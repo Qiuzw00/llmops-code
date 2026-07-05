@@ -44,6 +44,28 @@ export interface FAQItem {
   answer: string
 }
 
+export interface SkillMatch {
+  title: string
+  description: string
+}
+
+export interface ForYou {
+  transferableSkills: SkillMatch[]
+  gaps: SkillMatch[]
+  advice: string[]
+}
+
+export interface ResourceLink {
+  title: string
+  url: string
+}
+
+export interface ResourceCategory {
+  icon: string
+  title: string
+  links: ResourceLink[]
+}
+
 export interface Stage {
   id: number
   number: string
@@ -53,12 +75,14 @@ export interface Stage {
   description: string
   tags: string[]
   overview: string[]
+  forYou: ForYou
   learningObjectives: LearningObjective[]
   weeksContent: Week[]
   weeklySummaries: WeekSummary[]
   practiceProject: PracticeProject
   technicalHighlights: TechnicalHighlight[]
   faq: FAQItem[]
+  resources: ResourceCategory[]
 }
 
 export interface TechCategory {
@@ -71,4 +95,37 @@ export interface Project {
   icon: string
   title: string
   description: string
+}
+
+export interface Advantage {
+  title: string
+  description: string
+}
+
+export interface Challenge {
+  title: string
+  description: string
+}
+
+export interface PaceSuggestion {
+  stage: string
+  title: string
+  description: string
+}
+
+export interface CareerStep {
+  stage: string
+  title: string
+  highlighted?: boolean
+}
+
+export interface PersonalizedPlan {
+  subtitle: string
+  title: string
+  description: string
+  advantages: Advantage[]
+  challenges: Challenge[]
+  pace: PaceSuggestion[]
+  career: CareerStep[]
+  closing: string
 }

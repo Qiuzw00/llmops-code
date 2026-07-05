@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段4：LLMOps 可视化续 | LLMOps 学习路径</title>
+    <style id="theme-vars">
+/* LLMOps Learning Path — Editorial Academic Style */
+/* Warm paper tones + deep indigo accent */
+
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+/* Light theme tokens */
+:root {
+  /* Surface colors — warm paper */
+  --background: #FAF7F2;
+  --foreground: #1E1B2E;
+  --card: #FFFFFF;
+  --card-foreground: #1E1B2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1E1B2E;
+
+  /* Primary — Deep Indigo (single brand hue) */
+  --primary: #3730A3;
+  --primary-foreground: #FAF7F2;
+
+  /* Muted — warm neutral surface */
+  --muted: #F5F0E8;
+  --muted-foreground: #6B6480;
+
+  /* Destructive */
+  --destructive: #B91C1C;
+  --destructive-foreground: #FAF7F2;
+
+  /* Border & Input */
+  --border: #E5DFD5;
+  --input: #E5DFD5;
+  --ring: #3730A3;
+
+  /* Chart colors — indigo monochrome tints */
+  --chart-1: #3730A3;
+  --chart-2: #4F46E5;
+  --chart-3: #6366F1;
+  --chart-4: #818CF8;
+  --chart-5: #A5B4FC;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1E1B2E;
+  --sidebar-primary: #3730A3;
+  --sidebar-primary-foreground: #FAF7F2;
+  --sidebar-border: #E5DFD5;
+  --sidebar-ring: #3730A3;
+
+  /* Typography */
+  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+
+  /* Radius — restrained scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius: 8px;
+
+  /* State colors — semantic only */
+  --state-success: #15803D;
+  --state-warning: #B45309;
+  --state-error: #B91C1C;
+  --state-info: #3730A3;
+}
+
+/* Dark theme tokens */
+.dark {
+  --background: #1A1726;
+  --foreground: #F5F0E8;
+  --card: #252133;
+  --card-foreground: #F5F0E8;
+  --popover: #252133;
+  --popover-foreground: #F5F0E8;
+
+  --primary: #818CF8;
+  --primary-foreground: #1A1726;
+
+  --muted: #2D2840;
+  --muted-foreground: #9B95A8;
+
+  --destructive: #F87171;
+  --destructive-foreground: #1A1726;
+
+  --border: #3D3656;
+  --input: #3D3656;
+  --ring: #818CF8;
+
+  --chart-1: #818CF8;
+  --chart-2: #6366F1;
+  --chart-3: #4F46E5;
+  --chart-4: #4338CA;
+  --chart-5: #3730A3;
+
+  --sidebar: #252133;
+  --sidebar-foreground: #F5F0E8;
+  --sidebar-primary: #818CF8;
+  --sidebar-primary-foreground: #1A1726;
+  --sidebar-border: #3D3656;
+  --sidebar-ring: #818CF8;
+}
+
+/* Base typography */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Serif heading utility */
+.font-serif-display {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Mono label utility */
+.font-mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-foreground: var(--card-foreground);
+  }
+  @layer base {
+    body { background: var(--card-background); color: var(--card-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen font-sans antialiased">
+
+    <!-- ============ Top Navigation Bar ============ -->
+    <header class="sticky top-0 z-50 border-b backdrop-blur-sm" style="border-color: var(--border); background: rgba(250,247,242,0.92);">
+        <div class="mx-auto max-w-[1200px] px-6 py-3.5 flex items-center justify-between gap-4">
+            <a href="../pages/learning-path.html" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+                    <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">L</span>
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="font-serif-display text-[15px]" style="color: var(--foreground);">LLMOps 学习路径</span>
+                    <span class="font-mono-label" style="color: var(--muted-foreground);">CURRICULUM</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-2 text-[13px]" style="color: var(--muted-foreground);">
+                <a href="../pages/learning-path.html" class="nav-link hover:text-primary" style="color: var(--muted-foreground);">首页</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="font-medium" style="color: var(--foreground);">阶段 4</span>
+            </nav>
+            <a href="../pages/learning-path.html" class="inline-flex items-center gap-1.5 text-[13px] px-3 py-1.5 rounded-[8px] border nav-link" style="border-color: var(--border); color: var(--foreground);">
+                <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">返回总览</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+      <!-- ============ Stage Header ============ -->
+      <section class="border-b" style="border-color: var(--border); background: var(--card);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div class="lg:col-span-3">
+              <div class="font-serif-display text-[120px] leading-none" style="color: var(--primary); opacity: 0.18;">04</div>
+            </div>
+            <div class="lg:col-span-9">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="font-mono-label" style="color: var(--primary);">STAGE 04 · WEEK 10 — 12</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-[4px] border font-mono" style="border-color: var(--border); color: var(--muted-foreground);">平台化</span>
+              </div>
+              <h1 class="font-serif-display text-3xl md:text-4xl leading-[1.25] mb-5" style="color: var(--foreground);">
+                LLMOps 可视化续
+              </h1>
+              <p class="text-[15px] leading-[1.8] max-w-[720px]" style="color: var(--muted-foreground);">
+                完善平台内容审核机制，开放 API 接口供第三方接入，并支持多应用编排工作流，打造完整的 LLMOps 平台能力。
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-6">
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">API Gateway</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">LangGraph</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">DAG</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">内容安全</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Multi-Agent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Stage Overview ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          <div class="lg:col-span-3">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">OVERVIEW</span>
+            <h2 class="font-serif-display text-xl" style="color: var(--foreground);">阶段概述</h2>
+          </div>
+          <div class="lg:col-span-9 prose-stage">
+            <p class="text-[15px] mb-5" style="color: var(--foreground);">
+              本阶段是 LLMOps 平台能力建设的收尾。在前三阶段已具备对话、记忆、RAG、Agent 与可视化管理的基础上，补齐内容安全、开放接入与工作流编排三大能力，让平台从"能用"走向"可对外服务、可复杂编排"。
+            </p>
+            <p class="text-[15px] mb-5" style="color: var(--muted-foreground);">
+              第十周聚焦审核模块——对接内容安全 API、构建敏感词 AC 自动机、设计多级审核策略与可视化复审面板；第十一周开放 API——搭建网关、API Key 管理、Token 计费与 Swagger 文档，让第三方可安全接入。
+            </p>
+            <p class="text-[15px]" style="color: var(--muted-foreground);">
+              第十二周引入多应用工作流——基于 DAG 与 LangGraph StateGraph 实现多 Agent 协作编排，支持串行、并行与分层协作模式，最终交付完整的 LLMOps 平台。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 个性化对照 ============ -->
+      <section class="border-b" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-10">
+          <div class="mb-6">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">FOR YOU</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">与你经验的对照</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">可迁移的技能</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>数据治理 → 你做过数据质量管理、元数据管理，内容审核模块的审核策略类似数据校验</li>
+                <li>API 网关 → 你做过阿里云到华为云迁移，API 网关和计费体系的概念你已经熟悉</li>
+                <li>工作流编排 → DataWorks 的调度编排经验，直接迁移到 LangGraph 的 DAG 工作流</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="alert-triangle" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">需要补课的内容</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>AC 自动机算法 → 敏感词过滤的高效匹配算法，需要理解 Trie 树和 AC 自动机原理</li>
+                <li>LangGraph 状态图 → 比传统 DAG 更复杂，支持条件分支和循环，需要专门学习</li>
+                <li>多 Agent 协作 → 串行/并行/分层协作模式，是 Agent 工程的进阶内容</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--primary); background: var(--primary);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="lightbulb" class="w-4 h-4" style="color: var(--primary-foreground);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">学习建议</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--primary-foreground); opacity: 0.9;">
+                <li>Week 10 审核模块对你不难——用你做数据质量校验的思路理解内容安全审核</li>
+                <li>Week 11 开放 API 类似你做过的数据服务平台，API Key 管理和计费体系直接套用经验</li>
+                <li>Week 12 LangGraph 是重点，把它类比为"带 LLM 决策能力的 DataWorks 调度"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Learning Objectives ============ -->
+      <section class="border-y" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="mb-8">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">LEARNING OBJECTIVES</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习目标</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="shield-alert" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">内容安全审核</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">实现敏感词过滤与多级审核策略，保障平台内容合规。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="webhook" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">开放 API 与计费</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">设计 API 网关、Key 管理与 Token 计费体系。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="git-fork" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">LangGraph 状态图编排</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">掌握 StateGraph 状态机与条件分支、循环、并行节点。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="bot" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">多 Agent 协作</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">实现串行、并行与分层多 Agent 协作工作流。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow md:col-span-2" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="package-check" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">完成完整 LLMOps 平台</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">交付具备审核 + 开放 API + 工作流编排的完整 LLMOps 平台。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Weekly Detailed Content ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-16">
+        <div class="mb-10">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">WEEKLY BREAKDOWN</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">每周详细内容</h2>
+        </div>
+
+        <div class="space-y-10">
+
+          <!-- ===== Week 10 ===== -->
+          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
+              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W10</span>
+              </div>
+              <div>
+                <div class="font-mono-label" style="color: var(--primary);">WEEK 10</div>
+                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">审核模块</h3>
+              </div>
+            </div>
+            <div class="p-6 space-y-6">
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  内容安全审核
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  对接内容安全 API（阿里云 / 腾讯云内容安全），实现输入输出双重审核。设计审核策略（先审后发 / 先发后审），平衡安全性与体验流畅度。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  敏感词过滤
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  构建敏感词库与 AC 自动机算法实现高效匹配，支持通配符与变体识别。实现分级过滤（替换 / 拒绝 / 人工审核）。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+<span style="color: var(--primary);">from</span> pyahocorasick <span style="color: var(--primary);">import</span> Automaton
+ac = Automaton()
+<span style="color: var(--primary);">for</span> idx, word <span style="color: var(--primary);">in</span> <span style="color: var(--primary);">enumerate</span>(sensitive_words):
+    ac.add_word(word, (idx, word))
+ac.make_automaton()
+<span style="color: var(--muted-foreground);"># O(n) 扫描文本命中所有敏感词</span>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  多级审核策略
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  根据用户等级配置不同审核策略——新用户严格审核、信任用户快速通道。审核日志记录与审计追踪，满足合规要求。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  审核结果可视化
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  开发审核记录管理面板，支持申诉处理与人工复审，形成"机器初审 + 人工复核"的闭环。
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ===== Week 11 ===== -->
+          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
+              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W11</span>
+              </div>
+              <div>
+                <div class="font-mono-label" style="color: var(--primary);">WEEK 11</div>
+                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">开放 API</h3>
+              </div>
+            </div>
+            <div class="p-6 space-y-6">
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  API 网关
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  搭建 API 网关（Kong / APISIX），实现统一入口、路由转发、鉴权。配置 API 限流策略（令牌桶算法 / 漏桶算法），保护后端服务免受突发流量冲击。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  API Key 管理
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  实现 API Key 申请 / 审批 / 吊销流程，支持多应用隔离。设计 Key 权限范围控制，区分只读、读写、管理等权限级别。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  计费体系
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  基于 Token 用量计费，实现用量统计与配额管理。支持预付费套餐与后付费两种模式。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+计费公式: fee = tokens_used × unit_price
+预付费: 套餐包 → 用量扣减 → 余额不足拦截
+后付费: 月度结算 → 按阶梯计价 → 发账单
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  Swagger 文档
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  自动生成 API 接口文档，提供在线调试工具。支持多语言 SDK 自动生成，降低第三方接入成本。
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ===== Week 12 ===== -->
+          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
+              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W12</span>
+              </div>
+              <div>
+                <div class="font-mono-label" style="color: var(--primary);">WEEK 12</div>
+                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">多应用工作流</h3>
+              </div>
+            </div>
+            <div class="p-6 space-y-6">
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  应用编排概念
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  理解 DAG（有向无环图）工作流编排模型，节点表示任务、边表示数据流。设计可视化编排界面，让用户通过拖拽配置复杂流程。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  LangGraph 状态图
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  深入学习 LangGraph 框架，理解 StateGraph 状态机模型。实现条件分支、循环、并行节点。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+<span style="color: var(--primary);">from</span> langgraph.graph <span style="color: var(--primary);">import</span> StateGraph, END
+
+graph = StateGraph(State)
+graph.add_node(<span style="color: var(--state-success);">"retrieve"</span>, retrieve_fn)
+graph.add_node(<span style="color: var(--state-success);">"generate"</span>, generate_fn)
+graph.add_conditional_edges(<span style="color: var(--state-success);">"retrieve"</span>, should_generate)
+graph.add_edge(<span style="color: var(--state-success);">"generate"</span>, END)
+app = graph.compile()
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  多 Agent 协作
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  实现多 Agent 协作模式——串行协作（A→B→C）、并行协作（A+B→C）、分层协作（主 Agent 调度子 Agent）。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+<span style="color: var(--primary);">串行</span>: A → B → C      <span style="color: var(--muted-foreground);"># 流水线</span>
+<span style="color: var(--primary);">并行</span>: A ┐
+        B ┘→ C        <span style="color: var(--muted-foreground);"># 汇总</span>
+<span style="color: var(--primary);">分层</span>: 主Agent → [子A, 子B, 子C]  <span style="color: var(--muted-foreground);"># 调度</span>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  工作流调试与监控
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  实现工作流执行追踪、节点耗时统计、错误定位与重试机制，让复杂编排也可观测、可调试。
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ============ Practice Project ============ -->
+      <section class="border-y" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div class="lg:col-span-4">
+              <span class="font-mono-label block mb-2" style="color: var(--primary);">CAPSTONE</span>
+              <h2 class="font-serif-display text-2xl mb-3" style="color: var(--foreground);">实践项目</h2>
+              <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">阶段交付的工程项目，作为本阶段学习成果的检验。</p>
+            </div>
+            <div class="lg:col-span-8">
+              <div class="rounded-[12px] border-2 p-6 editorial-shadow" style="border-color: var(--primary); background: var(--card);">
+                <div class="flex items-start gap-4 mb-4">
+                  <div class="flex-shrink-0 w-11 h-11 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+                    <i data-lucide="package-check" class="w-5 h-5" style="color: var(--primary-foreground);"></i>
+                  </div>
+                  <div>
+                    <div class="font-mono-label mb-1" style="color: var(--primary);">DELIVERABLE</div>
+                    <h3 class="font-serif-display text-lg" style="color: var(--foreground);">完整 LLMOps 平台</h3>
+                  </div>
+                </div>
+                <p class="text-[14px] leading-[1.8] mb-4" style="color: var(--muted-foreground);">
+                  交付包含审核 + 开放 API + 工作流编排的完整 LLMOps 平台：内容安全模块实现输入输出双重审核与敏感词过滤；开放 API 通过网关统一接入并按 Token 计费；工作流编排基于 LangGraph 支持多 Agent 串行、并行与分层协作。平台可对外提供服务，支撑复杂业务场景。
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
+                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">AUDIT</div>
+                    <div class="text-[13px]" style="color: var(--foreground);">内容安全与敏感词</div>
+                  </div>
+                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
+                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">API</div>
+                    <div class="text-[13px]" style="color: var(--foreground);">网关 + Key + 计费</div>
+                  </div>
+                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
+                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">WORKFLOW</div>
+                    <div class="text-[13px]" style="color: var(--foreground);">LangGraph 多 Agent</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Technical Points ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="mb-8">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">TECHNICAL HIGHLIGHTS</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">技术要点</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="filter" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">AC 自动机敏感词匹配</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">Aho-Corasick 算法实现 O(n) 多模式串匹配，支持通配符与变体识别，高效过滤敏感词。</p>
+          </div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="gauge" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">令牌桶限流算法</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">Redis + Lua 脚本实现分布式令牌桶，支持突发流量与平滑限流，保护后端服务。</p>
+          </div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="git-fork" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">LangGraph StateGraph</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">基于状态机模型实现条件分支、循环与并行节点，构建有状态的多步骤 Agent 工作流。</p>
+          </div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="bot" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">多 Agent 协作模式</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">支持串行、并行、分层三种协作模式，主 Agent 调度子 Agent 完成复杂任务分解。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section class="border-t" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="mb-8">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">FAQ</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">常见问题</h2>
+          </div>
+          <div class="space-y-3">
+            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-start gap-3 mb-2">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q1</span>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">敏感词过滤误报率高？</h4>
+              </div>
+              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
+                结合上下文语义判断，使用 LLM 二次确认，建立白名单机制，针对正常业务词进行豁免。
+              </p>
+            </div>
+            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-start gap-3 mb-2">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q2</span>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">API 限流怎么实现？</h4>
+              </div>
+              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
+                Redis + Lua 脚本实现令牌桶，或使用网关自带限流插件，注意分布式环境下的一致性问题。
+              </p>
+            </div>
+            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-start gap-3 mb-2">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q3</span>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">LangGraph 和 LangChain 有什么区别？</h4>
+              </div>
+              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
+                LangGraph 是 LangChain 的扩展，专门用于构建有状态的、多步骤的 Agent 工作流，支持循环和条件分支。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Learning Resources ============ -->
+      <section class="border-b" style="border-color: var(--border);">
+        <div class="mx-auto max-w-[1200px] px-6 py-12">
+          <div class="mb-6">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">RESOURCES</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习资料</h2>
+            <p class="text-sm mt-1" style="color: var(--muted-foreground);">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="book-open" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">官方文档</span>
+              </div>
+              <div class="space-y-2">
+                <a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangGraph 官方文档 →</a>
+                <a href="https://konghq.com/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Kong API 网关文档 →</a>
+                <a href="https://apisix.apache.org/docs/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">APISIX 文档 →</a>
+                <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/text-analysis.html" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Elasticsearch 文本分析 →</a>
+                <a href="https://swagger.io/docs/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Swagger 文档 →</a>
+              </div>
+            </div>
+            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="play-circle" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">视频教程</span>
+              </div>
+              <div class="space-y-2">
+                <a href="https://www.bilibili.com/video/BV1hT4y1v7YH" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangGraph 多Agent协作（B站）→</a>
+                <a href="https://www.bilibili.com/video/BV1WV411r7pB" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">API 网关搭建教程（B站）→</a>
+                <a href="https://www.bilibili.com/video/BV1xV411r7mY" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">敏感词过滤算法（B站）→</a>
+                <a href="https://www.youtube.com/watch?v=R4PPjIpUqbo" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangGraph 完整教程（YouTube）→</a>
+                <a href="https://www.youtube.com/watch?v=vy0VL3RZJzw" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">AC自动机算法讲解（YouTube）→</a>
+              </div>
+            </div>
+            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">推荐阅读</span>
+              </div>
+              <div class="space-y-2">
+                <a href="https://arxiv.org/abs/2308.10848" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangGraph 论文：Multi-Agent 编排 →</a>
+                <a href="https://research.google/blog/chain-of-thought-prompting-elicits-reasoning/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Chain of Thought 推理 →</a>
+                <a href="https://huggingface.co/blog" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">HuggingFace 博客：内容审核 →</a>
+                <a href="https://www.promptingguide.ai/techniques/cot" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">CoT Prompting 指南 →</a>
+                <a href="https://redis.io/docs/manual/patterns/distributed-locks/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">分布式限流设计 →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Bottom Navigation ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <a href="stage-3.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
+            <div class="font-mono-label mb-2" style="color: var(--primary);">PREVIOUS · STAGE 03</div>
+            <div class="font-serif-display text-[15px] flex items-center gap-2" style="color: var(--foreground);">
+              <i data-lucide="arrow-left" class="w-4 h-4" style="color: var(--primary);"></i>
+              LLMOps 应用平台可视化
+            </div>
+          </a>
+          <a href="../pages/learning-path.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
+            <div class="font-mono-label mb-2 text-right" style="color: var(--primary);">BACK TO OVERVIEW</div>
+            <div class="font-serif-display text-[15px] flex items-center justify-end gap-2" style="color: var(--foreground);">
+              返回学习路径总览
+              <i data-lucide="arrow-right" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ============ Footer ============ -->
+      <footer class="border-t" style="border-color: var(--border);">
+        <div class="mx-auto max-w-[1200px] px-6 py-8">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">L</span>
+              </div>
+              <div>
+                <div class="font-serif-display text-sm" style="color: var(--foreground);">LLMOps 学习路径</div>
+                <div class="font-mono-label" style="color: var(--muted-foreground);">STAGE 04 · WEEK 10 — 12</div>
+              </div>
+            </div>
+            <p class="text-xs" style="color: var(--muted-foreground);">基于课程大纲设计 · 从架构基础到商业级 AI 应用</p>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>lucide.createIcons();</script>
+
+    <style>
+      .editorial-shadow { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
+      .prose-stage p { line-height: 1.85; }
+      .code-block { font-family: var(--font-mono); }
+      .nav-link { transition: color 0.2s; }
+      [data-icon] { background-color: currentColor; }
+    </style>
+</body>
+</html>

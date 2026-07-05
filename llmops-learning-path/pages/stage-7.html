@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段 7：五大商业级 AI 应用实战 — LLMOps 学习路径</title>
+    <style id="theme-vars">
+/* LLMOps Learning Path — Editorial Academic Style */
+/* Warm paper tones + deep indigo accent */
+
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+/* Light theme tokens */
+:root {
+  /* Surface colors — warm paper */
+  --background: #FAF7F2;
+  --foreground: #1E1B2E;
+  --card: #FFFFFF;
+  --card-foreground: #1E1B2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1E1B2E;
+
+  /* Primary — Deep Indigo (single brand hue) */
+  --primary: #3730A3;
+  --primary-foreground: #FAF7F2;
+
+  /* Muted — warm neutral surface */
+  --muted: #F5F0E8;
+  --muted-foreground: #6B6480;
+
+  /* Destructive */
+  --destructive: #B91C1C;
+  --destructive-foreground: #FAF7F2;
+
+  /* Border & Input */
+  --border: #E5DFD5;
+  --input: #E5DFD5;
+  --ring: #3730A3;
+
+  /* Chart colors — indigo monochrome tints */
+  --chart-1: #3730A3;
+  --chart-2: #4F46E5;
+  --chart-3: #6366F1;
+  --chart-4: #818CF8;
+  --chart-5: #A5B4FC;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1E1B2E;
+  --sidebar-primary: #3730A3;
+  --sidebar-primary-foreground: #FAF7F2;
+  --sidebar-border: #E5DFD5;
+  --sidebar-ring: #3730A3;
+
+  /* Typography */
+  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+
+  /* Radius — restrained scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius: 8px;
+
+  /* State colors — semantic only */
+  --state-success: #15803D;
+  --state-warning: #B45309;
+  --state-error: #B91C1C;
+  --state-info: #3730A3;
+}
+
+/* Dark theme tokens */
+.dark {
+  --background: #1A1726;
+  --foreground: #F5F0E8;
+  --card: #252133;
+  --card-foreground: #F5F0E8;
+  --popover: #252133;
+  --popover-foreground: #F5F0E8;
+
+  --primary: #818CF8;
+  --primary-foreground: #1A1726;
+
+  --muted: #2D2840;
+  --muted-foreground: #9B95A8;
+
+  --destructive: #F87171;
+  --destructive-foreground: #1A1726;
+
+  --border: #3D3656;
+  --input: #3D3656;
+  --ring: #818CF8;
+
+  --chart-1: #818CF8;
+  --chart-2: #6366F1;
+  --chart-3: #4F46E5;
+  --chart-4: #4338CA;
+  --chart-5: #3730A3;
+
+  --sidebar: #252133;
+  --sidebar-foreground: #F5F0E8;
+  --sidebar-primary: #818CF8;
+  --sidebar-primary-foreground: #1A1726;
+  --sidebar-border: #3D3656;
+  --sidebar-ring: #818CF8;
+}
+
+/* Base typography */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Serif heading utility */
+.font-serif-display {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Mono label utility */
+.font-mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-foreground: var(--card-foreground);
+  }
+  @layer base {
+    body { background: var(--card-background); color: var(--card-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen antialiased">
+
+  <!-- ============ Top Navigation Bar ============ -->
+  <header class="sticky top-0 z-50 border-b" style="border-color: var(--border); background: rgba(250,247,242,0.92); backdrop-filter: blur(8px);">
+    <div class="mx-auto max-w-[1200px] px-6 py-3.5 flex items-center justify-between gap-4">
+      <a href="learning-path.html" class="flex items-center gap-3 flex-shrink-0">
+        <div class="w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+          <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">L</span>
+        </div>
+        <div class="flex flex-col leading-tight">
+          <span class="font-serif-display text-[15px]" style="color: var(--foreground);">LLMOps 学习路径</span>
+          <span class="font-mono-label" style="color: var(--muted-foreground);">21 Weeks · 8 Stages</span>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-2 text-sm" style="color: var(--muted-foreground);">
+        <a href="learning-path.html" class="transition-colors hover:underline" style="color: var(--muted-foreground);">首页</a>
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+        <span style="color: var(--foreground); font-weight: 500;">阶段 7</span>
+      </nav>
+      <a href="learning-path.html" class="inline-flex items-center gap-1.5 text-sm font-medium px-3.5 py-2 rounded-[8px] border transition-colors" style="border-color: var(--border); color: var(--foreground);" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--foreground)'">
+        <i data-lucide="layout-grid" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">返回总览</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-[1200px] px-6">
+
+    <!-- ============ Stage Header ============ -->
+    <section class="pt-16 pb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="font-mono-label" style="color: var(--primary);">STAGE 07</span>
+            <span class="h-px w-12" style="background: var(--border);"></span>
+            <span class="font-mono-label" style="color: var(--muted-foreground);">WEEK 17 — 19</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded-[4px]" style="background: var(--primary); color: var(--primary-foreground);">实战</span>
+          </div>
+          <div class="flex items-end gap-5 mb-4">
+            <span class="font-serif-display text-[88px] leading-none" style="color: var(--primary);">07</span>
+            <h1 class="font-serif-display text-3xl md:text-4xl leading-[1.25] pb-2" style="color: var(--foreground);">
+              五大商业级<br>AI 应用实战
+            </h1>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">全栈开发</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">RAG</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">多模态</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Agent</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">生产部署</span>
+          </div>
+        </div>
+        <div class="lg:col-span-4">
+          <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+            <div class="font-mono-label mb-4" style="color: var(--primary);">STAGE OVERVIEW</div>
+            <div class="space-y-4">
+              <div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">3 周</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">学习周期</div>
+              </div>
+              <div class="h-px" style="background: var(--border);"></div>
+              <div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">5 个应用</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">客服 / 口语 / 转码 / 数字人 / PPT</div>
+              </div>
+              <div class="h-px" style="background: var(--border);"></div>
+              <div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">商业级</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">可独立部署交付</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Stage Overview ============ -->
+    <section class="pb-14">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-3">
+          <span class="font-mono-label" style="color: var(--primary);">OVERVIEW</span>
+          <h2 class="font-serif-display text-xl mt-2" style="color: var(--foreground);">阶段概述</h2>
+        </div>
+        <div class="lg:col-span-9 prose-stage">
+          <p class="text-[15px] mb-4" style="color: var(--foreground); line-height: 1.85;">
+            本阶段综合运用前六个阶段所学，从零构建<strong style="color: var(--primary);">五个可落地的商业级 AI 应用</strong>，覆盖客服、教育、创意与生产力场景。每个应用均可独立部署运行，具备完整的前后端、AI 能力与用户体验。
+          </p>
+          <p class="text-[15px] mb-4" style="color: var(--muted-foreground); line-height: 1.85;">
+            Week 17 构建智能客服系统（RAG 知识库 + 人工转接）与口语助手（语音交互链路 + 场景化练习）。Week 18 实现图片转 HTML（视觉模型识别设计稿生成代码）与虚拟数字人（多模态驱动形象与对话）。
+          </p>
+          <p class="text-[15px]" style="color: var(--muted-foreground); line-height: 1.85;">
+            Week 19 开发 PPT 生成应用（主题输入自动生成演示文稿），随后将五大应用整合到统一管理入口，打通用户体系与数据共享，完善项目文档与部署脚本，交付完整的商业级 AI 应用矩阵。
+          </p>
+        </div>
+      </div>
+    </section>
+
+      <!-- ============ 个性化对照 ============ -->
+      <section class="border-b" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-10">
+          <div class="mb-6">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">FOR YOU</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">与你经验的对照</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">可迁移的技能</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>智能客服 → 你做过联通权益平台，客服系统的业务逻辑（转人工/满意度统计）你已经熟悉</li>
+                <li>数据驱动 → 你有 BI 数据分析经验，客服后台的知识库管理和对话统计分析可以直接迁移</li>
+                <li>Python 工程化 → 你用 Python 做过自动化报表服务，PPT 生成的 python-pptx 库使用方式类似</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="alert-triangle" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">需要补课的内容</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>全栈开发 → 五个应用都需要前端+后端完整开发，前端仍是挑战</li>
+                <li>Vision API → GPT-4 Vision 识别设计稿生成代码，需要理解图像理解能力边界</li>
+                <li>数字人 SDK → D-ID/SadTalker 等第三方 SDK 集成，是新领域</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--primary); background: var(--primary);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="lightbulb" class="w-4 h-4" style="color: var(--primary-foreground);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">学习建议</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--primary-foreground); opacity: 0.9;">
+                <li>这是你转型 AI 工程师的核心作品集——每个项目都要完整交付并写入简历</li>
+                <li>智能客服项目可以复用你的联通项目经验，重点加上 RAG 知识库和 Agent 能力</li>
+                <li>PPT 生成项目用 python-pptx，你的 Python 能力可以快速上手</li>
+                <li>建议按"客服→PPT生成→图片转HTML→口语助手→数字人"顺序，难度递增</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- ============ Learning Objectives ============ -->
+    <section class="pb-14">
+      <div class="rounded-[12px] border p-8 shadow-soft" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-center gap-3 mb-6">
+          <i data-lucide="target" class="w-5 h-5" style="color: var(--primary);"></i>
+          <span class="font-mono-label" style="color: var(--primary);">LEARNING OBJECTIVES</span>
+        </div>
+        <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">学习目标</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="code-2" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">独立完成商业级 AI 应用全栈开发</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">从需求分析、架构设计到编码实现与部署</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="layers" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">综合运用 RAG/Agent/多模态技术</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">将核心技术融合到真实业务场景</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="workflow" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">掌握需求分析到部署上线完整流程</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">全生命周期项目管理与工程实践</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="package-check" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">交付五个可独立运行的 AI 应用</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">每个应用均可作为独立产品部署</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 md:col-span-2">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="trophy" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">积累商业项目实战经验</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">从工程师视角体验完整商业项目开发流程</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Weekly Detailed Content ============ -->
+    <section class="pb-14">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="font-mono-label" style="color: var(--primary);">WEEKLY BREAKDOWN</span>
+        <span class="h-px flex-1" style="background: var(--border);"></span>
+      </div>
+      <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">每周详细内容</h2>
+
+      <!-- Week 17 -->
+      <div class="rounded-[12px] border overflow-hidden mb-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-center gap-4 px-6 py-5 border-b" style="border-color: var(--border); background: var(--muted);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+            <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">17</span>
+          </div>
+          <div>
+            <div class="font-mono-label mb-1" style="color: var(--primary);">WEEK 17</div>
+            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">智能客服 + 口语助手</h3>
+          </div>
+        </div>
+        <div class="p-6 space-y-6">
+
+          <!-- 知识点 1 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="headphones" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">智能客服系统</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">KNOWLEDGE-BASED CHATBOT</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                基于 RAG 构建企业知识库客服系统，支持多轮对话与意图识别。实现人工转接机制——当 AI 置信度低于阈值时自动转接人工坐席。开发客服后台管理，涵盖知识库管理、对话记录查看与满意度统计分析。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">RAG 知识库</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">多轮对话</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">意图识别</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">人工转接</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">后台管理</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 知识点 2 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="mic" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">口语助手应用</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">SPEECH PRACTICE</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                构建语音输入 → ASR → LLM 口语纠错 → TTS 语音反馈的完整链路。实现场景化口语练习（日常对话 / 商务英语 / 面试模拟），设计多维度评分机制——发音准确度、语法正确性、流利度评估。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">语音交互链路</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">口语纠错</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">场景化练习</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">评分机制</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Week 18 -->
+      <div class="rounded-[12px] border overflow-hidden mb-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-center gap-4 px-6 py-5 border-b" style="border-color: var(--border); background: var(--muted);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+            <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">18</span>
+          </div>
+          <div>
+            <div class="font-mono-label mb-1" style="color: var(--primary);">WEEK 18</div>
+            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">图片转 HTML + 虚拟数字人</h3>
+          </div>
+        </div>
+        <div class="p-6 space-y-6">
+
+          <!-- 知识点 1 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="code" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">图片转 HTML</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">DESIGN-TO-CODE</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                使用 GPT-4 Vision 识别设计稿元素——布局结构、颜色方案、组件类型，生成对应的 HTML + CSS 代码。实现组件识别与代码模板匹配，支持输出 Vue / React 组件代码，提升前端开发效率。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">GPT-4 Vision</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">设计稿识别</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">组件识别</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">模板匹配</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Vue / React 输出</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 知识点 2 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="user-round" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">虚拟数字人</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">DIGITAL AVATAR</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                多模态驱动数字人——文字输入 → LLM 生成回复 → TTS 语音合成 → 口型同步动画。接入数字人 SDK（D-ID / SadTalker），实现表情与语音的实时同步，打造沉浸式交互体验。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">D-ID SDK</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">SadTalker</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">口型同步</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">表情驱动</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">多模态融合</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Week 19 -->
+      <div class="rounded-[12px] border overflow-hidden shadow-soft" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-center gap-4 px-6 py-5 border-b" style="border-color: var(--border); background: var(--muted);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+            <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">19</span>
+          </div>
+          <div>
+            <div class="font-mono-label mb-1" style="color: var(--primary);">WEEK 19</div>
+            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">PPT 生成 + 项目完善</h3>
+          </div>
+        </div>
+        <div class="p-6 space-y-6">
+
+          <!-- 知识点 1 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="presentation" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">PPT 生成应用</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">AUTO PRESENTATION</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                输入主题 → LLM 生成大纲 → 自动填充内容 → 选择模板 → 生成 PPT 文件。支持样式自定义、图表插入、导出 PPTX / PDF 格式。使用 python-pptx 库实现程序化文档生成。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">python-pptx</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">大纲生成</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">模板系统</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">图表插入</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">PPTX / PDF 导出</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 知识点 2 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="layout-grid" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">五大应用整合</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">INTEGRATION</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                统一应用管理入口，将五大应用整合到 LLMOps 平台。优化应用间数据共享与用户体系打通，实现单点登录与统一鉴权。完善项目文档与部署脚本，确保每个应用可独立部署也可协同运行。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">统一入口</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">数据共享</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">单点登录</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">部署脚本</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Practice Project ============ -->
+    <section class="pb-14">
+      <div class="rounded-[12px] border-2 p-8" style="border-color: var(--primary); background: var(--card);">
+        <div class="flex items-center gap-3 mb-5">
+          <i data-lucide="trophy" class="w-5 h-5" style="color: var(--primary);"></i>
+          <span class="font-mono-label" style="color: var(--primary);">CAPSTONE PROJECT</span>
+        </div>
+        <h2 class="font-serif-display text-2xl mb-4" style="color: var(--foreground);">五个可独立部署的商业级 AI 应用</h2>
+        <p class="text-[14px] mb-6 max-w-[800px]" style="color: var(--muted-foreground); line-height: 1.8;">
+          从零构建五个完整的商业级 AI 应用：智能客服、口语助手、图片转 HTML、虚拟数字人、PPT 生成。每个应用均可独立部署运行，同时整合到统一的 LLMOps 平台中协同工作。
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <i data-lucide="headphones" class="w-5 h-5 mb-3" style="color: var(--primary);"></i>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">智能客服</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.6;">RAG 知识库 + 人工转接</p>
+          </div>
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <i data-lucide="mic" class="w-5 h-5 mb-3" style="color: var(--primary);"></i>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">口语助手</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.6;">语音交互 + 实时纠错</p>
+          </div>
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <i data-lucide="code" class="w-5 h-5 mb-3" style="color: var(--primary);"></i>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">图片转 HTML</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.6;">视觉识别 + 代码生成</p>
+          </div>
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <i data-lucide="user-round" class="w-5 h-5 mb-3" style="color: var(--primary);"></i>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">虚拟数字人</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.6;">多模态驱动 + 口型同步</p>
+          </div>
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <i data-lucide="presentation" class="w-5 h-5 mb-3" style="color: var(--primary);"></i>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">PPT 生成</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.6;">主题输入 + 自动生成</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Technical Points ============ -->
+    <section class="pb-14">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="font-mono-label" style="color: var(--primary);">TECH STACK</span>
+        <span class="h-px flex-1" style="background: var(--border);"></span>
+      </div>
+      <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">技术要点</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="database" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">RAG 知识库客服</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">企业知识库检索 + 意图识别 + 人工转接</p>
+        </div>
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="audio-waveform" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">语音交互链路</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">ASR + LLM + TTS 全链路口语练习</p>
+        </div>
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="code" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">GPT-4 Vision 代码生成</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">设计稿识别 + HTML/Vue/React 代码输出</p>
+        </div>
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="user-round" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">数字人 SDK</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">D-ID / SadTalker 口型同步与表情驱动</p>
+        </div>
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="file-text" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">python-pptx 文档生成</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">程序化 PPT 生成，模板与图表插入</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="pb-16">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="font-mono-label" style="color: var(--primary);">FAQ</span>
+        <span class="h-px flex-1" style="background: var(--border);"></span>
+      </div>
+      <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">常见问题</h2>
+      <div class="space-y-4">
+
+        <div class="rounded-[12px] border p-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
+            <div class="flex-1">
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">智能客服如何判断转人工？</h3>
+              <div class="flex items-start gap-3">
+                <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
+                <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
+                  设置置信度阈值（如 0.6），当 RAG 检索匹配度低于阈值时标记为低置信。连续 2 次无法匹配知识库则自动转人工，同时支持用户主动请求"转人工"关键词触发即时转接。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-[12px] border p-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
+            <div class="flex-1">
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">图片转 HTML 代码质量差？</h3>
+              <div class="flex items-start gap-3">
+                <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
+                <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
+                  提供详细的设计规范 prompt，明确布局结构与样式约定。使用 few-shot 示例引导模型输出符合预期的代码风格，后处理校验 HTML 合法性与组件规范性，必要时引入代码模板库辅助匹配。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-[12px] border p-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
+            <div class="flex-1">
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">数字人口型不同步？</h3>
+              <div class="flex items-start gap-3">
+                <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
+                <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
+                  使用 viseme 音素映射实现精细口型控制，调整动画帧率与音频匹配（建议 30fps），预处理音频对齐时间戳，确保语音与口型动画的时间轴严格同步。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ Learning Resources ============ -->
+    <section class="border-b" style="border-color: var(--border);">
+      <div class="mx-auto max-w-[1200px] px-6 py-12">
+        <div class="mb-6">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">RESOURCES</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习资料</h2>
+          <p class="text-sm mt-1" style="color: var(--muted-foreground);">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4">
+              <i data-lucide="book-open" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">官方文档</span>
+            </div>
+            <div class="space-y-2">
+              <a href="https://python-pptx.readthedocs.io/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">python-pptx 官方文档 →</a>
+              <a href="https://www.d-id.com/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">D-ID 数字人 API →</a>
+              <a href="https://github.com/OpenTalker/SadTalker" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">SadTalker 数字人开源 →</a>
+              <a href="https://platform.openai.com/docs/guides/vision" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">GPT-4 Vision 文档 →</a>
+              <a href="https://rivian.com/meet" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">RAG 客服系统设计参考 →</a>
+            </div>
+          </div>
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4">
+              <i data-lucide="play-circle" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">视频教程</span>
+            </div>
+            <div class="space-y-2">
+              <a href="https://www.bilibili.com/video/BV1oV411r7VY" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">AI智能客服系统开发（B站）→</a>
+              <a href="https://www.bilibili.com/video/BV1RT4y1v7mN" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">python-pptx 自动生成PPT（B站）→</a>
+              <a href="https://www.bilibili.com/video/BV1Vt4y1H7pD" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">数字人开发教程（B站）→</a>
+              <a href="https://www.youtube.com/watch?v=AZMPe5g8oVo" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">图片转HTML代码实战（YouTube）→</a>
+              <a href="https://www.youtube.com/watch?v=wXf_EE7RyKU" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">AI口语助手开发（YouTube）→</a>
+            </div>
+          </div>
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4">
+              <i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">推荐阅读</span>
+            </div>
+            <div class="space-y-2">
+              <a href="https://github.com/waydabnier/AI-customer-service" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">AI客服开源项目 →</a>
+              <a href="https://www.promptingguide.ai/use-cases/chatbots" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">聊天机器人 Prompt 指南 →</a>
+              <a href="https://huggingface.co/blog" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">HuggingFace 博客：数字人 →</a>
+              <a href="https://docs.python.org/3/library/xml.etree.elementtree.html" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Python XML 处理（PPTX底层）→</a>
+              <a href="https://v3.vuejs.org/guide/component-basics.html" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Vue 组件开发指南 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Bottom Navigation ============ -->
+    <section class="pb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="stage-6.html" class="group rounded-[12px] border p-6 transition-colors" style="border-color: var(--border); background: var(--card);" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="arrow-left" class="w-4 h-4" style="color: var(--muted-foreground);"></i>
+            <span class="font-mono-label" style="color: var(--muted-foreground);">PREVIOUS</span>
+          </div>
+          <div class="font-serif-display text-base" style="color: var(--foreground);">阶段 6 · 多模态工具功能</div>
+          <div class="text-xs mt-1" style="color: var(--muted-foreground);">WEEK 15</div>
+        </a>
+        <a href="stage-8.html" class="group rounded-[12px] border p-6 transition-colors text-right" style="border-color: var(--border); background: var(--card);" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="flex items-center justify-end gap-2 mb-2">
+            <span class="font-mono-label" style="color: var(--muted-foreground);">NEXT</span>
+            <i data-lucide="arrow-right" class="w-4 h-4" style="color: var(--muted-foreground);"></i>
+          </div>
+          <div class="font-serif-display text-base" style="color: var(--foreground);">阶段 8 · 课程回顾与 LLM 进阶</div>
+          <div class="text-xs mt-1" style="color: var(--muted-foreground);">WEEK 20 — 21</div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="border-t" style="border-color: var(--border);">
+    <div class="mx-auto max-w-[1200px] px-6 py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+          <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">L</span>
+        </div>
+        <div>
+          <div class="font-serif-display text-sm" style="color: var(--foreground);">LLMOps 学习路径</div>
+          <div class="font-mono-label" style="color: var(--muted-foreground);">21 WEEKS · 8 STAGES · 5 PROJECTS</div>
+        </div>
+      </div>
+      <p class="text-xs" style="color: var(--muted-foreground);">阶段 7 · 五大商业级 AI 应用实战 · WEEK 17 — 19</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>lucide.createIcons();</script>
+
+    <style>
+      .shadow-soft { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
+      .prose-stage p { line-height: 1.85; }
+    </style>
+</body>
+</html>

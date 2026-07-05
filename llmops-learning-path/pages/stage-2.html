@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段2：商业级聊天机器人开发 | LLMOps 学习路径</title>
+    <style id="theme-vars">
+/* LLMOps Learning Path — Editorial Academic Style */
+/* Warm paper tones + deep indigo accent */
+
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+/* Light theme tokens */
+:root {
+  /* Surface colors — warm paper */
+  --background: #FAF7F2;
+  --foreground: #1E1B2E;
+  --card: #FFFFFF;
+  --card-foreground: #1E1B2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1E1B2E;
+
+  /* Primary — Deep Indigo (single brand hue) */
+  --primary: #3730A3;
+  --primary-foreground: #FAF7F2;
+
+  /* Muted — warm neutral surface */
+  --muted: #F5F0E8;
+  --muted-foreground: #6B6480;
+
+  /* Destructive */
+  --destructive: #B91C1C;
+  --destructive-foreground: #FAF7F2;
+
+  /* Border & Input */
+  --border: #E5DFD5;
+  --input: #E5DFD5;
+  --ring: #3730A3;
+
+  /* Chart colors — indigo monochrome tints */
+  --chart-1: #3730A3;
+  --chart-2: #4F46E5;
+  --chart-3: #6366F1;
+  --chart-4: #818CF8;
+  --chart-5: #A5B4FC;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1E1B2E;
+  --sidebar-primary: #3730A3;
+  --sidebar-primary-foreground: #FAF7F2;
+  --sidebar-border: #E5DFD5;
+  --sidebar-ring: #3730A3;
+
+  /* Typography */
+  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+
+  /* Radius — restrained scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius: 8px;
+
+  /* State colors — semantic only */
+  --state-success: #15803D;
+  --state-warning: #B45309;
+  --state-error: #B91C1C;
+  --state-info: #3730A3;
+}
+
+/* Dark theme tokens */
+.dark {
+  --background: #1A1726;
+  --foreground: #F5F0E8;
+  --card: #252133;
+  --card-foreground: #F5F0E8;
+  --popover: #252133;
+  --popover-foreground: #F5F0E8;
+
+  --primary: #818CF8;
+  --primary-foreground: #1A1726;
+
+  --muted: #2D2840;
+  --muted-foreground: #9B95A8;
+
+  --destructive: #F87171;
+  --destructive-foreground: #1A1726;
+
+  --border: #3D3656;
+  --input: #3D3656;
+  --ring: #818CF8;
+
+  --chart-1: #818CF8;
+  --chart-2: #6366F1;
+  --chart-3: #4F46E5;
+  --chart-4: #4338CA;
+  --chart-5: #3730A3;
+
+  --sidebar: #252133;
+  --sidebar-foreground: #F5F0E8;
+  --sidebar-primary: #818CF8;
+  --sidebar-primary-foreground: #1A1726;
+  --sidebar-border: #3D3656;
+  --sidebar-ring: #818CF8;
+}
+
+/* Base typography */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Serif heading utility */
+.font-serif-display {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Mono label utility */
+.font-mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-foreground: var(--card-foreground);
+  }
+  @layer base {
+    body { background: var(--card-background); color: var(--card-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen font-sans antialiased">
+
+    <!-- ============ Top Navigation Bar ============ -->
+    <header class="sticky top-0 z-50 border-b backdrop-blur-sm" style="border-color: var(--border); background: rgba(250,247,242,0.92);">
+        <div class="mx-auto max-w-[1200px] px-6 py-3.5 flex items-center justify-between gap-4">
+            <a href="../pages/learning-path.html" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+                    <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">L</span>
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="font-serif-display text-[15px]" style="color: var(--foreground);">LLMOps 学习路径</span>
+                    <span class="font-mono-label" style="color: var(--muted-foreground);">CURRICULUM</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-2 text-[13px]" style="color: var(--muted-foreground);">
+                <a href="../pages/learning-path.html" class="nav-link hover:text-primary" style="color: var(--muted-foreground);">首页</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="font-medium" style="color: var(--foreground);">阶段 2</span>
+            </nav>
+            <a href="../pages/learning-path.html" class="inline-flex items-center gap-1.5 text-[13px] px-3 py-1.5 rounded-[8px] border nav-link" style="border-color: var(--border); color: var(--foreground);">
+                <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">返回总览</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+      <!-- ============ Stage Header ============ -->
+      <section class="border-b" style="border-color: var(--border); background: var(--card);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div class="lg:col-span-3">
+              <div class="font-serif-display text-[120px] leading-none" style="color: var(--primary); opacity: 0.18;">02</div>
+            </div>
+            <div class="lg:col-span-9">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="font-mono-label" style="color: var(--primary);">STAGE 02 · WEEK 04 — 06</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-[4px] border font-mono" style="border-color: var(--border); color: var(--muted-foreground);">进阶</span>
+              </div>
+              <h1 class="font-serif-display text-3xl md:text-4xl leading-[1.25] mb-5" style="color: var(--foreground);">
+                商业级聊天机器人开发
+              </h1>
+              <p class="text-[15px] leading-[1.8] max-w-[720px]" style="color: var(--muted-foreground);">
+                为 ChatBot 增加长期记忆、RAG 知识检索与 Agent 工具调用能力，从基础对话升级为商业可用的智能助手。
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-6">
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Redis</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Faiss</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Embedding</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">RAG</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Agent</span>
+                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">ReACT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Stage Overview ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          <div class="lg:col-span-3">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">OVERVIEW</span>
+            <h2 class="font-serif-display text-xl" style="color: var(--foreground);">阶段概述</h2>
+          </div>
+          <div class="lg:col-span-9 prose-stage">
+            <p class="text-[15px] mb-5" style="color: var(--foreground);">
+              基础 ChatBot 只能依赖单轮上下文，无法记住用户偏好，也无法检索私有知识。本阶段将赋予它三个核心能力：长期记忆、知识检索与工具调用，使其从"能对话"升级为"能用"。
+            </p>
+            <p class="text-[15px] mb-5" style="color: var(--muted-foreground);">
+              第四周聚焦记忆模块，通过 Redis 实现短期与长期记忆，结合滑动窗口与摘要机制突破上下文长度限制；第五周搭建 RAG 数据管道，完成文档解析、分块、Embedding 向量化与 Faiss 相似度检索，实现基于知识库的精准回答。
+            </p>
+            <p class="text-[15px]" style="color: var(--muted-foreground);">
+              第六周引入 Agent 与 ReACT 推理模式，让模型能够自主决策何时检索知识、何时调用外部工具，最终交付具备记忆 + RAG + Agent 三位一体能力的商业级 ChatBot。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 个性化对照 ============ -->
+      <section class="border-b" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-10">
+          <div class="mb-6">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">FOR YOU</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">与你经验的对照</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">可迁移的技能</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>Redis 缓存 → 你在联通项目用过 Redis 缓存用户点击页面，记忆模块的 Redis 用法类似</li>
+                <li>文档处理管道 → RAG 的"文档解析→分块→向量化→检索"本质就是 ETL，你做了5年</li>
+                <li>Faiss 向量检索 → 概念上类似 ClickHouse 的分布式检索，只是用向量相似度替代 SQL 条件</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="alert-triangle" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">需要补课的内容</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>Embedding 模型 → 理解文本如何变成向量，选型策略（BGE/M3E/OpenAI）</li>
+                <li>ReACT Agent 框架 → 从确定性数据流转到 LLM 自主决策，这是思维方式的转变</li>
+                <li>Function Calling → OpenAI 的工具调用接口规范，需要理解 JSON Schema 定义</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--primary); background: var(--primary);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="lightbulb" class="w-4 h-4" style="color: var(--primary-foreground);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">学习建议</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--primary-foreground); opacity: 0.9;">
+                <li>Week 4 记忆模块对你很简单，Redis 你已经会用，重点理解对话上下文管理策略</li>
+                <li>Week 5 RAG 是核心——用你做 ETL 的思维理解：文档分块 = 数据拆分，向量化 = 数据转换，检索 = 数据查询</li>
+                <li>Week 6 Agent 是本阶段难点，建议多写几遍 ReACT 循环代码加深理解</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Learning Objectives ============ -->
+      <section class="border-y" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="mb-8">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">LEARNING OBJECTIVES</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习目标</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="messages-square" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">多轮对话记忆管理</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">实现会话上下文管理与长期记忆，突破上下文窗口限制。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="file-search" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">搭建 RAG 检索管道</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">完成文档处理→向量化→检索→生成的端到端 RAG 流程。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="brain-circuit" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">掌握 Agent 与 ReACT</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">理解 ReACT 推理模式，实现工具调用与多步编排。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="vector-square" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">理解 Embedding 与向量库</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">掌握 Embedding 模型选型与向量数据库的索引原理。</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow md:col-span-2" style="border-color: var(--border); background: var(--card);">
+              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+                <i data-lucide="trophy" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">交付商业级 ChatBot</div>
+                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">交付具备记忆 + RAG + Agent 能力的商业可用智能助手。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Weekly Detailed Content ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-16">
+        <div class="mb-10">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">WEEKLY BREAKDOWN</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">每周详细内容</h2>
+        </div>
+
+        <div class="space-y-10">
+
+          <!-- ===== Week 4 ===== -->
+          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
+              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W4</span>
+              </div>
+              <div>
+                <div class="font-mono-label" style="color: var(--primary);">WEEK 04</div>
+                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">记忆模块</h3>
+              </div>
+            </div>
+            <div class="p-6 space-y-6">
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  对话上下文管理
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-2" style="color: var(--muted-foreground);">
+                  理解对话上下文窗口限制，实现滑动窗口策略保留最近 N 轮对话。设计对话摘要机制——当对话超过窗口时自动摘要前文，确保关键信息不丢失。
+                </p>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  滑动窗口保留最近若干轮原始对话，超出部分由 LLM 生成结构化摘要注入系统提示，兼顾上下文连贯性与 Token 成本。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  Redis 长期记忆
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  搭建 Redis 服务，设计记忆存储结构（短期记忆：最近对话列表；长期记忆：用户偏好摘要）。实现记忆的读写与过期策略。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+<span style="color: var(--primary);"># Redis 记忆结构</span>
+short_term:{user_id}   → List[message]   <span style="color: var(--muted-foreground);"># 最近 N 轮</span>
+long_term:{user_id}    → String(summary) <span style="color: var(--muted-foreground);"># 偏好摘要</span>
+TTL: short_term = 1h · long_term = 7d
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  多轮对话优化
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  实现对话历史压缩、关键信息提取、上下文相关性排序。处理多用户并发会话隔离，确保不同用户的记忆互不污染。
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ===== Week 5 ===== -->
+          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
+              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W5</span>
+              </div>
+              <div>
+                <div class="font-mono-label" style="color: var(--primary);">WEEK 05</div>
+                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">RAG 数据模块</h3>
+              </div>
+            </div>
+            <div class="p-6 space-y-6">
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  文档处理管道
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  支持 PDF / Word / Markdown 文档解析，实现文档分块策略（固定长度分块、语义分块、递归分块）。理解 chunk_size 和 overlap 参数对检索效果的影响。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  Embedding 向量化
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  选择 Embedding 模型（OpenAI text-embedding-3-small / BGE / M3E），理解向量维度与质量的关系。批量向量化文档块。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+<span style="color: var(--primary);">from</span> openai <span style="color: var(--primary);">import</span> OpenAI
+client = OpenAI()
+resp = client.embeddings.create(
+    model=<span style="color: var(--state-success);">"text-embedding-3-small"</span>,
+    input=chunks  <span style="color: var(--muted-foreground);"># List[str]</span>
+)
+vectors = [d.embedding <span style="color: var(--primary);">for</span> d <span style="color: var(--primary);">in</span> resp.data]
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  向量数据库 Faiss
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  搭建 Faiss 本地向量索引，理解 IVF、HNSW 索引类型。实现相似度检索（余弦相似度 / L2 距离），返回 Top-K 相关文档块。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  RAG 生成流程
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  检索相关文档 → 构造增强 Prompt（context + question）→ 调用 LLM 生成回答。实现引用标注，标注回答来源的文档段落。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+<span style="color: var(--primary);">def</span> rag_answer(question, top_k=<span style="color: var(--primary);">3</span>):
+    docs = faiss.search(embed(question), k=top_k)
+    context = <span style="color: var(--state-success);">"\n"</span>.join(d.text <span style="color: var(--primary);">for</span> d <span style="color: var(--primary);">in</span> docs)
+    prompt = f<span style="color: var(--state-success);">"参考资料：{context}\n问题：{question}"</span>
+    <span style="color: var(--primary);">return</span> llm.chat(prompt), docs  <span style="color: var(--muted-foreground);"># 返回引用</span>
+                </div>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- ===== Week 6 ===== -->
+          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
+              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W6</span>
+              </div>
+              <div>
+                <div class="font-mono-label" style="color: var(--primary);">WEEK 06</div>
+                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">工具功能 (Agent)</h3>
+              </div>
+            </div>
+            <div class="p-6 space-y-6">
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  ReACT 推理模式
+                </h4>
+                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
+                  理解 ReACT（Reasoning + Acting）框架——Thought → Action → Observation 循环。设计 Agent 的推理链与工具选择逻辑。
+                </p>
+                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
+<span style="color: var(--primary);">Thought</span>: 用户问今天天气，我需要调用搜索工具
+<span style="color: var(--primary);">Action</span>: search_weather(city=<span style="color: var(--state-success);">"北京"</span>)
+<span style="color: var(--primary);">Observation</span>: 晴, 26℃
+<span style="color: var(--primary);">Thought</span>: 已获得结果，可以回答用户
+<span style="color: var(--primary);">Final Answer</span>: 北京今天晴，气温 26℃。
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  自定义工具定义
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  定义搜索工具、计算器工具、数据库查询工具等。使用 OpenAI Function Calling 或 LangChain Tool 接口规范工具定义，明确参数 schema 与返回格式。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  Agent 多步编排
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  实现 Agent 多步推理与工具调用循环，处理工具调用失败与异常。设置最大迭代次数防止死循环，并在超出时优雅降级。
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
+                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
+                  Agent 与 RAG 结合
+                </h4>
+                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
+                  让 Agent 能自主决定何时检索知识库、何时调用外部工具，实现智能路由。这是从"被动问答"到"主动解决问题"的关键跃迁。
+                </p>
+              </div>
+
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ============ Practice Project ============ -->
+      <section class="border-y" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div class="lg:col-span-4">
+              <span class="font-mono-label block mb-2" style="color: var(--primary);">CAPSTONE</span>
+              <h2 class="font-serif-display text-2xl mb-3" style="color: var(--foreground);">实践项目</h2>
+              <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">阶段交付的工程项目，作为本阶段学习成果的检验。</p>
+            </div>
+            <div class="lg:col-span-8">
+              <div class="rounded-[12px] border-2 p-6 editorial-shadow" style="border-color: var(--primary); background: var(--card);">
+                <div class="flex items-start gap-4 mb-4">
+                  <div class="flex-shrink-0 w-11 h-11 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+                    <i data-lucide="package-check" class="w-5 h-5" style="color: var(--primary-foreground);"></i>
+                  </div>
+                  <div>
+                    <div class="font-mono-label mb-1" style="color: var(--primary);">DELIVERABLE</div>
+                    <h3 class="font-serif-display text-lg" style="color: var(--foreground);">具备记忆 + RAG + Agent 的商业级 ChatBot</h3>
+                  </div>
+                </div>
+                <p class="text-[14px] leading-[1.8] mb-4" style="color: var(--muted-foreground);">
+                  在阶段一基础上集成三大能力：Redis 实现长期记忆与上下文压缩；Faiss + Embedding 搭建 RAG 知识检索，支持文档上传与引用标注；ReACT Agent 实现工具自主调用与多步推理。最终交付可服务于真实业务场景的智能助手。
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
+                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">MEMORY</div>
+                    <div class="text-[13px]" style="color: var(--foreground);">Redis 长期记忆</div>
+                  </div>
+                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
+                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">RAG</div>
+                    <div class="text-[13px]" style="color: var(--foreground);">Faiss 知识检索</div>
+                  </div>
+                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
+                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">AGENT</div>
+                    <div class="text-[13px]" style="color: var(--foreground);">ReACT 工具调用</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Technical Points ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="mb-8">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">TECHNICAL HIGHLIGHTS</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">技术要点</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="zap" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">Redis 缓存策略</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">短期记忆用 List、长期记忆用 String，配合 TTL 与摘要压缩，平衡召回率与成本。</p>
+          </div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="grid-3x3" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">Faiss 向量索引</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">使用 IVF 或 HNSW 索引加速近邻搜索，支持余弦相似度与 L2 距离度量。</p>
+          </div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="sliders-horizontal" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">Embedding 模型选型</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">中文场景优先 BGE-large-zh / M3E，英文场景可用 OpenAI text-embedding-3，需权衡维度与存储成本。</p>
+          </div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="git-branch" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">ReACT Agent 编排</span>
+            </div>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">Thought-Action-Observation 循环驱动工具调用，结合 max_iterations 防止死循环。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section class="border-t" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-14">
+          <div class="mb-8">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">FAQ</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">常见问题</h2>
+          </div>
+          <div class="space-y-3">
+            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-start gap-3 mb-2">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q1</span>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">RAG 检索效果不好怎么办？</h4>
+              </div>
+              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
+                优化分块策略（减小 chunk_size）、尝试语义分块、增加 overlap、使用 reranker 重排序检索结果，并校验 Embedding 模型与语种匹配。
+              </p>
+            </div>
+            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-start gap-3 mb-2">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q2</span>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">Agent 工具调用陷入死循环？</h4>
+              </div>
+              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
+                设置 max_iterations（建议 5-10 次），添加终止条件检测，实现 fallback 策略——超过阈值后直接返回当前最佳结果。
+              </p>
+            </div>
+            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-start gap-3 mb-2">
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q3</span>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">Embedding 模型怎么选？</h4>
+              </div>
+              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
+                中文场景推荐 BGE-large-zh 或 M3E，英文场景推荐 OpenAI text-embedding-3，注意向量维度与存储成本的权衡。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Learning Resources ============ -->
+      <section class="border-b" style="border-color: var(--border);">
+        <div class="mx-auto max-w-[1200px] px-6 py-12">
+          <div class="mb-6">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">RESOURCES</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习资料</h2>
+            <p class="text-sm mt-1" style="color: var(--muted-foreground);">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="book-open" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">官方文档</span>
+              </div>
+              <div class="space-y-2">
+                <a href="https://redis.io/docs/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Redis 官方文档 →</a>
+                <a href="https://faiss.ai/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Faiss 官方文档 →</a>
+                <a href="https://python.langchain.com/docs/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangChain 官方文档 →</a>
+                <a href="https://huggingface.co/blog/getting-started-with-embeddings" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">HuggingFace Embeddings 指南 →</a>
+                <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">OpenAI Function Calling 文档 →</a>
+              </div>
+            </div>
+            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="play-circle" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">视频教程</span>
+              </div>
+              <div class="space-y-2">
+                <a href="https://www.bilibili.com/video/BV1BV4y1v7nR" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">RAG 从原理到实战（B站）→</a>
+                <a href="https://www.bilibili.com/video/BV1xm4y1s7Hb" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangChain Agent 开发教程（B站）→</a>
+                <a href="https://www.bilibili.com/video/BV1TV411r7wp" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Faiss 向量检索入门（B站）→</a>
+                <a href="https://www.youtube.com/watch?v=bZQun8Y4L2A" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">ReACT Agent 原理讲解（YouTube）→</a>
+                <a href="https://www.youtube.com/watch?v=azUyI-x3Hb8" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Embedding 模型完整教程（YouTube）→</a>
+              </div>
+            </div>
+            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">推荐阅读</span>
+              </div>
+              <div class="space-y-2">
+                <a href="https://arxiv.org/abs/2210.03629" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">ReACT 论文：Reasoning+Acting →</a>
+                <a href="https://python.langchain.com/docs/modules/agents/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangChain Agent 文档 →</a>
+                <a href="https://www.pinecone.io/learn/chunking-strategies/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">RAG 分块策略详解 →</a>
+                <a href="https://microsoft.github.io/graphrag/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">GraphRAG 知识图谱检索 →</a>
+                <a href="https://lilianweng.github.io/posts/2023-06-23-agent/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LLM Agent 综述（Lilian Weng）→</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Bottom Navigation ============ -->
+      <section class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <a href="stage-1.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
+            <div class="font-mono-label mb-2" style="color: var(--primary);">PREVIOUS · STAGE 01</div>
+            <div class="font-serif-display text-[15px] flex items-center gap-2" style="color: var(--foreground);">
+              <i data-lucide="arrow-left" class="w-4 h-4" style="color: var(--primary);"></i>
+              架构设计与基础聊天机器人开发
+            </div>
+          </a>
+          <a href="stage-3.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
+            <div class="font-mono-label mb-2 text-right" style="color: var(--primary);">NEXT · STAGE 03</div>
+            <div class="font-serif-display text-[15px] flex items-center justify-end gap-2" style="color: var(--foreground);">
+              LLMOps 应用平台可视化
+              <i data-lucide="arrow-right" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ============ Footer ============ -->
+      <footer class="border-t" style="border-color: var(--border);">
+        <div class="mx-auto max-w-[1200px] px-6 py-8">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">L</span>
+              </div>
+              <div>
+                <div class="font-serif-display text-sm" style="color: var(--foreground);">LLMOps 学习路径</div>
+                <div class="font-mono-label" style="color: var(--muted-foreground);">STAGE 02 · WEEK 04 — 06</div>
+              </div>
+            </div>
+            <p class="text-xs" style="color: var(--muted-foreground);">基于课程大纲设计 · 从架构基础到商业级 AI 应用</p>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>lucide.createIcons();</script>
+
+    <style>
+      .editorial-shadow { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
+      .prose-stage p { line-height: 1.85; }
+      .code-block { font-family: var(--font-mono); }
+      .nav-link { transition: color 0.2s; }
+      [data-icon] { background-color: currentColor; }
+    </style>
+</body>
+</html>

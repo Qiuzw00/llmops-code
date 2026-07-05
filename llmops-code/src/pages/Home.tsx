@@ -3,6 +3,7 @@ import { ArrowDown, ArrowRight } from 'lucide-react'
 import { stages } from '../data/stages'
 import { techStack } from '../data/techStack'
 import { projects } from '../data/projects'
+import { personalizedPlan } from '../data/personalizedPlan'
 import { Icon } from '../components/Icon'
 
 const stats = [
@@ -78,57 +79,185 @@ export const Home = () => {
         </div>
 
         <div className="space-y-6">
-          {stages.map((stage) => (
-            <div
-              key={stage.id}
-              className="rounded-[12px] border overflow-hidden bg-card group transition-colors hover:border-primary editorial-shadow"
-              style={{ borderColor: 'var(--color-border)' }}
-            >
-              <div className="flex items-center gap-4 px-6 py-4 border-b" style={{ borderColor: 'var(--color-border)', background: 'var(--color-muted)' }}>
-                <div className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center bg-primary text-primary-foreground">
-                  <span className="font-serif-display text-base">{stage.id}</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="font-mono-label text-primary">{stage.weeks}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-[4px] border font-mono border-border text-muted-foreground">{stage.level}</span>
+          {stages.map((stage) => {
+            const isHighlighted = stage.id === 7
+            return (
+              <div
+                key={stage.id}
+                className={`rounded-[12px] border overflow-hidden bg-card group transition-colors hover:border-primary editorial-shadow ${isHighlighted ? 'border-2' : ''}`}
+                style={{ borderColor: isHighlighted ? 'var(--color-primary)' : 'var(--color-border)' }}
+              >
+                <div
+                  className="flex items-center gap-4 px-6 py-4 border-b"
+                  style={{
+                    borderColor: isHighlighted ? 'var(--color-primary)' : 'var(--color-border)',
+                    background: isHighlighted ? 'var(--color-primary)' : 'var(--color-muted)',
+                  }}
+                >
+                  <div
+                    className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
+                    style={{
+                      background: isHighlighted ? 'var(--color-card)' : 'var(--color-primary)',
+                      color: isHighlighted ? 'var(--color-primary)' : 'var(--color-primary-foreground)',
+                    }}
+                  >
+                    <span className="font-serif-display text-base">{stage.id}</span>
                   </div>
-                  <h3 className="font-serif-display text-lg text-foreground">{stage.title}</h3>
-                  <Link to={`/stage/${stage.id}`} className="inline-flex items-center gap-1 text-xs mt-1 text-primary hover:underline">
-                    查看详细学习内容 <ArrowRight className="w-3 h-3" />
-                  </Link>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className="font-mono-label" style={{ color: isHighlighted ? 'var(--color-primary-foreground)' : 'var(--color-primary)' }}>
+                        {stage.weeks}
+                      </span>
+                      <span
+                        className="text-[10px] px-2 py-0.5 rounded-[4px] border font-mono"
+                        style={{
+                          borderColor: isHighlighted ? 'var(--color-card)' : 'var(--color-border)',
+                          color: isHighlighted ? 'var(--color-primary)' : 'var(--color-muted-foreground)',
+                          background: isHighlighted ? 'var(--color-card)' : 'transparent',
+                        }}
+                      >
+                        {stage.level}
+                      </span>
+                    </div>
+                    <h3 className="font-serif-display text-lg" style={{ color: isHighlighted ? 'var(--color-primary-foreground)' : 'var(--color-foreground)' }}>
+                      {stage.title}
+                    </h3>
+                    <Link to={`/stage/${stage.id}`} className="inline-flex items-center gap-1 text-xs mt-1 text-primary hover:underline" style={{ color: isHighlighted ? 'var(--color-primary-foreground)' : undefined }}>
+                      查看详细学习内容 <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className={`grid grid-cols-1 ${stage.weeklySummaries.length <= 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-3 mb-5`}>
+                    {stage.weeklySummaries.map((week) => (
+                      <div key={week.weekNumber} className="rounded-[8px] border p-4 bg-muted" style={{ borderColor: 'var(--color-border)' }}>
+                        <div className="font-mono text-[10px] mb-2 text-primary">WEEK {String(week.weekNumber).padStart(2, '0')}</div>
+                        <div className="font-serif-display text-sm mb-2 text-foreground">{week.title}</div>
+                        <ul className="text-xs space-y-1.5 text-muted-foreground">
+                          {week.points.map((point, index) => (
+                            <li key={index}>{point}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 mb-4 px-4 py-3 rounded-[8px] bg-muted" style={{ borderLeft: '3px solid var(--color-primary)' }}>
+                    <Icon name={isHighlighted ? 'trophy' : 'package-check'} className="w-4 h-4 flex-shrink-0 text-primary" />
+                    <span className="text-xs text-foreground">
+                      <strong>阶段交付：</strong>{stage.practiceProject.title}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {stage.tags.map((tag) => (
+                      <span key={tag} className="font-mono text-[11px] px-2 py-1 rounded-[4px] border border-border text-muted-foreground">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="p-6">
-                <div className={`grid grid-cols-1 ${stage.weeklySummaries.length <= 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-3 mb-5`}>
-                  {stage.weeklySummaries.map((week) => (
-                    <div key={week.weekNumber} className="rounded-[8px] border p-4 bg-muted" style={{ borderColor: 'var(--color-border)' }}>
-                      <div className="font-mono text-[10px] mb-2 text-primary">WEEK {String(week.weekNumber).padStart(2, '0')}</div>
-                      <div className="font-serif-display text-sm mb-2 text-foreground">{week.title}</div>
-                      <ul className="text-xs space-y-1.5 text-muted-foreground">
-                        {week.points.map((point, index) => (
-                          <li key={index}>{point}</li>
-                        ))}
-                      </ul>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Personalized Learning Advice */}
+      <section id="advice" className="border-y" style={{ borderColor: 'var(--color-border)' }}>
+        <div className="mx-auto max-w-[1200px] px-6 py-16">
+          <div className="mb-10">
+            <span className="font-mono-label block mb-3 text-primary">{personalizedPlan.subtitle}</span>
+            <h2 className="font-serif-display text-3xl mb-3 text-foreground">{personalizedPlan.title}</h2>
+            <p className="text-sm max-w-[600px] text-muted-foreground">{personalizedPlan.description}</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Advantages */}
+            <div className="rounded-[12px] border p-6 bg-card editorial-shadow" style={{ borderColor: 'var(--color-border)' }}>
+              <div className="flex items-center gap-2 mb-5">
+                <Icon name="trending-up" className="w-5 h-5 text-primary" />
+                <h3 className="font-serif-display text-lg text-foreground">你的已有优势</h3>
+              </div>
+              <div className="space-y-3">
+                {personalizedPlan.advantages.map((item, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <Icon name="check-circle-2" className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{item.title}</p>
+                      <p className="text-xs mt-0.5 text-muted-foreground">{item.description}</p>
                     </div>
-                  ))}
-                </div>
-                <div className="flex items-center gap-2 mb-4 px-4 py-3 rounded-[8px] bg-muted" style={{ borderLeft: '3px solid var(--color-primary)' }}>
-                  <Icon name="package-check" className="w-4 h-4 flex-shrink-0 text-primary" />
-                  <span className="text-xs text-foreground">
-                    <strong>阶段交付：</strong>{stage.practiceProject.title}
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {stage.tags.map((tag) => (
-                    <span key={tag} className="font-mono text-[11px] px-2 py-1 rounded-[4px] border border-border text-muted-foreground">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+
+            {/* Challenges */}
+            <div className="rounded-[12px] border p-6 bg-card editorial-shadow" style={{ borderColor: 'var(--color-border)' }}>
+              <div className="flex items-center gap-2 mb-5">
+                <Icon name="target" className="w-5 h-5 text-primary" />
+                <h3 className="font-serif-display text-lg text-foreground">需要重点突破</h3>
+              </div>
+              <div className="space-y-3">
+                {personalizedPlan.challenges.map((item, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <Icon name="alert-circle" className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{item.title}</p>
+                      <p className="text-xs mt-0.5 text-muted-foreground">{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Pace Suggestions */}
+          <div className="rounded-[12px] border p-6 bg-muted" style={{ borderColor: 'var(--color-border)' }}>
+            <div className="flex items-center gap-2 mb-5">
+              <Icon name="calendar-clock" className="w-5 h-5 text-primary" />
+              <h3 className="font-serif-display text-lg text-foreground">学习节奏建议</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {personalizedPlan.pace.map((item, index) => (
+                <div key={index} className="rounded-[8px] border p-4 bg-card" style={{ borderColor: 'var(--color-border)' }}>
+                  <div className="font-mono text-[10px] mb-2 text-primary">{item.stage}</div>
+                  <p className="text-xs font-medium mb-1 text-foreground">{item.title}</p>
+                  <p className="text-[11px] text-muted-foreground">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Career Path */}
+          <div className="mt-6 rounded-[12px] border p-6 bg-card editorial-shadow" style={{ borderColor: 'var(--color-border)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <Icon name="route" className="w-5 h-5 text-primary" />
+              <h3 className="font-serif-display text-lg text-foreground">职业转型路径建议</h3>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 text-xs">
+              {personalizedPlan.career.map((step, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <div
+                    className="rounded-[8px] border px-4 py-2"
+                    style={{
+                      borderColor: step.highlighted ? 'var(--color-primary)' : 'var(--color-border)',
+                      background: step.highlighted ? 'var(--color-primary)' : 'var(--color-muted)',
+                    }}
+                  >
+                    <span className="font-mono text-[10px] block mb-1" style={{ color: step.highlighted ? 'var(--color-primary-foreground)' : 'var(--color-primary)' }}>
+                      {step.stage}
+                    </span>
+                    <span className="font-medium" style={{ color: step.highlighted ? 'var(--color-primary-foreground)' : 'var(--color-foreground)' }}>
+                      {step.title}
+                    </span>
+                  </div>
+                  {index < personalizedPlan.career.length - 1 && (
+                    <Icon name="arrow-right" className="w-4 h-4 text-muted-foreground" />
+                  )}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs mt-4 text-muted-foreground">{personalizedPlan.closing}</p>
+          </div>
         </div>
       </section>
 

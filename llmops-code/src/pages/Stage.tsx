@@ -75,6 +75,51 @@ export const Stage = () => {
         </div>
       </section>
 
+      {/* For You — Skill Match */}
+      <section className="border-y bg-muted" style={{ borderColor: 'var(--color-border)' }}>
+        <div className="mx-auto max-w-[1200px] px-6 py-10">
+          <div className="mb-6">
+            <span className="font-mono-label block mb-2 text-primary">FOR YOU</span>
+            <h2 className="font-serif-display text-2xl text-foreground">与你经验的对照</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-[8px] border p-5 bg-card" style={{ borderColor: 'var(--color-border)' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Icon name="check-circle-2" className="w-4 h-4 text-primary" />
+                <span className="font-serif-display text-sm text-foreground">可迁移的技能</span>
+              </div>
+              <ul className="text-xs space-y-2 text-muted-foreground">
+                {stage.forYou.transferableSkills.map((skill, index) => (
+                  <li key={index}><strong className="text-foreground">{skill.title}：</strong>{skill.description}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-[8px] border p-5 bg-card" style={{ borderColor: 'var(--color-border)' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Icon name="alert-triangle" className="w-4 h-4 text-primary" />
+                <span className="font-serif-display text-sm text-foreground">需要补课的内容</span>
+              </div>
+              <ul className="text-xs space-y-2 text-muted-foreground">
+                {stage.forYou.gaps.map((gap, index) => (
+                  <li key={index}><strong className="text-foreground">{gap.title}：</strong>{gap.description}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-[8px] border-2 p-5 bg-primary" style={{ borderColor: 'var(--color-primary)' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Icon name="lightbulb" className="w-4 h-4 text-primary-foreground" />
+                <span className="font-serif-display text-sm text-primary-foreground">学习建议</span>
+              </div>
+              <ul className="text-xs space-y-2 text-primary-foreground" style={{ opacity: 0.9 }}>
+                {stage.forYou.advice.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Learning Objectives */}
       <section className="border-y bg-muted" style={{ borderColor: 'var(--color-border)' }}>
         <div className="mx-auto max-w-[1200px] px-6 py-14">
@@ -215,6 +260,34 @@ export const Stage = () => {
                   <h4 className="font-serif-display text-[15px] text-foreground">{item.question}</h4>
                 </div>
                 <p className="text-[13px] leading-[1.8] pl-[52px] text-muted-foreground">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Resources */}
+      <section className="border-b" style={{ borderColor: 'var(--color-border)' }}>
+        <div className="mx-auto max-w-[1200px] px-6 py-12">
+          <div className="mb-6">
+            <span className="font-mono-label block mb-2 text-primary">RESOURCES</span>
+            <h2 className="font-serif-display text-2xl text-foreground">学习资料</h2>
+            <p className="text-sm mt-1 text-muted-foreground">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {stage.resources.map((category) => (
+              <div key={category.title} className="rounded-[12px] border p-5 bg-card editorial-shadow" style={{ borderColor: 'var(--color-border)' }}>
+                <div className="flex items-center gap-2 mb-4">
+                  <Icon name={category.icon} className="w-4 h-4 text-primary" />
+                  <span className="font-serif-display text-sm text-foreground">{category.title}</span>
+                </div>
+                <div className="space-y-2">
+                  {category.links.map((link) => (
+                    <a key={link.title} href={link.url} target="_blank" rel="noreferrer" className="block text-xs text-primary hover:underline">
+                      {link.title} →
+                    </a>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

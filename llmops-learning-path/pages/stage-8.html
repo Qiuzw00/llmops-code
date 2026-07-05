@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段 8：课程回顾与 LLM 进阶 — LLMOps 学习路径</title>
+    <style id="theme-vars">
+/* LLMOps Learning Path — Editorial Academic Style */
+/* Warm paper tones + deep indigo accent */
+
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+/* Light theme tokens */
+:root {
+  /* Surface colors — warm paper */
+  --background: #FAF7F2;
+  --foreground: #1E1B2E;
+  --card: #FFFFFF;
+  --card-foreground: #1E1B2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1E1B2E;
+
+  /* Primary — Deep Indigo (single brand hue) */
+  --primary: #3730A3;
+  --primary-foreground: #FAF7F2;
+
+  /* Muted — warm neutral surface */
+  --muted: #F5F0E8;
+  --muted-foreground: #6B6480;
+
+  /* Destructive */
+  --destructive: #B91C1C;
+  --destructive-foreground: #FAF7F2;
+
+  /* Border & Input */
+  --border: #E5DFD5;
+  --input: #E5DFD5;
+  --ring: #3730A3;
+
+  /* Chart colors — indigo monochrome tints */
+  --chart-1: #3730A3;
+  --chart-2: #4F46E5;
+  --chart-3: #6366F1;
+  --chart-4: #818CF8;
+  --chart-5: #A5B4FC;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1E1B2E;
+  --sidebar-primary: #3730A3;
+  --sidebar-primary-foreground: #FAF7F2;
+  --sidebar-border: #E5DFD5;
+  --sidebar-ring: #3730A3;
+
+  /* Typography */
+  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+
+  /* Radius — restrained scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius: 8px;
+
+  /* State colors — semantic only */
+  --state-success: #15803D;
+  --state-warning: #B45309;
+  --state-error: #B91C1C;
+  --state-info: #3730A3;
+}
+
+/* Dark theme tokens */
+.dark {
+  --background: #1A1726;
+  --foreground: #F5F0E8;
+  --card: #252133;
+  --card-foreground: #F5F0E8;
+  --popover: #252133;
+  --popover-foreground: #F5F0E8;
+
+  --primary: #818CF8;
+  --primary-foreground: #1A1726;
+
+  --muted: #2D2840;
+  --muted-foreground: #9B95A8;
+
+  --destructive: #F87171;
+  --destructive-foreground: #1A1726;
+
+  --border: #3D3656;
+  --input: #3D3656;
+  --ring: #818CF8;
+
+  --chart-1: #818CF8;
+  --chart-2: #6366F1;
+  --chart-3: #4F46E5;
+  --chart-4: #4338CA;
+  --chart-5: #3730A3;
+
+  --sidebar: #252133;
+  --sidebar-foreground: #F5F0E8;
+  --sidebar-primary: #818CF8;
+  --sidebar-primary-foreground: #1A1726;
+  --sidebar-border: #3D3656;
+  --sidebar-ring: #818CF8;
+}
+
+/* Base typography */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Serif heading utility */
+.font-serif-display {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Mono label utility */
+.font-mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-foreground: var(--card-foreground);
+  }
+  @layer base {
+    body { background: var(--card-background); color: var(--card-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen antialiased">
+
+  <!-- ============ Top Navigation Bar ============ -->
+  <header class="sticky top-0 z-50 border-b" style="border-color: var(--border); background: rgba(250,247,242,0.92); backdrop-filter: blur(8px);">
+    <div class="mx-auto max-w-[1200px] px-6 py-3.5 flex items-center justify-between gap-4">
+      <a href="learning-path.html" class="flex items-center gap-3 flex-shrink-0">
+        <div class="w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+          <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">L</span>
+        </div>
+        <div class="flex flex-col leading-tight">
+          <span class="font-serif-display text-[15px]" style="color: var(--foreground);">LLMOps 学习路径</span>
+          <span class="font-mono-label" style="color: var(--muted-foreground);">21 Weeks · 8 Stages</span>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-2 text-sm" style="color: var(--muted-foreground);">
+        <a href="learning-path.html" class="transition-colors hover:underline" style="color: var(--muted-foreground);">首页</a>
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+        <span style="color: var(--foreground); font-weight: 500;">阶段 8</span>
+      </nav>
+      <a href="learning-path.html" class="inline-flex items-center gap-1.5 text-sm font-medium px-3.5 py-2 rounded-[8px] border transition-colors" style="border-color: var(--border); color: var(--foreground);" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--foreground)'">
+        <i data-lucide="layout-grid" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">返回总览</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-[1200px] px-6">
+
+    <!-- ============ Stage Header ============ -->
+    <section class="pt-16 pb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="font-mono-label" style="color: var(--primary);">STAGE 08</span>
+            <span class="h-px w-12" style="background: var(--border);"></span>
+            <span class="font-mono-label" style="color: var(--muted-foreground);">WEEK 20 — 21</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded-[4px]" style="background: var(--primary); color: var(--primary-foreground);">进阶</span>
+          </div>
+          <div class="flex items-end gap-5 mb-4">
+            <span class="font-serif-display text-[88px] leading-none" style="color: var(--primary);">08</span>
+            <h1 class="font-serif-display text-3xl md:text-4xl leading-[1.25] pb-2" style="color: var(--foreground);">
+              课程回顾与<br>LLM 进阶
+            </h1>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">进阶</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Fine-tuning</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">LoRA</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">LangChain v1</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">MCP</span>
+          </div>
+        </div>
+        <div class="lg:col-span-4">
+          <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+            <div class="font-mono-label mb-4" style="color: var(--primary);">STAGE OVERVIEW</div>
+            <div class="space-y-4">
+              <div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">2 周</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">学习周期</div>
+              </div>
+              <div class="h-px" style="background: var(--border);"></div>
+              <div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">4 大主题</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">微调 / LoRA / LangChain v1 / MCP</div>
+              </div>
+              <div class="h-px" style="background: var(--border);"></div>
+              <div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">专家级</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">从工程师到 LLMOps 专家</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Stage Overview ============ -->
+    <section class="pb-14">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-3">
+          <span class="font-mono-label" style="color: var(--primary);">OVERVIEW</span>
+          <h2 class="font-serif-display text-xl mt-2" style="color: var(--foreground);">阶段概述</h2>
+        </div>
+        <div class="lg:col-span-9 prose-stage">
+          <p class="text-[15px] mb-4" style="color: var(--foreground); line-height: 1.85;">
+            本阶段回顾全链路知识体系，深入<strong style="color: var(--primary);">预训练微调技术</strong>，掌握 LangChain v1 与 MCP 协议前沿实践，完成从工程师到 LLMOps 专家的跃迁。系统梳理 21 周所学，形成完整的知识地图与技能清单。
+          </p>
+          <p class="text-[15px] mb-4" style="color: var(--muted-foreground); line-height: 1.85;">
+            Week 20 聚焦预训练微调：理解预训练到微调的范式转变，区分全量微调与参数高效微调（PEFT）。深入学习 LoRA 低秩适配原理——冻结原始权重，仅训练低秩分解矩阵。使用 PEFT 库实践 LoRA 微调，配置 rank / alpha / dropout 参数，训练领域专属模型。
+          </p>
+          <p class="text-[15px]" style="color: var(--muted-foreground); line-height: 1.85;">
+            Week 21 探索前沿技术：了解 LangChain v1 架构变化与 LCEL 表达式语言，掌握 v0 到 v1 的迁移最佳实践。学习 Anthropic 提出的 MCP 协议——标准化 LLM 与外部工具的连接方式，实现自定义 MCP Server。最后规划 LLM 技术职业发展路径。
+          </p>
+        </div>
+      </div>
+    </section>
+
+      <!-- ============ 个性化对照 ============ -->
+      <section class="border-b" style="border-color: var(--border); background: var(--muted);">
+        <div class="mx-auto max-w-[1200px] px-6 py-10">
+          <div class="mb-6">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">FOR YOU</span>
+            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">与你经验的对照</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">可迁移的技能</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>数学基础 → 数学与应用数学本科（GPA 3.66），LoRA 低秩分解的线性代数原理对你毫无障碍</li>
+                <li>机器学习基础 → 大学学过机器学习课程，理解预训练→微调范式</li>
+                <li>系统架构 → 你做过数据中台架构设计，MCP 协议的 Server/Client 架构理解起来很直观</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="alert-triangle" class="w-4 h-4" style="color: var(--primary);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--foreground);">需要补课的内容</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+                <li>PEFT 库实操 → LoRA 微调的代码实现，需要学习 HuggingFace PEFT 库 API</li>
+                <li>GPU 显存管理 → 微调需要理解显存优化（4-bit 量化/梯度累积），数据工程中不涉及</li>
+                <li>LangChain v1 → 从 v0 迁移到 LCEL 语法的新特性</li>
+              </ul>
+            </div>
+            <div class="rounded-[8px] border p-5" style="border-color: var(--primary); background: var(--primary);">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="lightbulb" class="w-4 h-4" style="color: var(--primary-foreground);"></i>
+                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">学习建议</span>
+              </div>
+              <ul class="text-xs space-y-2" style="color: var(--primary-foreground); opacity: 0.9;">
+                <li>你的数学基础是巨大优势——LoRA 论文中的 SVD 分解和低秩近似，你比大部分同学理解更深</li>
+                <li>建议实际跑一次 LoRA 微调：用你的领域知识微调一个"数据工程助手"模型</li>
+                <li>MCP 协议是前沿内容，理解后可以写在简历上作为技术亮点</li>
+                <li>课程结束后，把21周的知识体系整理成思维导图，作为个人技术栈地图</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- ============ Learning Objectives ============ -->
+    <section class="pb-14">
+      <div class="rounded-[12px] border p-8 shadow-soft" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-center gap-3 mb-6">
+          <i data-lucide="target" class="w-5 h-5" style="color: var(--primary);"></i>
+          <span class="font-mono-label" style="color: var(--primary);">LEARNING OBJECTIVES</span>
+        </div>
+        <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">学习目标</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="map" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">系统回顾 21 周完整知识体系</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">梳理知识脉络，制作知识地图与技能清单</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="brain-circuit" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">掌握 Fine-tuning 与 LoRA 微调</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">参数高效微调，训练领域专属模型</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="git-branch" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">理解 LangChain v1 新特性</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">LCEL 表达式语言与 v0 迁移方案</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="plug" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">学习 MCP 协议原理与应用</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">标准化工具连接，实现自定义 MCP Server</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 md:col-span-2">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="trending-up" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">规划 LLM 技术职业发展路径</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">从 LLM 应用工程师到 LLMOps 工程师再到 AI 架构师</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Weekly Detailed Content ============ -->
+    <section class="pb-14">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="font-mono-label" style="color: var(--primary);">WEEKLY BREAKDOWN</span>
+        <span class="h-px flex-1" style="background: var(--border);"></span>
+      </div>
+      <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">每周详细内容</h2>
+
+      <!-- Week 20 -->
+      <div class="rounded-[12px] border overflow-hidden mb-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-center gap-4 px-6 py-5 border-b" style="border-color: var(--border); background: var(--muted);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+            <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">20</span>
+          </div>
+          <div>
+            <div class="font-mono-label mb-1" style="color: var(--primary);">WEEK 20</div>
+            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">预训练微调</h3>
+          </div>
+        </div>
+        <div class="p-6 space-y-6">
+
+          <!-- 知识点 1 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="brain-circuit" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">Fine-tuning 原理</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">PRETRAIN → FINE-TUNE</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                理解预训练到微调的范式——大规模无监督预训练获取通用语言能力，微调适配特定任务。区分全量微调（更新所有参数）与参数高效微调（PEFT，仅训练少量参数）。学习 LoRA（Low-Rank Adaptation）原理：冻结原始权重，训练低秩分解矩阵实现高效适配。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">预训练范式</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">全量微调</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">PEFT</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">LoRA 低秩适配</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">权重冻结</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 知识点 2 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="settings-2" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">LoRA 实践</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">HANDS-ON FINE-TUNING</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                使用 PEFT 库实现 LoRA 微调，配置 rank（秩）、alpha（缩放因子）、dropout 等核心参数。准备 instruction tuning 格式的微调数据集，训练领域专属模型，在保持基座模型能力的同时适配垂直场景需求。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">PEFT 库</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">rank / alpha</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Instruction Tuning</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">领域专属模型</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">QLoRA 量化</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 知识点 3 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="map" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">知识体系回顾</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">KNOWLEDGE RECAP</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                梳理 21 周知识脉络——基础架构 → 商业 ChatBot → LLMOps 平台 → 生产部署 → 多模态 → 商业应用 → 进阶。制作知识地图与技能清单，形成系统化的技术认知框架，为后续职业发展奠定基础。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">知识脉络梳理</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">知识地图</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">技能清单</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">认知框架</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Week 21 -->
+      <div class="rounded-[12px] border overflow-hidden shadow-soft" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-center gap-4 px-6 py-5 border-b" style="border-color: var(--border); background: var(--muted);">
+          <div class="flex-shrink-0 w-12 h-12 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+            <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">21</span>
+          </div>
+          <div>
+            <div class="font-mono-label mb-1" style="color: var(--primary);">WEEK 21</div>
+            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">LangChain v1 + MCP</h3>
+          </div>
+        </div>
+        <div class="p-6 space-y-6">
+
+          <!-- 知识点 1 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="git-branch" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">LangChain v1 新特性</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">LCEL & MIGRATION</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                了解 LangChain v1 架构变化——LCEL（LangChain Expression Language）声明式链式编排、统一接口抽象、改进的 Agent 执行引擎。掌握从 v0 迁移到 v1 的最佳实践，利用兼容层平滑过渡并逐步重构为 LCEL 语法。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">LCEL 表达式语言</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">统一接口抽象</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Agent 执行引擎</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">v0 → v1 迁移</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 知识点 2 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="plug" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">MCP 协议</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">MODEL CONTEXT PROTOCOL</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                Model Context Protocol（MCP）是 Anthropic 提出的模型上下文协议，标准化 LLM 与外部工具/数据源的连接方式。理解 MCP Server / Client 架构，实现自定义 MCP Server，让任意 LLM 都能通过统一协议接入自定义工具链。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">MCP 协议</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Server / Client</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">标准化连接</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">自定义 Server</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">跨模型工具链</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 知识点 3 -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="trending-up" class="w-4 h-4" style="color: var(--primary);"></i>
+                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">技术前沿与职业发展</h4>
+              </div>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">FRONTIER & CAREER</span>
+            </div>
+            <div class="md:col-span-9">
+              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
+                关注 LLM 领域最新进展——多模态大模型、Agent 框架演进、RAG 进阶技术。规划技术成长路径：LLM 应用工程师 → LLMOps 工程师 → AI 架构师，明确各阶段能力要求与成长方向。
+              </p>
+              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
+                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">多模态大模型</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Agent 框架</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">RAG 进阶</span>
+                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">职业路径规划</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Practice Project ============ -->
+    <section class="pb-14">
+      <div class="rounded-[12px] border-2 p-8" style="border-color: var(--primary); background: var(--card);">
+        <div class="flex items-center gap-3 mb-5">
+          <i data-lucide="graduation-cap" class="w-5 h-5" style="color: var(--primary);"></i>
+          <span class="font-mono-label" style="color: var(--primary);">CAPSTONE PROJECT</span>
+        </div>
+        <h2 class="font-serif-display text-2xl mb-4" style="color: var(--foreground);">完整知识体系回顾报告 + 前沿技术实践</h2>
+        <p class="text-[14px] mb-6 max-w-[800px]" style="color: var(--muted-foreground); line-height: 1.8;">
+          交付一份完整的 21 周知识体系回顾报告，包含知识地图与技能清单。同时完成两项前沿技术实践：使用 PEFT 库实现 LoRA 微调训练领域专属模型，以及实现一个自定义 MCP Server 接入工具链。
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <div class="font-mono-label mb-2" style="color: var(--primary);">DELIVERABLE 01</div>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">知识体系回顾报告</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">21 周知识地图 + 技能清单 + 学习总结</p>
+          </div>
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <div class="font-mono-label mb-2" style="color: var(--primary);">DELIVERABLE 02</div>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">LoRA 微调实践</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">PEFT 库训练领域专属模型</p>
+          </div>
+          <div class="rounded-[8px] p-4" style="background: var(--muted);">
+            <div class="font-mono-label mb-2" style="color: var(--primary);">DELIVERABLE 03</div>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">自定义 MCP Server</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">标准化协议接入自定义工具链</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Technical Points ============ -->
+    <section class="pb-14">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="font-mono-label" style="color: var(--primary);">TECH STACK</span>
+        <span class="h-px flex-1" style="background: var(--border);"></span>
+      </div>
+      <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">技术要点</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="brain-circuit" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">LoRA 低秩适配</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">冻结原始权重，训练低秩分解矩阵实现高效微调</p>
+        </div>
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="settings-2" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">PEFT 库</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">参数高效微调框架，rank / alpha / dropout 配置</p>
+        </div>
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="git-branch" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">LangChain v1 LCEL</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">声明式链式编排，统一接口与 Agent 执行引擎</p>
+        </div>
+        <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
+            <i data-lucide="plug" class="w-5 h-5" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">MCP Server / Client</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">标准化协议，跨模型工具连接架构</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="pb-16">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="font-mono-label" style="color: var(--primary);">FAQ</span>
+        <span class="h-px flex-1" style="background: var(--border);"></span>
+      </div>
+      <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">常见问题</h2>
+      <div class="space-y-4">
+
+        <div class="rounded-[12px] border p-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
+            <div class="flex-1">
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">LoRA 微调需要多少显存？</h3>
+              <div class="flex items-start gap-3">
+                <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
+                <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
+                  7B 模型 LoRA 微调约需 16GB 显存。使用 4-bit 量化技术（QLoRA）可将显存需求降至 8GB，使消费级显卡也能完成微调任务，大幅降低硬件门槛。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-[12px] border p-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
+            <div class="flex-1">
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">LangChain v1 和 v0 兼容吗？</h3>
+              <div class="flex items-start gap-3">
+                <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
+                <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
+                  v1 提供兼容层支持 v0 代码运行，但建议逐步迁移到 LCEL 语法。LCEL 性能更好、更易调试、支持流式与异步原生处理，是 LangChain 未来推荐的开发范式。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-[12px] border p-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
+            <div class="flex-1">
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">MCP 和 Function Calling 有什么区别？</h3>
+              <div class="flex items-start gap-3">
+                <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
+                <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
+                  MCP 是标准化协议（跨模型、跨工具的通用连接标准），Function Calling 是特定模型的能力。MCP 可以基于 Function Calling 实现，但提供了更高层次的抽象与互操作性——一个 MCP Server 可同时服务多个不同模型的客户端。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ Learning Resources ============ -->
+    <section class="border-b" style="border-color: var(--border);">
+      <div class="mx-auto max-w-[1200px] px-6 py-12">
+        <div class="mb-6">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">RESOURCES</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习资料</h2>
+          <p class="text-sm mt-1" style="color: var(--muted-foreground);">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4">
+              <i data-lucide="book-open" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">官方文档</span>
+            </div>
+            <div class="space-y-2">
+              <a href="https://huggingface.co/docs/peft" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">PEFT 库官方文档 →</a>
+              <a href="https://huggingface.co/docs/transformers" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">HuggingFace Transformers →</a>
+              <a href="https://python.langchain.com/docs/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangChain v1 文档 →</a>
+              <a href="https://modelcontextprotocol.io/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">MCP 官方文档 →</a>
+              <a href="https://github.com/modelcontextprotocol" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">MCP GitHub 仓库 →</a>
+            </div>
+          </div>
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4">
+              <i data-lucide="play-circle" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">视频教程</span>
+            </div>
+            <div class="space-y-2">
+              <a href="https://www.bilibili.com/video/BV1kt4y1H7nZ" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LoRA 微调从零开始（B站）→</a>
+              <a href="https://www.bilibili.com/video/BV1FV411r7mY" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">QLoRA 4bit量化微调（B站）→</a>
+              <a href="https://www.bilibili.com/video/BV1xz4y1m7tZ" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LangChain v1 新特性（B站）→</a>
+              <a href="https://www.youtube.com/watch?v=wd1sOxJwlkM" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">MCP 协议详解（YouTube）→</a>
+              <a href="https://www.youtube.com/watch?v=YWVCtP6W6Ew" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LoRA 微调实战教程（YouTube）→</a>
+            </div>
+          </div>
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4">
+              <i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">推荐阅读</span>
+            </div>
+            <div class="space-y-2">
+              <a href="https://arxiv.org/abs/2106.09685" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">LoRA 论文：Low-Rank Adaptation →</a>
+              <a href="https://arxiv.org/abs/2305.14314" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">QLoRA 论文：高效微调 →</a>
+              <a href="https://huggingface.co/blog/peft" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">PEFT 技术博客 →</a>
+              <a href="https://spec.modelcontextprotocol.io/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">MCP 协议规范 →</a>
+              <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Anthropic MCP 发布说明 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Bottom Navigation ============ -->
+    <section class="pb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="stage-7.html" class="group rounded-[12px] border p-6 transition-colors" style="border-color: var(--border); background: var(--card);" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="arrow-left" class="w-4 h-4" style="color: var(--muted-foreground);"></i>
+            <span class="font-mono-label" style="color: var(--muted-foreground);">PREVIOUS</span>
+          </div>
+          <div class="font-serif-display text-base" style="color: var(--foreground);">阶段 7 · 五大商业级 AI 应用实战</div>
+          <div class="text-xs mt-1" style="color: var(--muted-foreground);">WEEK 17 — 19</div>
+        </a>
+        <a href="learning-path.html" class="group rounded-[12px] border p-6 transition-colors text-right" style="border-color: var(--border); background: var(--card);" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="flex items-center justify-end gap-2 mb-2">
+            <span class="font-mono-label" style="color: var(--primary);">COMPLETE</span>
+            <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
+          </div>
+          <div class="font-serif-display text-base" style="color: var(--foreground);">返回总览 · 课程完成</div>
+          <div class="text-xs mt-1" style="color: var(--muted-foreground);">21 Weeks Learning Journey</div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="border-t" style="border-color: var(--border);">
+    <div class="mx-auto max-w-[1200px] px-6 py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+          <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">L</span>
+        </div>
+        <div>
+          <div class="font-serif-display text-sm" style="color: var(--foreground);">LLMOps 学习路径</div>
+          <div class="font-mono-label" style="color: var(--muted-foreground);">21 WEEKS · 8 STAGES · 5 PROJECTS</div>
+        </div>
+      </div>
+      <p class="text-xs" style="color: var(--muted-foreground);">阶段 8 · 课程回顾与 LLM 进阶 · WEEK 20 — 21</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>lucide.createIcons();</script>
+
+    <style>
+      .shadow-soft { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
+      .prose-stage p { line-height: 1.85; }
+    </style>
+</body>
+</html>
