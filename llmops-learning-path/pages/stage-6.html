@@ -1,168 +1,43 @@
 <!DOCTYPE html>
 <html class="light" lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>阶段 6：多模态工具功能 — LLMOps 学习路径</title>
-    <style id="theme-vars">
-/* LLMOps Learning Path — Editorial Academic Style */
-/* Warm paper tones + deep indigo accent */
-
-@import "tailwindcss";
-@custom-variant dark (&:is(.dark *));
-
-/* Light theme tokens */
-:root {
-  /* Surface colors — warm paper */
-  --background: #FAF7F2;
-  --foreground: #1E1B2E;
-  --card: #FFFFFF;
-  --card-foreground: #1E1B2E;
-  --popover: #FFFFFF;
-  --popover-foreground: #1E1B2E;
-
-  /* Primary — Deep Indigo (single brand hue) */
-  --primary: #3730A3;
-  --primary-foreground: #FAF7F2;
-
-  /* Muted — warm neutral surface */
-  --muted: #F5F0E8;
-  --muted-foreground: #6B6480;
-
-  /* Destructive */
-  --destructive: #B91C1C;
-  --destructive-foreground: #FAF7F2;
-
-  /* Border & Input */
-  --border: #E5DFD5;
-  --input: #E5DFD5;
-  --ring: #3730A3;
-
-  /* Chart colors — indigo monochrome tints */
-  --chart-1: #3730A3;
-  --chart-2: #4F46E5;
-  --chart-3: #6366F1;
-  --chart-4: #818CF8;
-  --chart-5: #A5B4FC;
-
-  /* Sidebar */
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1E1B2E;
-  --sidebar-primary: #3730A3;
-  --sidebar-primary-foreground: #FAF7F2;
-  --sidebar-border: #E5DFD5;
-  --sidebar-ring: #3730A3;
-
-  /* Typography */
-  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
-
-  /* Radius — restrained scale */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius: 8px;
-
-  /* State colors — semantic only */
-  --state-success: #15803D;
-  --state-warning: #B45309;
-  --state-error: #B91C1C;
-  --state-info: #3730A3;
-}
-
-/* Dark theme tokens */
-.dark {
-  --background: #1A1726;
-  --foreground: #F5F0E8;
-  --card: #252133;
-  --card-foreground: #F5F0E8;
-  --popover: #252133;
-  --popover-foreground: #F5F0E8;
-
-  --primary: #818CF8;
-  --primary-foreground: #1A1726;
-
-  --muted: #2D2840;
-  --muted-foreground: #9B95A8;
-
-  --destructive: #F87171;
-  --destructive-foreground: #1A1726;
-
-  --border: #3D3656;
-  --input: #3D3656;
-  --ring: #818CF8;
-
-  --chart-1: #818CF8;
-  --chart-2: #6366F1;
-  --chart-3: #4F46E5;
-  --chart-4: #4338CA;
-  --chart-5: #3730A3;
-
-  --sidebar: #252133;
-  --sidebar-foreground: #F5F0E8;
-  --sidebar-primary: #818CF8;
-  --sidebar-primary-foreground: #1A1726;
-  --sidebar-border: #3D3656;
-  --sidebar-ring: #818CF8;
-}
-
-/* Base typography */
-body {
-  font-family: var(--font-sans);
-  background-color: var(--background);
-  color: var(--foreground);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Serif heading utility */
-.font-serif-display {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-/* Mono label utility */
-.font-mono-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
-    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
-    <style type="text/tailwindcss">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段6：多模态工具功能与平台部署</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style id="theme-vars">
   @theme inline {
-    --color-foreground: var(--card-foreground);
+    --color-background: var(--background); --color-foreground: var(--foreground);
+    --color-card: var(--card); --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover); --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted); --color-muted-foreground: var(--muted-foreground);
+    --color-destructive: var(--destructive); --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border); --color-input: var(--input); --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1); --color-chart-2: var(--chart-2); --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4); --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar); --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary); --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-border: var(--sidebar-border); --color-sidebar-ring: var(--sidebar-ring);
+    --font-sans: var(--font-sans); --font-serif: var(--font-serif); --font-mono: var(--font-mono);
+    --radius-sm: var(--radius-sm); --radius-md: var(--radius-md); --radius-lg: var(--radius-lg); --radius: var(--radius);
   }
-  @layer base {
-    body { background: var(--card-background); color: var(--card-foreground); }
-    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
-    th { @apply whitespace-nowrap; }
-  }
-    </style>
-    <style>
-      .no-scrollbar::-webkit-scrollbar { display: none; }
-      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      [data-icon] {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        -webkit-mask-size: contain;
-        mask-size: contain;
-        -webkit-mask-repeat: no-repeat;
-        mask-repeat: no-repeat;
-        -webkit-mask-position: center;
-        mask-position: center;
-        background-color: currentColor;
-      }
-    </style>
+  </style>
+  <style>
+    .shadow-soft { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
+    .prose-stage p { line-height: 1.85; }
+    .lesson-card { border-color: var(--border); background: var(--card); transition: border-color .2s ease, box-shadow .2s ease; }
+    .lesson-card:hover { border-color: var(--primary); box-shadow: 0 2px 8px rgba(55,48,163,0.08); }
+    .lesson-card-recap { border-color: var(--border); background: var(--muted); transition: border-color .2s ease; }
+    .lesson-card-recap:hover { border-color: var(--primary); }
+  </style>
 </head>
 <body class="bg-background text-foreground min-h-screen antialiased">
-
   <!-- ============ Top Navigation Bar ============ -->
   <header class="sticky top-0 z-50 border-b" style="border-color: var(--border); background: rgba(250,247,242,0.92); backdrop-filter: blur(8px);">
     <div class="mx-auto max-w-[1200px] px-6 py-3.5 flex items-center justify-between gap-4">
@@ -188,7 +63,6 @@ body {
   </header>
 
   <main class="mx-auto max-w-[1200px] px-6">
-
     <!-- ============ Stage Header ============ -->
     <section class="pt-16 pb-12">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -201,15 +75,16 @@ body {
           <div class="flex items-end gap-5 mb-4">
             <span class="font-serif-display text-[88px] leading-none" style="color: var(--primary);">06</span>
             <h1 class="font-serif-display text-3xl md:text-4xl leading-[1.25] pb-2" style="color: var(--foreground);">
-              多模态工具功能
+              多模态工具功能与<br>平台部署
             </h1>
           </div>
           <div class="flex flex-wrap gap-2">
-            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">拓展</span>
-            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">图像理解</span>
-            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">ASR</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">多模态</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">GPT-4V</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Whisper ASR</span>
             <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">TTS</span>
-            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">多模态 Agent</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Nginx部署</span>
+            <span class="font-mono text-[11px] px-2.5 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">微信发布</span>
           </div>
         </div>
         <div class="lg:col-span-4">
@@ -218,17 +93,17 @@ body {
             <div class="space-y-4">
               <div>
                 <div class="font-serif-display text-2xl" style="color: var(--foreground);">1 周</div>
-                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">学习周期</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">学习周期 · Week 15</div>
               </div>
               <div class="h-px" style="background: var(--border);"></div>
               <div>
-                <div class="font-serif-display text-2xl" style="color: var(--foreground);">6 项能力</div>
-                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">图像理解 / ASR / TTS / 图片生成 / Agent 路由 / 全链路</div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">1 章 4 节</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">第15章 多模态工具与平台部署</div>
               </div>
               <div class="h-px" style="background: var(--border);"></div>
               <div>
-                <div class="font-serif-display text-2xl" style="color: var(--foreground);">能看听说</div>
-                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">多模态交互</div>
+                <div class="font-serif-display text-2xl" style="color: var(--foreground);">49 课时</div>
+                <div class="text-xs mt-0.5" style="color: var(--muted-foreground);">节点级详情</div>
               </div>
             </div>
           </div>
@@ -245,62 +120,62 @@ body {
         </div>
         <div class="lg:col-span-9 prose-stage">
           <p class="text-[15px] mb-4" style="color: var(--foreground); line-height: 1.85;">
-            本阶段扩展 Agent 工具链，支持<strong style="color: var(--primary);">图像、语音等多模态输入输出</strong>，打通多模态交互链路，让 AI 能看、能听、能说。从单一文本交互跃迁到图文语音全模态交互，大幅拓展 AI 应用的能力边界。
+            本阶段扩展 Agent 工具链，支持<strong style="color: var(--primary);">图像、语音等多模态输入输出</strong>，并完成平台生产部署与第三方社交平台对接，让 AI 能看、能听、能说，还能发布到微信公众号。
           </p>
           <p class="text-[15px] mb-4" style="color: var(--muted-foreground); line-height: 1.85;">
-            上半周聚焦多模态输入：接入 GPT-4 Vision / Claude Vision 实现图像理解与 OCR 识别，接入 Whisper API 完成实时语音转文字，并将这些能力封装为 Agent 工具，实现多模态输入的智能路由与自动调度。
+            15-1 节聚焦多模态输入：接入 GPT-4V 实现图像理解，对接 Whisper 实现语音转文本，并完善前端图片上传与语音配置 UI；15-2 节处理生产部署前的优化——日志冲突、Weaviate/Postgres 优化、Celery 环境隔离与 LangChain 0.3 升级。
           </p>
           <p class="text-[15px]" style="color: var(--muted-foreground); line-height: 1.85;">
-            下半周转向多模态输出：通过 Azure TTS / Edge TTS 实现自然语音合成，接入 DALL-E / Stable Diffusion 实现文生图能力。最终打通"语音输入 → ASR → LLM 推理 → TTS 语音输出"与"图片输入 → 视觉理解 → LLM 推理 → 图片/文字输出"两条完整链路。
+            15-3 节完成 Docker 容器化与 Nginx 反向代理、SSL 证书、腾讯云部署与 Azure OpenAI 接入；15-4 节打通微信公众号发布链路，并扩展接入 DeepSeek 开源模型，构建完整的多模态 + 多平台 LLMOps 系统。
           </p>
         </div>
       </div>
     </section>
 
-      <!-- ============ 个性化对照 ============ -->
-      <section class="border-b" style="border-color: var(--border); background: var(--muted);">
-        <div class="mx-auto max-w-[1200px] px-6 py-10">
-          <div class="mb-6">
-            <span class="font-mono-label block mb-2" style="color: var(--primary);">FOR YOU</span>
-            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">与你经验的对照</h2>
+    <!-- ============ 个性化对照 ============ -->
+    <section class="border-b" style="border-color: var(--border); background: var(--muted);">
+      <div class="mx-auto max-w-[1200px] px-6 py-10">
+        <div class="mb-6">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">FOR YOU</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">与你经验的对照</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">可迁移的技能</span>
+            </div>
+            <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+              <li>Python SDK 集成 → 你有丰富的 Python 第三方库经验，多模态 API 对接不难</li>
+              <li>数据流处理 → 多模态链路的"输入→处理→输出"和实时数仓流处理思路一致</li>
+              <li>云平台部署 → 腾讯云部署与 Nginx 配置，你有阿里云/华为云经验可迁移</li>
+            </ul>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--foreground);">可迁移的技能</span>
-              </div>
-              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
-                <li>Python SDK 集成 → 你有丰富的 Python 第三方库使用经验，多模态 API 对接不难</li>
-                <li>数据流处理 → 多模态交互链路的"输入→处理→输出"和你做实时数仓的流处理思路一致</li>
-                <li>工具封装 → 你封装过邮件推送 SDK，多模态工具封装是同样的模式</li>
-              </ul>
+          <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="alert-triangle" class="w-4 h-4" style="color: var(--primary);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--foreground);">需要补课的内容</span>
             </div>
-            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="alert-triangle" class="w-4 h-4" style="color: var(--primary);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--foreground);">需要补课的内容</span>
-              </div>
-              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
-                <li>多模态 API → GPT-4 Vision、Whisper ASR、TTS 等接口的使用方式和参数</li>
-                <li>音频处理 → 音频格式转换、噪声抑制等，数据工程中不常见</li>
-                <li>多模态 Agent 路由 → 让 Agent 自主选择处理图文语音的方式，是进阶内容</li>
-              </ul>
+            <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
+              <li>多模态 API → GPT-4V、Whisper ASR、TTS 等接口参数与使用方式</li>
+              <li>音频处理 → 语音格式转换、流式 TTS，数据工程中不常见</li>
+              <li>微信公众号开发 → 公众号对接、wechatpy SDK、消息推送链路</li>
+            </ul>
+          </div>
+          <div class="rounded-[8px] border p-5" style="border-color: var(--primary); background: var(--primary);">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="lightbulb" class="w-4 h-4" style="color: var(--primary-foreground);"></i>
+              <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">学习建议</span>
             </div>
-            <div class="rounded-[8px] border p-5" style="border-color: var(--primary); background: var(--primary);">
-              <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="lightbulb" class="w-4 h-4" style="color: var(--primary-foreground);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">学习建议</span>
-              </div>
-              <ul class="text-xs space-y-2" style="color: var(--primary-foreground); opacity: 0.9;">
-                <li>这个阶段只有1周，但内容很新——建议动手做一个完整的多模态 Demo</li>
-                <li>用你的 Python 优势：写一个脚本同时处理图片+语音+文字三种输入</li>
-                <li>把多模态链路理解为"带感官的数据管道"——输入端多了图片和音频</li>
-              </ul>
-            </div>
+            <ul class="text-xs space-y-2" style="color: var(--primary-foreground); opacity: 0.9;">
+              <li>15-1 是核心：动手做一个同时处理图片+语音+文字的多模态 Demo</li>
+              <li>15-3 部署节建议结合阶段 5 的 Dockerfile 一起理解容器编排</li>
+              <li>把多模态链路理解为"带感官的数据管道"——输入端多了图片和音频</li>
+            </ul>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
     <!-- ============ Learning Objectives ============ -->
     <section class="pb-14">
@@ -313,38 +188,38 @@ body {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-              <i data-lucide="layers" class="w-4 h-4" style="color: var(--primary);"></i>
-            </div>
-            <div>
-              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">理解多模态 AI 技术架构</h3>
-              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">掌握多模态模型的能力边界与适用场景</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
               <i data-lucide="image" class="w-4 h-4" style="color: var(--primary);"></i>
             </div>
             <div>
-              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">实现图像理解与视觉描述工具</h3>
-              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">接入 Vision API，封装视觉理解 Agent 工具</p>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">实现多模态输入与输出</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">GPT-4V 图像理解、Whisper ASR、边缘 TTS 语音播放</p>
             </div>
           </div>
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-              <i data-lucide="mic" class="w-4 h-4" style="color: var(--primary);"></i>
+              <i data-lucide="database" class="w-4 h-4" style="color: var(--primary);"></i>
             </div>
             <div>
-              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">接入语音识别与语音合成</h3>
-              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">Whisper ASR 语音转文字，TTS 文字转语音</p>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">完成平台部署优化</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">日志/向量库/Postgres 优化，Celery 环境隔离与依赖管理</p>
             </div>
           </div>
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-              <i data-lucide="wrench" class="w-4 h-4" style="color: var(--primary);"></i>
+              <i data-lucide="container" class="w-4 h-4" style="color: var(--primary);"></i>
             </div>
             <div>
-              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">构建多模态 Agent 工具链</h3>
-              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">多模态输入路由，Agent 自动选择处理方式</p>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">实现 Docker + Nginx 生产部署</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">容器化编排、Nginx 反向代理、SSL 证书与腾讯云部署</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
+              <i data-lucide="share-2" class="w-4 h-4" style="color: var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">打通第三方平台发布</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">微信公众号对接、消息推送，扩展接入 DeepSeek</p>
             </div>
           </div>
           <div class="flex items-start gap-4 md:col-span-2">
@@ -352,200 +227,707 @@ body {
               <i data-lucide="route" class="w-4 h-4" style="color: var(--primary);"></i>
             </div>
             <div>
-              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">打通图文语音多模态交互全链路</h3>
-              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">语音输入→ASR→LLM→TTS 输出；图片输入→视觉理解→LLM→图片/文字输出</p>
+              <h3 class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">交付多模态 + 多平台 LLMOps 系统</h3>
+              <p class="text-[13px]" style="color: var(--muted-foreground); line-height: 1.7;">能看听说 + 生产部署 + 社交平台发布的完整 AI 平台</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ Weekly Detailed Content ============ -->
+    <!-- ============ 课时级节点详情 ============ -->
     <section class="pb-14">
       <div class="flex items-center gap-3 mb-8">
-        <span class="font-mono-label" style="color: var(--primary);">WEEKLY BREAKDOWN</span>
+        <span class="font-mono-label" style="color: var(--primary);">LESSON BREAKDOWN</span>
         <span class="h-px flex-1" style="background: var(--border);"></span>
       </div>
-      <h2 class="font-serif-display text-2xl mb-8" style="color: var(--foreground);">每周详细内容</h2>
+      <h2 class="font-serif-display text-2xl mb-2" style="color: var(--foreground);">课时级节点详情</h2>
+      <p class="text-sm mb-8" style="color: var(--muted-foreground);">按章 / 节分组，共 1 章 4 节 49 课时，每个节点对应一节视频课程。</p>
 
-      <!-- Week 15 上半周 -->
-      <div class="rounded-[12px] border overflow-hidden mb-6 shadow-soft" style="border-color: var(--border); background: var(--card);">
+      <div class="rounded-[12px] border overflow-hidden  shadow-soft" style="border-color: var(--border); background: var(--card);">
         <div class="flex items-center gap-4 px-6 py-5 border-b" style="border-color: var(--border); background: var(--muted);">
           <div class="flex-shrink-0 w-12 h-12 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
             <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">15</span>
           </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-mono-label mb-1" style="color: var(--primary);">CHAPTER 15 · WEEK 15</div>
+            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">多模态工具功能与平台部署</h3>
+          </div>
+          <div class="hidden md:flex items-center gap-2 text-xs px-3 py-1.5 rounded-[6px] border" style="border-color: var(--border); color: var(--muted-foreground);">
+            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+            <span>49 课时 · 4 节</span>
+          </div>
+        </div>
+        <div class="p-6 space-y-8">
+
           <div>
-            <div class="font-mono-label mb-1" style="color: var(--primary);">WEEK 15 · 上半周</div>
-            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">多模态输入</h3>
-          </div>
-        </div>
-        <div class="p-6 space-y-6">
-
-          <!-- 知识点 1 -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
-            <div class="md:col-span-3">
-              <div class="flex items-center gap-2 mb-1">
-                <i data-lucide="image" class="w-4 h-4" style="color: var(--primary);"></i>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">图像理解</h4>
-              </div>
-              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">VISION UNDERSTANDING</span>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-mono text-xs px-2.5 py-1 rounded-[4px]" style="background: var(--muted); color: var(--primary);">15-1</span>
+              <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">多模态功能</h4>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">14 LESSONS</span>
+              <span class="h-px flex-1" style="background: var(--border);"></span>
             </div>
-            <div class="md:col-span-9">
-              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
-                接入 GPT-4 Vision / Claude Vision API，实现图像描述、OCR 文字识别与图表理解能力。封装统一的视觉理解工具接口，供 Agent 按需调用，支持多图输入与区域标注识别。
-              </p>
-              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
-                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">GPT-4 Vision</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Claude Vision</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">OCR 识别</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">图表理解</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">视觉工具封装</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-1</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章介绍与多模态功能分析</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">Agent 多模态输入输出</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">功能分析</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-2</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Agent多模态输入输出功能分析与流程解析</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">多模态流程</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">流程解析</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-3</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">GPT多模态输入参数配置与LangChain实现</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">GPT-4V 接入</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">GPT-4V</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-4</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Whisper服务与语音文本互转功能设计</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">语音识别</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">语音识别</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-5</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">多模态输入数据库表设计与API文档更新</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">数据模型</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">数据模型</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-6</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">优化基础语言模型并生成图片输入功能</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">图片输入</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">图片输入</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-7</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">切换模型查找GPT2词表与解决方案</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">模型切换问题</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">模型切换</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-8</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">完善LLMOps前端多模态图片输入功能</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">前端图片上传</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">前端上传</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-9</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">语音输入与应用配置API接口的设计与实现</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">语音配置</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">语音配置</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-10</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">对接Whisper服务实现语音转文本功能</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">ASR 实现</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">ASR实现</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-11</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Agent编辑页面语音能力配置与实现</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">语音配置 UI</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">语音UI</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-12</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">TTS文字流式转语音功能的设计与实现</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">TTS 实现</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">TTS实现</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-1-13</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">完善LLMOps平台边缘TTS语音播放功能</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">语音播放</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">语音播放</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card-recap rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--muted-foreground); color: var(--card);">15-1-14</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium" style="color: var(--foreground);">本章总结与回顾</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--muted-foreground); color: var(--muted-foreground);">章节总结</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 知识点 2 -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
-            <div class="md:col-span-3">
-              <div class="flex items-center gap-2 mb-1">
-                <i data-lucide="mic" class="w-4 h-4" style="color: var(--primary);"></i>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">语音识别 (ASR)</h4>
-              </div>
-              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">AUTOMATIC SPEECH RECOGNITION</span>
-            </div>
-            <div class="md:col-span-9">
-              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
-                接入 Whisper API 或阿里云语音识别服务，实现实时语音转文字。处理音频格式转换（WAV / MP3 / WebM），引入噪声抑制与静音检测提升识别准确率，支持中英文混合识别。
-              </p>
-              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
-                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Whisper API</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">阿里云 ASR</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">音频格式转换</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">噪声抑制</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">实时转写</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 知识点 3 -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div class="md:col-span-3">
-              <div class="flex items-center gap-2 mb-1">
-                <i data-lucide="wrench" class="w-4 h-4" style="color: var(--primary);"></i>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">多模态 Agent 工具</h4>
-              </div>
-              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">MULTIMODAL AGENT TOOLS</span>
-            </div>
-            <div class="md:col-span-9">
-              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
-                定义图像分析工具、语音转文字工具等标准 Agent 工具接口，让 Agent 能根据用户输入类型自动选择处理方式。实现多模态输入路由——文本走 LLM 直答、图片走视觉工具、音频走 ASR 再推理。
-              </p>
-              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
-                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">工具定义</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">多模态路由</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">自动调度</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">输入类型识别</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Week 15 下半周 -->
-      <div class="rounded-[12px] border overflow-hidden shadow-soft" style="border-color: var(--border); background: var(--card);">
-        <div class="flex items-center gap-4 px-6 py-5 border-b" style="border-color: var(--border); background: var(--muted);">
-          <div class="flex-shrink-0 w-12 h-12 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
-            <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">15</span>
-          </div>
           <div>
-            <div class="font-mono-label mb-1" style="color: var(--primary);">WEEK 15 · 下半周</div>
-            <h3 class="font-serif-display text-xl" style="color: var(--foreground);">多模态输出</h3>
-          </div>
-        </div>
-        <div class="p-6 space-y-6">
-
-          <!-- 知识点 1 -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
-            <div class="md:col-span-3">
-              <div class="flex items-center gap-2 mb-1">
-                <i data-lucide="volume-2" class="w-4 h-4" style="color: var(--primary);"></i>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">语音合成 (TTS)</h4>
-              </div>
-              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">TEXT TO SPEECH</span>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-mono text-xs px-2.5 py-1 rounded-[4px]" style="background: var(--muted); color: var(--primary);">15-2</span>
+              <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">平台部署</h4>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">12 LESSONS</span>
+              <span class="h-px flex-1" style="background: var(--border);"></span>
             </div>
-            <div class="md:col-span-9">
-              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
-                接入 Azure TTS 或 Edge TTS 服务，实现文字转语音输出。支持多音色选择（男声/女声/不同语言），调节语速与音调参数，使用 SSML 标记控制停顿与重音，输出自然流畅的语音。
-              </p>
-              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
-                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Azure TTS</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Edge TTS</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Neural 语音</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">多音色</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">SSML 标记</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-1</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章介绍与平台部署分析</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">生产部署</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">生产部署</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-2</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">开发环境下日志写入冲突问题优化解决</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">日志优化</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">日志优化</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-3</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Weaviate向量数据库初始化与修复</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">向量库配置</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">向量库配置</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-4</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">完善Postgres数据库索引设计与添加</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">数据库优化</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">数据库优化</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-5</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Postgres数据库多表查询优化与实现</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">查询优化</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">查询优化</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-6</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">优化存储过程逻辑避免获取空数据</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">存储过程优化</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">存储过程</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-7</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">区分LLMOps运行环境并配置Celery猴子补丁</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">环境隔离</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">环境隔离</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-8</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">LangChain 0.3版本升级指南与代码变化</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">版本升级</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">版本升级</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-9</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">pip-tools与Python依赖管理方案</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">依赖管理</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">依赖管理</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-10</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">pip-compile配置与项目Bug维护</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">Bug 修复</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Bug修复</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-2-11</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">完善项目基础requirements.txt更新</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">依赖更新</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">依赖更新</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card-recap rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--muted-foreground); color: var(--card);">15-2-12</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium" style="color: var(--foreground);">本章总结与回顾</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--muted-foreground); color: var(--muted-foreground);">章节总结</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 知识点 2 -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b" style="border-color: var(--border);">
-            <div class="md:col-span-3">
-              <div class="flex items-center gap-2 mb-1">
-                <i data-lucide="paintbrush" class="w-4 h-4" style="color: var(--primary);"></i>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">图片生成工具</h4>
-              </div>
-              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">IMAGE GENERATION</span>
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-mono text-xs px-2.5 py-1 rounded-[4px]" style="background: var(--muted); color: var(--primary);">15-3</span>
+              <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">配置部署与持久化</h4>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">13 LESSONS</span>
+              <span class="h-px flex-1" style="background: var(--border);"></span>
             </div>
-            <div class="md:col-span-9">
-              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
-                接入 DALL-E / Stable Diffusion API，实现文生图能力。封装为标准 Agent 工具，支持指令式图片生成——用户描述需求，Agent 自动构造 prompt 并调用生成接口，返回图片结果。
-              </p>
-              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
-                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">DALL-E</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Stable Diffusion</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">文生图</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">Prompt 构造</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">指令式生成</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-1</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章介绍与配置部署与持久化</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">Docker 部署</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Docker部署</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-2</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">PostgreSQL数据库容器化配置与持久化</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">数据库容器</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">数据库容器</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-3</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Redis容器化配置与持久化</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">缓存容器</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">缓存容器</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-4</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">编写API与Celery服务执行命令脚本</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">启动脚本</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">启动脚本</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-5</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">unstructured依赖nltk数据下载</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">文档解析依赖</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">文档解析</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-6</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">同步与异步Weaviate对Gevent的影响</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">异步兼容</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">异步兼容</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-7</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Flask API服务Dockerfile容器配置</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">API 容器</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">API容器</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-8</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">编写Celery服务Docker容器配置</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">Celery 容器</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Celery容器</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-9</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">完善Nginx反向代理服务器配置与部署</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">Nginx 配置</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Nginx配置</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-10</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">SSL证书配置与Nginx部署技巧</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">HTTPS 配置</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">HTTPS配置</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-11</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">将LLMOps项目部署到腾讯云服务器</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">云部署</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">云部署</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-3-12</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Azure OpenAI接口与服务接入</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">Azure 接入</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Azure接入</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card-recap rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--muted-foreground); color: var(--card);">15-3-13</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium" style="color: var(--foreground);">本章总结与回顾</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--muted-foreground); color: var(--muted-foreground);">章节总结</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 知识点 3 -->
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div class="md:col-span-3">
-              <div class="flex items-center gap-2 mb-1">
-                <i data-lucide="route" class="w-4 h-4" style="color: var(--primary);"></i>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">多模态交互链路</h4>
-              </div>
-              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">END-TO-END PIPELINE</span>
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-mono text-xs px-2.5 py-1 rounded-[4px]" style="background: var(--muted); color: var(--primary);">15-4</span>
+              <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">第三方平台发布</h4>
+              <span class="font-mono text-[10px]" style="color: var(--muted-foreground);">10 LESSONS</span>
+              <span class="h-px flex-1" style="background: var(--border);"></span>
             </div>
-            <div class="md:col-span-9">
-              <p class="text-[14px] mb-3" style="color: var(--muted-foreground); line-height: 1.8;">
-                打通两条完整多模态链路：语音链路"语音输入 → ASR 转文字 → LLM 推理 → TTS 语音输出"；视觉链路"图片输入 → 视觉理解 → LLM 推理 → 图片/文字输出"。实现全链路低延迟流转与状态管理。
-              </p>
-              <div class="rounded-[8px] p-4 border-l-2" style="background: var(--muted); border-left-color: var(--primary);">
-                <div class="font-mono-label mb-2" style="color: var(--primary);">KEY CONCEPTS</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">语音交互链路</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">视觉交互链路</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">状态管理</span>
-                  <span class="font-mono text-[11px] px-2 py-1 rounded-[4px]" style="background: var(--card); color: var(--muted-foreground);">低延迟流转</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-1</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章介绍与第三方平台发布</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">社交平台对接</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">社交平台</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-2</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">Agent社交平台发布功能与流程分析</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">发布流程</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">发布流程</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-3</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">微信公众号开发基础与Agent对接思路</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">公众号对接</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">公众号对接</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-4</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">利用wechatpy简化微信公众号对接</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">SDK 使用</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">SDK使用</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-5</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">三方平台发布模块API文档编写与数据库设计</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">数据模型</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">数据模型</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-6</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">LLMOps项目前端发布模块API与开发</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">发布前端</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">发布前端</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-7</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">微信消息推送API接口的设计与开发</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">消息推送</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">消息推送</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-8</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">从微信公众号扩展到其他社交平台的思路</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">多平台扩展</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">多平台扩展</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">15-4-9</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium mb-1" style="color: var(--foreground);">扩展课时-快速接入DeepSeek开源模型</p>
+                    <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">DeepSeek 接入</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">DeepSeek</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-card-recap rounded-[8px] border p-4">
+                <div class="flex items-start gap-3">
+                  <div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--muted-foreground); color: var(--card);">15-4-10</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium" style="color: var(--foreground);">本章总结与回顾</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--muted-foreground); color: var(--muted-foreground);">章节总结</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -562,25 +944,25 @@ body {
           <i data-lucide="package-check" class="w-5 h-5" style="color: var(--primary);"></i>
           <span class="font-mono-label" style="color: var(--primary);">CAPSTONE PROJECT</span>
         </div>
-        <h2 class="font-serif-display text-2xl mb-4" style="color: var(--foreground);">支持图文语音多模态输入输出的 Agent 系统</h2>
+        <h2 class="font-serif-display text-2xl mb-4" style="color: var(--foreground);">多模态 + 多平台部署的 LLMOps 系统</h2>
         <p class="text-[14px] mb-6 max-w-[800px]" style="color: var(--muted-foreground); line-height: 1.8;">
-          构建一个完整的多模态 Agent 系统，支持文字、图片、语音三种输入方式，能根据输入类型自动路由到对应处理工具，并通过文字、图片、语音三种方式输出结果。打通从输入到输出的完整多模态交互链路。
+          在阶段 5 平台基础上扩展多模态能力（GPT-4V / Whisper / TTS），完成 Docker + Nginx + SSL 生产部署到腾讯云，并打通微信公众号发布链路与 DeepSeek 开源模型接入，交付一个能看听说、可社交分发的完整 AI 平台。
         </p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="rounded-[8px] p-4" style="background: var(--muted);">
             <div class="font-mono-label mb-2" style="color: var(--primary);">DELIVERABLE 01</div>
-            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">多模态输入处理</div>
-            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">图像理解 + ASR 语音识别 + 智能路由</p>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">多模态能力</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">GPT-4V 图像理解 + Whisper ASR + 边缘 TTS</p>
           </div>
           <div class="rounded-[8px] p-4" style="background: var(--muted);">
             <div class="font-mono-label mb-2" style="color: var(--primary);">DELIVERABLE 02</div>
-            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">多模态输出能力</div>
-            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">TTS 语音合成 + DALL-E 图片生成</p>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">生产部署</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">Docker 编排 + Nginx + SSL + 腾讯云 + Azure</p>
           </div>
           <div class="rounded-[8px] p-4" style="background: var(--muted);">
             <div class="font-mono-label mb-2" style="color: var(--primary);">DELIVERABLE 03</div>
-            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">全链路打通</div>
-            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">语音链路 + 视觉链路端到端流转</p>
+            <div class="font-serif-display text-sm mb-1" style="color: var(--foreground);">平台发布</div>
+            <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">微信公众号对接 + DeepSeek 开源模型接入</p>
           </div>
         </div>
       </div>
@@ -598,36 +980,36 @@ body {
           <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
             <i data-lucide="image" class="w-5 h-5" style="color: var(--primary);"></i>
           </div>
-          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">GPT-4 Vision</h3>
-          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">图像理解、OCR 识别、图表分析</p>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">GPT-4V</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">多模态图片输入与图像理解</p>
         </div>
         <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
           <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
             <i data-lucide="mic" class="w-5 h-5" style="color: var(--primary);"></i>
           </div>
           <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">Whisper ASR</h3>
-          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">实时语音转文字，多语言支持</p>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">语音转文本，流式 TTS 语音播放</p>
         </div>
         <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
           <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
-            <i data-lucide="volume-2" class="w-5 h-5" style="color: var(--primary);"></i>
+            <i data-lucide="container" class="w-5 h-5" style="color: var(--primary);"></i>
           </div>
-          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">Edge TTS</h3>
-          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">Neural 语音合成，多音色 SSML 控制</p>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">Docker + Nginx</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">容器编排、反向代理与 SSL 部署</p>
         </div>
         <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
           <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
-            <i data-lucide="paintbrush" class="w-5 h-5" style="color: var(--primary);"></i>
+            <i data-lucide="message-circle" class="w-5 h-5" style="color: var(--primary);"></i>
           </div>
-          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">DALL-E 生图</h3>
-          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">文生图能力，指令式图片生成</p>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">微信公众号</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">wechatpy 对接与消息推送</p>
         </div>
         <div class="rounded-[12px] border p-5 shadow-soft" style="border-color: var(--border); background: var(--card);">
           <div class="w-10 h-10 rounded-[8px] flex items-center justify-center mb-4" style="background: var(--muted);">
-            <i data-lucide="route" class="w-5 h-5" style="color: var(--primary);"></i>
+            <i data-lucide="cpu" class="w-5 h-5" style="color: var(--primary);"></i>
           </div>
-          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">多模态路由</h3>
-          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">Agent 自动选择处理方式与工具</p>
+          <h3 class="font-serif-display text-sm mb-2" style="color: var(--foreground);">DeepSeek</h3>
+          <p class="text-xs" style="color: var(--muted-foreground); line-height: 1.7;">开源模型扩展接入与 Azure OpenAI</p>
         </div>
       </div>
     </section>
@@ -645,11 +1027,11 @@ body {
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
             <div class="flex-1">
-              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">图片识别准确率不够？</h3>
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">切换模型后 GPT2 词表报错？</h3>
               <div class="flex items-start gap-3">
                 <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
                 <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
-                  提供清晰的图片指令（prompt），明确指定关注区域与期望输出格式。多角度图片输入提升信息完整度，结合 OCR 辅助识别文字内容，必要时进行图片预处理（裁剪/增强对比度）。
+                  不同模型 Tokenizer 词表不一致，切换模型时需重新加载对应词表，避免复用旧 Tokenizer 导致编码错乱，15-1-7 课时给出了解决方案。
                 </p>
               </div>
             </div>
@@ -660,11 +1042,11 @@ body {
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
             <div class="flex-1">
-              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">TTS 语音不自然？</h3>
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">同步与异步 Weaviate 冲突？</h3>
               <div class="flex items-start gap-3">
                 <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
                 <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
-                  选择 Neural TTS 引擎（而非传统拼接式），调整语速参数（建议范围 0.8 — 1.2）与音调参数匹配场景需求，使用 SSML 标记精细控制停顿、重音与情感，显著提升语音自然度。
+                  Weaviate 同步客户端与 Gevent 异步协程存在兼容问题，需区分运行环境并配置 Celery 猴子补丁，15-3-6 课时详细分析了该影响。
                 </p>
               </div>
             </div>
@@ -675,69 +1057,17 @@ body {
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 w-8 h-8 rounded-[6px] flex items-center justify-center font-serif-display text-sm" style="background: var(--primary); color: var(--primary-foreground);">Q</div>
             <div class="flex-1">
-              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">多模态数据传输慢？</h3>
+              <h3 class="font-serif-display text-[15px] mb-3" style="color: var(--foreground);">微信公众号如何对接 Agent？</h3>
               <div class="flex items-start gap-3">
                 <span class="font-mono text-[11px] flex-shrink-0 mt-0.5" style="color: var(--primary);">A:</span>
                 <p class="text-[14px]" style="color: var(--muted-foreground); line-height: 1.8;">
-                  图片传输前压缩为 WebP 格式减小体积，音频使用流式传输（chunked transfer）避免整段等待，前端实现加载进度提示与骨架状态，提升用户感知体验。
+                  利用 wechatpy SDK 简化对接流程，设计三方平台发布模块的数据库表与 API，用户消息经公众号回调推送至 Agent，回复再通过消息推送接口返回公众号。
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-      </div>
-    </section>
-
-    <!-- ============ Learning Resources ============ -->
-    <section class="border-b" style="border-color: var(--border);">
-      <div class="mx-auto max-w-[1200px] px-6 py-12">
-        <div class="mb-6">
-          <span class="font-mono-label block mb-2" style="color: var(--primary);">RESOURCES</span>
-          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习资料</h2>
-          <p class="text-sm mt-1" style="color: var(--muted-foreground);">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-2 mb-4">
-              <i data-lucide="book-open" class="w-4 h-4" style="color: var(--primary);"></i>
-              <span class="font-serif-display text-sm" style="color: var(--foreground);">官方文档</span>
-            </div>
-            <div class="space-y-2">
-              <a href="https://platform.openai.com/docs/guides/vision" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">GPT-4 Vision 官方文档 →</a>
-              <a href="https://platform.openai.com/docs/guides/whisper" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Whisper 语音识别文档 →</a>
-              <a href="https://platform.openai.com/docs/guides/text-to-speech" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">OpenAI TTS 文档 →</a>
-              <a href="https://platform.openai.com/docs/guides/images" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">DALL-E 图片生成文档 →</a>
-              <a href="https://azure.microsoft.com/zh-cn/products/ai-services/text-to-speech" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Azure TTS 服务 →</a>
-            </div>
-          </div>
-          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-2 mb-4">
-              <i data-lucide="play-circle" class="w-4 h-4" style="color: var(--primary);"></i>
-              <span class="font-serif-display text-sm" style="color: var(--foreground);">视频教程</span>
-            </div>
-            <div class="space-y-2">
-              <a href="https://www.bilibili.com/video/BV1Lm4y1U7pZ" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">GPT-4 Vision 图像识别实战（B站）→</a>
-              <a href="https://www.bilibili.com/video/BV1hV411r7Yv" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Whisper 语音识别教程（B站）→</a>
-              <a href="https://www.bilibili.com/video/BV1GN411h7vS" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">TTS 语音合成教程（B站）→</a>
-              <a href="https://www.youtube.com/watch?v=sqQrN0iZBs0" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">多模态AI应用开发（YouTube）→</a>
-              <a href="https://www.youtube.com/watch?v=VIwl7UySP5w" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">DALL-E 3 图片生成教程（YouTube）→</a>
-            </div>
-          </div>
-          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-2 mb-4">
-              <i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i>
-              <span class="font-serif-display text-sm" style="color: var(--foreground);">推荐阅读</span>
-            </div>
-            <div class="space-y-2">
-              <a href="https://arxiv.org/abs/2304.08485" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Whisper 论文 →</a>
-              <a href="https://huggingface.co/spaces/tonyassi/image-to-text" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">HuggingFace 图像理解 →</a>
-              <a href="https://www.promptingguide.ai/models/gpt-4-vision" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">GPT-4V Prompt 指南 →</a>
-              <a href="https://github.com/ageitgey/face_recognition" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">人脸识别开源项目 →</a>
-              <a href="https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Azure 语音服务文档 →</a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -764,7 +1094,6 @@ body {
     </section>
 
   </main>
-
   <!-- ============ Footer ============ -->
   <footer class="border-t" style="border-color: var(--border);">
     <div class="mx-auto max-w-[1200px] px-6 py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -777,16 +1106,10 @@ body {
           <div class="font-mono-label" style="color: var(--muted-foreground);">21 WEEKS · 8 STAGES · 5 PROJECTS</div>
         </div>
       </div>
-      <p class="text-xs" style="color: var(--muted-foreground);">阶段 6 · 多模态工具功能 · WEEK 15</p>
+      <p class="text-xs" style="color: var(--muted-foreground);">阶段 6 · 多模态工具功能与平台部署 · WEEK 15</p>
     </div>
   </footer>
 
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script>lucide.createIcons();</script>
-
-    <style>
-      .shadow-soft { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
-      .prose-stage p { line-height: 1.85; }
-    </style>
 </body>
 </html>

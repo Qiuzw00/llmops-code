@@ -1,771 +1,321 @@
 <!DOCTYPE html>
 <html class="light" lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>阶段3：LLMOps 应用平台可视化 | LLMOps 学习路径</title>
-    <style id="theme-vars">
-/* LLMOps Learning Path — Editorial Academic Style */
-/* Warm paper tones + deep indigo accent */
-
-@import "tailwindcss";
-@custom-variant dark (&:is(.dark *));
-
-/* Light theme tokens */
-:root {
-  /* Surface colors — warm paper */
-  --background: #FAF7F2;
-  --foreground: #1E1B2E;
-  --card: #FFFFFF;
-  --card-foreground: #1E1B2E;
-  --popover: #FFFFFF;
-  --popover-foreground: #1E1B2E;
-
-  /* Primary — Deep Indigo (single brand hue) */
-  --primary: #3730A3;
-  --primary-foreground: #FAF7F2;
-
-  /* Muted — warm neutral surface */
-  --muted: #F5F0E8;
-  --muted-foreground: #6B6480;
-
-  /* Destructive */
-  --destructive: #B91C1C;
-  --destructive-foreground: #FAF7F2;
-
-  /* Border & Input */
-  --border: #E5DFD5;
-  --input: #E5DFD5;
-  --ring: #3730A3;
-
-  /* Chart colors — indigo monochrome tints */
-  --chart-1: #3730A3;
-  --chart-2: #4F46E5;
-  --chart-3: #6366F1;
-  --chart-4: #818CF8;
-  --chart-5: #A5B4FC;
-
-  /* Sidebar */
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1E1B2E;
-  --sidebar-primary: #3730A3;
-  --sidebar-primary-foreground: #FAF7F2;
-  --sidebar-border: #E5DFD5;
-  --sidebar-ring: #3730A3;
-
-  /* Typography */
-  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
-
-  /* Radius — restrained scale */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius: 8px;
-
-  /* State colors — semantic only */
-  --state-success: #15803D;
-  --state-warning: #B45309;
-  --state-error: #B91C1C;
-  --state-info: #3730A3;
-}
-
-/* Dark theme tokens */
-.dark {
-  --background: #1A1726;
-  --foreground: #F5F0E8;
-  --card: #252133;
-  --card-foreground: #F5F0E8;
-  --popover: #252133;
-  --popover-foreground: #F5F0E8;
-
-  --primary: #818CF8;
-  --primary-foreground: #1A1726;
-
-  --muted: #2D2840;
-  --muted-foreground: #9B95A8;
-
-  --destructive: #F87171;
-  --destructive-foreground: #1A1726;
-
-  --border: #3D3656;
-  --input: #3D3656;
-  --ring: #818CF8;
-
-  --chart-1: #818CF8;
-  --chart-2: #6366F1;
-  --chart-3: #4F46E5;
-  --chart-4: #4338CA;
-  --chart-5: #3730A3;
-
-  --sidebar: #252133;
-  --sidebar-foreground: #F5F0E8;
-  --sidebar-primary: #818CF8;
-  --sidebar-primary-foreground: #1A1726;
-  --sidebar-border: #3D3656;
-  --sidebar-ring: #818CF8;
-}
-
-/* Base typography */
-body {
-  font-family: var(--font-sans);
-  background-color: var(--background);
-  color: var(--foreground);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Serif heading utility */
-.font-serif-display {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-/* Mono label utility */
-.font-mono-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
-    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
-    <style type="text/tailwindcss">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段3：LLMOps应用平台可视化</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style id="theme-vars">
   @theme inline {
-    --color-foreground: var(--card-foreground);
+    --color-background: var(--background); --color-foreground: var(--foreground);
+    --color-card: var(--card); --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover); --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted); --color-muted-foreground: var(--muted-foreground);
+    --color-destructive: var(--destructive); --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border); --color-input: var(--input); --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1); --color-chart-2: var(--chart-2); --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4); --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar); --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary); --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-border: var(--sidebar-border); --color-sidebar-ring: var(--sidebar-ring);
+    --font-sans: var(--font-sans); --font-serif: var(--font-serif); --font-mono: var(--font-mono);
+    --radius-sm: var(--radius-sm); --radius-md: var(--radius-md); --radius-lg: var(--radius-lg); --radius: var(--radius);
   }
-  @layer base {
-    body { background: var(--card-background); color: var(--card-foreground); }
-    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
-    th { @apply whitespace-nowrap; }
-  }
-    </style>
-    <style>
-      .no-scrollbar::-webkit-scrollbar { display: none; }
-      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      [data-icon] {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        -webkit-mask-size: contain;
-        mask-size: contain;
-        -webkit-mask-repeat: no-repeat;
-        mask-repeat: no-repeat;
-        -webkit-mask-position: center;
-        mask-position: center;
-        background-color: currentColor;
-      }
-    </style>
+  </style>
+  <style>
+    .editorial-shadow { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
+    .prose-stage p { line-height: 1.85; }
+    .nav-link { transition: color 0.2s; }
+    [data-icon] { background-color: currentColor; }
+    .hover\:border-primary:hover { border-color: var(--primary); }
+  </style>
 </head>
 <body class="bg-background text-foreground min-h-screen font-sans antialiased">
-
-    <!-- ============ Top Navigation Bar ============ -->
+  <main>
+    <!-- ============ 1. Top Navigation Bar ============ -->
     <header class="sticky top-0 z-50 border-b backdrop-blur-sm" style="border-color: var(--border); background: rgba(250,247,242,0.92);">
-        <div class="mx-auto max-w-[1200px] px-6 py-3.5 flex items-center justify-between gap-4">
-            <a href="../pages/learning-path.html" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
-                    <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">L</span>
-                </div>
-                <div class="flex flex-col leading-tight">
-                    <span class="font-serif-display text-[15px]" style="color: var(--foreground);">LLMOps 学习路径</span>
-                    <span class="font-mono-label" style="color: var(--muted-foreground);">CURRICULUM</span>
-                </div>
-            </a>
-            <nav class="hidden md:flex items-center gap-2 text-[13px]" style="color: var(--muted-foreground);">
-                <a href="../pages/learning-path.html" class="nav-link hover:text-primary" style="color: var(--muted-foreground);">首页</a>
-                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                <span class="font-medium" style="color: var(--foreground);">阶段 3</span>
-            </nav>
-            <a href="../pages/learning-path.html" class="inline-flex items-center gap-1.5 text-[13px] px-3 py-1.5 rounded-[8px] border nav-link" style="border-color: var(--border); color: var(--foreground);">
-                <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
-                <span class="hidden sm:inline">返回总览</span>
-            </a>
-        </div>
+      <div class="mx-auto max-w-[1200px] px-6 py-3.5 flex items-center justify-between gap-4">
+        <a href="learning-path.html" class="flex items-center gap-3 group">
+          <div class="w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
+            <span class="font-serif-display text-lg" style="color: var(--primary-foreground);">L</span>
+          </div>
+          <div class="flex flex-col leading-tight">
+            <span class="font-serif-display text-[15px]" style="color: var(--foreground);">LLMOps 学习路径</span>
+            <span class="font-mono-label" style="color: var(--muted-foreground);">CURRICULUM</span>
+          </div>
+        </a>
+        <nav class="hidden md:flex items-center gap-2 text-[13px]" style="color: var(--muted-foreground);">
+          <a href="learning-path.html" class="nav-link" style="color: var(--muted-foreground);">首页</a>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+          <span class="font-medium" style="color: var(--foreground);">阶段 3</span>
+        </nav>
+        <a href="learning-path.html" class="inline-flex items-center gap-1.5 text-[13px] px-3 py-1.5 rounded-[8px] border nav-link" style="border-color: var(--border); color: var(--foreground);">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">返回总览</span>
+        </a>
+      </div>
     </header>
-
-    <main>
-
-      <!-- ============ Stage Header ============ -->
-      <section class="border-b" style="border-color: var(--border); background: var(--card);">
-        <div class="mx-auto max-w-[1200px] px-6 py-14">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            <div class="lg:col-span-3">
-              <div class="font-serif-display text-[120px] leading-none" style="color: var(--primary); opacity: 0.18;">03</div>
-            </div>
-            <div class="lg:col-span-9">
-              <div class="flex items-center gap-2 mb-4">
-                <span class="font-mono-label" style="color: var(--primary);">STAGE 03 · WEEK 07 — 09</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-[4px] border font-mono" style="border-color: var(--border); color: var(--muted-foreground);">平台化</span>
-              </div>
-              <h1 class="font-serif-display text-3xl md:text-4xl leading-[1.25] mb-5" style="color: var(--foreground);">
-                LLMOps 应用平台可视化
-              </h1>
-              <p class="text-[15px] leading-[1.8] max-w-[720px]" style="color: var(--muted-foreground);">
-                构建 LLMOps 可视化管理平台，实现 Prompt 模板管理、流式响应展示与用户授权认证体系，让 AI 应用可管理、可监控。
-              </p>
-              <div class="flex flex-wrap gap-1.5 mt-6">
-                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Jinja2</span>
-                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">SSE</span>
-                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">JWT</span>
-                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">RBAC</span>
-                <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Prompt Engineering</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ Stage Overview ============ -->
-      <section class="mx-auto max-w-[1200px] px-6 py-14">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <!-- ============ 2. Stage Header ============ -->
+    <section class="border-b" style="border-color: var(--border); background: var(--card);">
+      <div class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
-            <span class="font-mono-label block mb-2" style="color: var(--primary);">OVERVIEW</span>
-            <h2 class="font-serif-display text-xl" style="color: var(--foreground);">阶段概述</h2>
+            <div class="font-serif-display text-[120px] leading-none" style="color: var(--primary); opacity: 0.18;">03</div>
           </div>
-          <div class="lg:col-span-9 prose-stage">
-            <p class="text-[15px] mb-5" style="color: var(--foreground);">
-              当 ChatBot 具备记忆、RAG 与 Agent 能力后，下一个挑战是"可管理性"。本阶段将构建一个可视化的 LLMOps 管理平台，让 Prompt、模型响应与用户权限都成为可控的资产。
-            </p>
-            <p class="text-[15px] mb-5" style="color: var(--muted-foreground);">
-              第七周聚焦 Prompt 模块——设计模板数据模型、变量注入与版本管理，支持 A/B 测试与可视化编辑；第八周深入响应模块——SSE 流式协议、Redis 响应缓存、多模型切换与降级、监控仪表盘。
-            </p>
-            <p class="text-[15px]" style="color: var(--muted-foreground);">
-              第九周搭建授权认证体系——用户注册登录、JWT 双 Token 机制、RBAC 权限模型与安全加固。最终交付一个具备 Prompt 管理 + 流式响应 + 认证的 LLMOps 可视化管理平台。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ 个性化对照 ============ -->
-      <section class="border-b" style="border-color: var(--border); background: var(--muted);">
-        <div class="mx-auto max-w-[1200px] px-6 py-10">
-          <div class="mb-6">
-            <span class="font-mono-label block mb-2" style="color: var(--primary);">FOR YOU</span>
-            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">与你经验的对照</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="check-circle-2" class="w-4 h-4" style="color: var(--primary);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--foreground);">可迁移的技能</span>
-              </div>
-              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
-                <li>平台化管理 → 你做过报表平台、数据中台，Prompt 管理平台概念上完全一致</li>
-                <li>调度编排 → DataWorks 调度经验直接迁移到 Prompt 模板版本管理和 A/B 测试</li>
-                <li>用户认证 → 你设计过 rds 配置表和后端接口，JWT 认证是标准 Web 安全方案</li>
-              </ul>
+          <div class="lg:col-span-9">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="font-mono-label" style="color: var(--primary);">STAGE 03 · WEEK 07 — 09</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-[4px] border font-mono" style="border-color: var(--border); color: var(--muted-foreground);">平台化</span>
             </div>
-            <div class="rounded-[8px] border p-5" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="alert-triangle" class="w-4 h-4" style="color: var(--primary);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--foreground);">需要补课的内容</span>
-              </div>
-              <ul class="text-xs space-y-2" style="color: var(--muted-foreground);">
-                <li>SSE 流式响应深入 → 不只是概念，需要处理断线重连、心跳保活等工程细节</li>
-                <li>JWT + RBAC → 你可能没做过完整的认证体系，需要学习双 Token 机制</li>
-                <li>前端权限守卫 → Vue Router 的路由级权限控制，需要前端知识</li>
-              </ul>
-            </div>
-            <div class="rounded-[8px] border p-5" style="border-color: var(--primary); background: var(--primary);">
-              <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="lightbulb" class="w-4 h-4" style="color: var(--primary-foreground);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">学习建议</span>
-              </div>
-              <ul class="text-xs space-y-2" style="color: var(--primary-foreground); opacity: 0.9;">
-                <li>这个阶段是你的舒适区——把 LLMOps 平台当成"带 LLM 引擎的 DataWorks"来理解</li>
-                <li>Prompt 模板管理 = SQL 模板管理，版本控制逻辑一样</li>
-                <li>重点放在 SSE 和 JWT 上，这两个是需要补课的工程技能</li>
-              </ul>
+            <h1 class="font-serif-display text-3xl md:text-4xl leading-[1.25] mb-5" style="color: var(--foreground);">LLMOps 应用平台可视化</h1>
+            <p class="text-[15px] leading-[1.8] max-w-[720px]" style="color: var(--muted-foreground);">构建 LLMOps 可视化管理平台，实现 Prompt 模板管理、流式响应展示与用户授权认证体系，让 AI 应用可管理、可监控。</p>
+            <div class="flex flex-wrap gap-1.5 mt-6">
+              <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Jinja2</span>
+              <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">SSE</span>
+              <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">JWT</span>
+              <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">RBAC</span>
+              <span class="font-mono text-[11px] px-2 py-1 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Prompt Engineering</span>
             </div>
           </div>
         </div>
-      </section>
-
-      <!-- ============ Learning Objectives ============ -->
-      <section class="border-y" style="border-color: var(--border); background: var(--muted);">
-        <div class="mx-auto max-w-[1200px] px-6 py-14">
-          <div class="mb-8">
-            <span class="font-mono-label block mb-2" style="color: var(--primary);">LEARNING OBJECTIVES</span>
-            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习目标</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-                <i data-lucide="file-text" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
-              </div>
-              <div>
-                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">Prompt 模板管理</div>
-                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">设计模板系统，支持版本控制、变量注入与 A/B 测试。</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-                <i data-lucide="radio" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
-              </div>
-              <div>
-                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">SSE 流式与多模型切换</div>
-                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">实现 SSE 端点与多模型动态切换、降级策略。</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-                <i data-lucide="shield-check" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
-              </div>
-              <div>
-                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">认证与 RBAC 权限</div>
-                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">搭建 JWT 双 Token 认证与角色权限控制体系。</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-                <i data-lucide="layout-dashboard" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
-              </div>
-              <div>
-                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">可视化管理后台</div>
-                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">构建管理后台界面，集成监控面板与运营工具。</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow md:col-span-2" style="border-color: var(--border); background: var(--card);">
-              <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);">
-                <i data-lucide="package-check" class="w-4.5 h-4.5" style="color: var(--primary);"></i>
-              </div>
-              <div>
-                <div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">完成平台核心管理功能</div>
-                <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">交付 LLMOps 平台核心管理能力，使 AI 应用可管理、可监控、可运营。</p>
-              </div>
-            </div>
-          </div>
+      </div>
+    </section>
+    <!-- ============ 3. Stage Overview ============ -->
+    <section class="mx-auto max-w-[1200px] px-6 py-14">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-3">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">OVERVIEW</span>
+          <h2 class="font-serif-display text-xl" style="color: var(--foreground);">阶段概述</h2>
         </div>
-      </section>
-
-      <!-- ============ Weekly Detailed Content ============ -->
-      <section class="mx-auto max-w-[1200px] px-6 py-16">
-        <div class="mb-10">
-          <span class="font-mono-label block mb-2" style="color: var(--primary);">WEEKLY BREAKDOWN</span>
-          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">每周详细内容</h2>
+        <div class="lg:col-span-9 prose-stage">
+          <p class="text-[15px] mb-5" style="color: var(--foreground);">当 ChatBot 具备记忆、RAG 与 Agent 能力后，下一个挑战是"可管理性"。本阶段将构建一个可视化的 LLMOps 管理平台，让 Prompt、模型响应与用户权限都成为可控的资产。</p>
+          <p class="text-[15px] mb-5" style="color: var(--muted-foreground);">第七周聚焦 Prompt 模块——设计模板数据模型、变量注入与版本管理，支持 A/B 测试与可视化编辑；第八周深入响应模块——SSE 流式协议、Redis 响应缓存、多模型切换与降级、监控仪表盘。</p>
+          <p class="text-[15px]" style="color: var(--muted-foreground);">第九周搭建授权认证体系——用户注册登录、JWT 双 Token 机制、RBAC 权限模型与安全加固。最终交付一个具备 Prompt 管理 + 流式响应 + 认证的 LLMOps 可视化管理平台。</p>
         </div>
-
-        <div class="space-y-10">
-
-          <!-- ===== Week 7 ===== -->
-          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
-              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
-                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W7</span>
-              </div>
-              <div>
-                <div class="font-mono-label" style="color: var(--primary);">WEEK 07</div>
-                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">Prompt 模块</h3>
-              </div>
-            </div>
-            <div class="p-6 space-y-6">
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  Prompt 模板管理
-                </h4>
-                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
-                  设计 Prompt 模板数据模型（模板名 / 内容 / 变量 / 版本号），实现模板 CRUD 接口。支持模板分类与标签管理。
-                </p>
-                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
-PromptTemplate:
-  id · name · content · variables[] · version
-  category · tags[] · created_at · updated_at
-                </div>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  变量注入与渲染
-                </h4>
-                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
-                  实现 Jinja2 模板引擎变量注入，支持系统变量（日期 / 用户名）与自定义变量。设计变量校验机制。
-                </p>
-                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
-<span style="color: var(--primary);">from</span> jinja2 <span style="color: var(--primary);">import</span> Template
-tpl = Template(<span style="color: var(--state-success);">"你好 {{user}}，今天是 {{date}}"</span>)
-rendered = tpl.render(user=<span style="color: var(--state-success);">"张三"</span>, date=<span style="color: var(--state-success);">"周一"</span>)
-                </div>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  A/B 测试与效果对比
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  实现 Prompt 模板版本管理，支持多版本对比测试。设计效果评估指标（响应质量评分 / 用户满意度 / Token 消耗），用数据驱动 Prompt 迭代。
-                </p>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  Prompt 可视化编辑器
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  开发在线 Prompt 编辑器，支持变量高亮、实时预览、历史版本回滚。让运营人员无需改代码即可调整 Prompt。
-                </p>
-              </div>
-
-            </div>
-          </article>
-
-          <!-- ===== Week 8 ===== -->
-          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
-              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
-                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W8</span>
-              </div>
-              <div>
-                <div class="font-mono-label" style="color: var(--primary);">WEEK 08</div>
-                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">响应模块</h3>
-              </div>
-            </div>
-            <div class="p-6 space-y-6">
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  SSE 流式响应
-                </h4>
-                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
-                  深入理解 Server-Sent Events 协议，实现 Flask SSE 端点。处理连接断开重连、心跳保活机制。
-                </p>
-                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
-<span style="color: var(--primary);">@app.route</span>(<span style="color: var(--state-success);">"/api/v1/chat/stream"</span>)
-<span style="color: var(--primary);">def</span> stream():
-    <span style="color: var(--primary);">def</span> generate():
-        <span style="color: var(--primary);">for</span> chunk <span style="color: var(--primary);">in</span> llm.stream(prompt):
-            <span style="color: var(--primary);">yield</span> f<span style="color: var(--state-success);">"data: {chunk}\n\n"</span>
-    <span style="color: var(--primary);">return</span> Response(generate(), mimetype=<span style="color: var(--state-success);">"text/event-stream"</span>)
-                </div>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  响应缓存策略
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  基于 Redis 实现响应缓存，相同 Prompt + 参数直接返回缓存结果。设计缓存失效策略（TTL / 主动失效），降低重复调用的 Token 成本。
-                </p>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  多模型切换
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  支持 OpenAI GPT-4 / GPT-3.5 / Claude 等多模型接入，实现模型动态切换与降级策略（主模型超时自动切换备选模型），保障服务可用性。
-                </p>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  响应监控面板
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  开发响应耗时监控、Token 使用统计、错误率仪表盘，让平台运营状态可视化、可预警。
-                </p>
-              </div>
-
-            </div>
-          </article>
-
-          <!-- ===== Week 9 ===== -->
-          <article class="rounded-[12px] border overflow-hidden editorial-shadow" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-4 px-6 py-4 border-b" style="border-color: var(--border); background: var(--muted);">
-              <div class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center" style="background: var(--primary);">
-                <span class="font-serif-display text-base" style="color: var(--primary-foreground);">W9</span>
-              </div>
-              <div>
-                <div class="font-mono-label" style="color: var(--primary);">WEEK 09</div>
-                <h3 class="font-serif-display text-lg" style="color: var(--foreground);">授权认证</h3>
-              </div>
-            </div>
-            <div class="p-6 space-y-6">
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  用户注册登录
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  实现用户注册 / 登录 / 找回密码流程，密码 bcrypt 加密存储。支持邮箱验证与第三方登录（GitHub / Google OAuth）。
-                </p>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  JWT Token 认证
-                </h4>
-                <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--muted-foreground);">
-                  实现 JWT Token 签发与校验，Access Token + Refresh Token 双 Token 机制。处理 Token 过期与自动续签。
-                </p>
-                <div class="rounded-[8px] border p-4 code-block text-[12px] leading-[1.7] overflow-x-auto" style="border-color: var(--border); background: var(--muted); color: var(--foreground);">
-Access Token  → 前端内存 · 短时效 (15min)
-Refresh Token → HttpOnly Cookie · 长时效 (7d)
-<span style="color: var(--muted-foreground);"># Access 过期时用 Refresh 换新</span>
-                </div>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  RBAC 权限管理
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  设计角色-权限模型（管理员 / 开发者 / 普通用户），实现 API 级别权限控制。前端路由级权限守卫，做到接口与界面双重防护。
-                </p>
-              </div>
-
-              <div>
-                <h4 class="font-serif-display text-[15px] mb-2 flex items-center gap-2" style="color: var(--foreground);">
-                  <span class="w-1 h-4 rounded-[2px]" style="background: var(--primary);"></span>
-                  安全加固
-                </h4>
-                <p class="text-[14px] leading-[1.8]" style="color: var(--muted-foreground);">
-                  接口限流（Rate Limiting）、SQL 注入防护、XSS 过滤、CSRF 防护，构建多层纵深防御体系。
-                </p>
-              </div>
-
-            </div>
-          </article>
-
-        </div>
-      </section>
-
-      <!-- ============ Practice Project ============ -->
-      <section class="border-y" style="border-color: var(--border); background: var(--muted);">
-        <div class="mx-auto max-w-[1200px] px-6 py-14">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            <div class="lg:col-span-4">
-              <span class="font-mono-label block mb-2" style="color: var(--primary);">CAPSTONE</span>
-              <h2 class="font-serif-display text-2xl mb-3" style="color: var(--foreground);">实践项目</h2>
-              <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">阶段交付的工程项目，作为本阶段学习成果的检验。</p>
-            </div>
-            <div class="lg:col-span-8">
-              <div class="rounded-[12px] border-2 p-6 editorial-shadow" style="border-color: var(--primary); background: var(--card);">
-                <div class="flex items-start gap-4 mb-4">
-                  <div class="flex-shrink-0 w-11 h-11 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
-                    <i data-lucide="package-check" class="w-5 h-5" style="color: var(--primary-foreground);"></i>
-                  </div>
-                  <div>
-                    <div class="font-mono-label mb-1" style="color: var(--primary);">DELIVERABLE</div>
-                    <h3 class="font-serif-display text-lg" style="color: var(--foreground);">LLMOps 可视化管理平台</h3>
-                  </div>
-                </div>
-                <p class="text-[14px] leading-[1.8] mb-4" style="color: var(--muted-foreground);">
-                  交付包含 Prompt 管理 + 流式响应 + 认证的可视化管理平台：运营人员可在后台管理 Prompt 模板与版本，开发者可监控响应耗时与 Token 用量，用户通过 JWT 认证访问，RBAC 控制不同角色的可见范围。
-                </p>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
-                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">PROMPT</div>
-                    <div class="text-[13px]" style="color: var(--foreground);">模板管理与 A/B 测试</div>
-                  </div>
-                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
-                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">RESPONSE</div>
-                    <div class="text-[13px]" style="color: var(--foreground);">SSE 流式 + 多模型</div>
-                  </div>
-                  <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);">
-                    <div class="font-mono text-[10px] mb-1" style="color: var(--primary);">AUTH</div>
-                    <div class="text-[13px]" style="color: var(--foreground);">JWT + RBAC 权限</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ Technical Points ============ -->
-      <section class="mx-auto max-w-[1200px] px-6 py-14">
+      </div>
+    </section>
+    <!-- ============ 4. Learning Objectives ============ -->
+    <section class="border-y" style="border-color: var(--border); background: var(--muted);">
+      <div class="mx-auto max-w-[1200px] px-6 py-14">
         <div class="mb-8">
-          <span class="font-mono-label block mb-2" style="color: var(--primary);">TECHNICAL HIGHLIGHTS</span>
-          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">技术要点</h2>
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">LEARNING OBJECTIVES</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习目标</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-2 mb-3">
-              <i data-lucide="file-code-2" class="w-4 h-4" style="color: var(--primary);"></i>
-              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">Jinja2 模板引擎</span>
-            </div>
-            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">使用 Jinja2 实现 Prompt 变量注入与渲染，支持系统变量与自定义变量校验。</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);"><i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i></div>
+            <div><div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">Prompt 模板管理</div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">设计模板系统，支持版本控制、变量注入与 A/B 测试。</p></div>
           </div>
-          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-2 mb-3">
-              <i data-lucide="radio" class="w-4 h-4" style="color: var(--primary);"></i>
-              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">SSE 协议</span>
-            </div>
-            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">基于 text/event-stream 实现服务端推送，配合心跳保活与断点续传。</p>
+          <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);"><i data-lucide="radio" class="w-4 h-4" style="color: var(--primary);"></i></div>
+            <div><div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">SSE 流式与多模型切换</div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">实现 SSE 端点与多模型动态切换、降级策略。</p></div>
           </div>
-          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-2 mb-3">
-              <i data-lucide="key-round" class="w-4 h-4" style="color: var(--primary);"></i>
-              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">JWT 双 Token 认证</span>
-            </div>
-            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">Access Token 短时效存内存，Refresh Token 长时效存 HttpOnly Cookie，自动续签。</p>
+          <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);"><i data-lucide="shield-check" class="w-4 h-4" style="color: var(--primary);"></i></div>
+            <div><div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">认证与 RBAC 权限</div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">搭建 JWT 双 Token 认证与角色权限控制体系。</p></div>
           </div>
-          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-            <div class="flex items-center gap-2 mb-3">
-              <i data-lucide="users" class="w-4 h-4" style="color: var(--primary);"></i>
-              <span class="font-serif-display text-[15px]" style="color: var(--foreground);">RBAC 权限模型</span>
-            </div>
-            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">角色-权限映射实现 API 级与路由级双重控制，支撑多租户场景。</p>
+          <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);"><i data-lucide="layout-dashboard" class="w-4 h-4" style="color: var(--primary);"></i></div>
+            <div><div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">可视化管理后台</div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">构建管理后台界面，集成监控面板与运营工具。</p></div>
+          </div>
+          <div class="flex items-start gap-3 rounded-[12px] border p-5 editorial-shadow md:col-span-2" style="border-color: var(--border); background: var(--card);">
+            <div class="flex-shrink-0 w-9 h-9 rounded-[8px] flex items-center justify-center" style="background: var(--muted);"><i data-lucide="package-check" class="w-4 h-4" style="color: var(--primary);"></i></div>
+            <div><div class="font-serif-display text-[15px] mb-1" style="color: var(--foreground);">完成平台核心管理功能</div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">交付 LLMOps 平台核心管理能力，使 AI 应用可管理、可监控、可运营。</p></div>
           </div>
         </div>
-      </section>
-
-      <!-- ============ FAQ ============ -->
-      <section class="border-t" style="border-color: var(--border); background: var(--muted);">
-        <div class="mx-auto max-w-[1200px] px-6 py-14">
-          <div class="mb-8">
-            <span class="font-mono-label block mb-2" style="color: var(--primary);">FAQ</span>
-            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">常见问题</h2>
-          </div>
-          <div class="space-y-3">
-            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-start gap-3 mb-2">
-                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q1</span>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">SSE 连接经常断开？</h4>
-              </div>
-              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
-                实现 Last-Event-ID 机制支持断点续传，添加心跳包（每 15s 发送注释行），Nginx 配置 proxy_buffering off 避免缓冲堆积。
-              </p>
-            </div>
-            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-start gap-3 mb-2">
-                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q2</span>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">JWT Token 存哪里？</h4>
-              </div>
-              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
-                Access Token 存内存（前端 Vuex / Pinia），Refresh Token 存 HttpOnly Cookie，避免 XSS 攻击窃取。
-              </p>
-            </div>
-            <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-start gap-3 mb-2">
-                <span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q3</span>
-                <h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">Prompt 版本管理怎么做？</h4>
-              </div>
-              <p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">
-                每次修改创建新版本，保留历史版本，支持 diff 对比与一键回滚，配合 A/B 测试用数据驱动迭代。
-              </p>
-            </div>
-          </div>
+      </div>
+    </section>
+    <!-- ============ 5. Lesson Nodes (Core Section) ============ -->
+    <section class="mx-auto max-w-[1200px] px-6 py-16">
+      <div class="mb-10">
+        <span class="font-mono-label block mb-2" style="color: var(--primary);">LESSON NODES</span>
+        <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">课时级节点详情</h2>
+        <p class="text-sm mt-2" style="color: var(--muted-foreground);">按章节与课时拆解的学习节点，明确每个知识点的学习目标与技能标签。节点编号格式为「章-节-课时」。</p>
+      </div>
+      <!-- 第7章 -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <h3 class="font-serif-display text-xl" style="color: var(--foreground);">第7章：Prompt模块开发</h3>
+          <span class="font-mono text-[10px] px-2 py-1 rounded-[4px]" style="background: var(--muted); color: var(--muted-foreground);">WEEK 07</span>
         </div>
-      </section>
-
-      <!-- ============ Learning Resources ============ -->
-      <section class="border-b" style="border-color: var(--border);">
-        <div class="mx-auto max-w-[1200px] px-6 py-12">
-          <div class="mb-6">
-            <span class="font-mono-label block mb-2" style="color: var(--primary);">RESOURCES</span>
-            <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习资料</h2>
-            <p class="text-sm mt-1" style="color: var(--muted-foreground);">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-1</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章介绍与Prompt模块功能分析</p><p class="text-xs" style="color: var(--muted-foreground);">Prompt模板管理需求分析，模块功能拆解</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Prompt管理</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-2</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Prompt模板数据模型设计</p><p class="text-xs" style="color: var(--muted-foreground);">设计prompt_template表(模板名/内容/变量/版本号)</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">数据模型</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-3</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Prompt模板CRUD API开发</p><p class="text-xs" style="color: var(--muted-foreground);">实现模板增删改查接口，支持分类标签</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">API开发</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-4</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Jinja2模板引擎变量注入</p><p class="text-xs" style="color: var(--muted-foreground);">使用Jinja2渲染模板变量，支持系统变量与自定义变量</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Jinja2</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-5</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">变量校验机制设计</p><p class="text-xs" style="color: var(--muted-foreground);">校验必填变量、类型检查、默认值处理</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">数据校验</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-6</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Prompt版本管理与历史回滚</p><p class="text-xs" style="color: var(--muted-foreground);">每次修改创建新版本，支持版本对比与回滚</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">版本管理</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-7</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">A/B测试与效果对比</p><p class="text-xs" style="color: var(--muted-foreground);">多版本模板对比测试，设计评估指标</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">A/B测试</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-8</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Prompt可视化编辑器开发</p><p class="text-xs" style="color: var(--muted-foreground);">在线编辑器，支持变量高亮、实时预览</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">前端开发</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">7-1-9</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章总结与回顾</p><p class="text-xs" style="color: var(--muted-foreground);">回顾本章知识点</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">总结</span></div></div></div></div>
+        </div>
+      </div>
+      <!-- 第8章 -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <h3 class="font-serif-display text-xl" style="color: var(--foreground);">第8章：响应模块</h3>
+          <span class="font-mono text-[10px] px-2 py-1 rounded-[4px]" style="background: var(--muted); color: var(--muted-foreground);">WEEK 08</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-1</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章介绍与响应模块功能分析</p><p class="text-xs" style="color: var(--muted-foreground);">SSE流式响应、缓存策略、多模型切换</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">模块分析</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-2</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">SSE协议深入与Flask SSE端点</p><p class="text-xs" style="color: var(--muted-foreground);">Server-Sent Events协议，Flask实现SSE端点</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">SSE</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-3</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">SSE连接断开重连与心跳保活</p><p class="text-xs" style="color: var(--muted-foreground);">Last-Event-ID机制，心跳包保活</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">SSE</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-4</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Redis响应缓存策略</p><p class="text-xs" style="color: var(--muted-foreground);">相同Prompt+参数返回缓存，TTL失效策略</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Redis</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-5</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">多模型接入架构设计</p><p class="text-xs" style="color: var(--muted-foreground);">支持GPT-4/GPT-3.5/Claude等多模型</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">多模型</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-6</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">模型动态切换与降级策略</p><p class="text-xs" style="color: var(--muted-foreground);">主模型超时自动切换备选模型</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">降级策略</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-7</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Token使用统计与成本监控</p><p class="text-xs" style="color: var(--muted-foreground);">统计每次调用的token消耗与成本</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">Token统计</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-8</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">响应耗时监控面板开发</p><p class="text-xs" style="color: var(--muted-foreground);">开发耗时监控、错误率仪表盘</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">监控面板</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">8-1-9</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章总结与回顾</p><p class="text-xs" style="color: var(--muted-foreground);">回顾本章知识点</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">总结</span></div></div></div></div>
+        </div>
+      </div>
+      <!-- 第9章 -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <h3 class="font-serif-display text-xl" style="color: var(--foreground);">第9章：授权认证</h3>
+          <span class="font-mono text-[10px] px-2 py-1 rounded-[4px]" style="background: var(--muted); color: var(--muted-foreground);">WEEK 09</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-1</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章介绍与授权认证模块分析</p><p class="text-xs" style="color: var(--muted-foreground);">用户注册登录、JWT认证、RBAC权限</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">模块分析</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-2</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">用户注册登录接口开发</p><p class="text-xs" style="color: var(--muted-foreground);">注册/登录/找回密码流程，bcrypt加密</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">用户认证</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-3</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">邮箱验证与第三方OAuth</p><p class="text-xs" style="color: var(--muted-foreground);">邮箱验证码，GitHub/Google OAuth登录</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">OAuth</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-4</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">JWT Token签发与校验</p><p class="text-xs" style="color: var(--muted-foreground);">Access Token + Refresh Token双Token机制</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">JWT</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-5</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">Token过期与自动续签</p><p class="text-xs" style="color: var(--muted-foreground);">Refresh Token续签Access Token</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">JWT</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-6</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">RBAC权限模型设计</p><p class="text-xs" style="color: var(--muted-foreground);">角色-权限模型(管理员/开发者/普通用户)</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">RBAC</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-7</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">API级别权限控制中间件</p><p class="text-xs" style="color: var(--muted-foreground);">基于角色的API访问控制</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">权限控制</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-8</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">前端路由级权限守卫</p><p class="text-xs" style="color: var(--muted-foreground);">Vue Router路由守卫，页面级权限控制</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">前端权限</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-9</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">安全加固(限流/防注入/XSS)</p><p class="text-xs" style="color: var(--muted-foreground);">Rate Limiting、SQL注入防护、XSS过滤</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">安全</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-10</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">授权认证页面与交互逻辑实现</p><p class="text-xs" style="color: var(--muted-foreground);">登录/注册页面UI与交互</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">前端开发</span></div></div></div></div>
+          <div class="rounded-[8px] border p-4 hover:border-primary transition-colors" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3"><div class="font-mono text-[10px] px-2 py-1 rounded-[4px] shrink-0" style="background: var(--primary); color: var(--primary-foreground);">9-1-11</div><div class="flex-1"><p class="text-sm font-medium mb-1" style="color: var(--foreground);">本章总结与回顾</p><p class="text-xs" style="color: var(--muted-foreground);">回顾本章知识点</p><div class="flex flex-wrap gap-1.5 mt-2"><span class="font-mono text-[10px] px-1.5 py-0.5 rounded-[4px] border" style="border-color: var(--border); color: var(--muted-foreground);">总结</span></div></div></div></div>
+        </div>
+      </div>
+    </section>
+    <!-- ============ 6. Practice Project ============ -->
+    <section class="border-y" style="border-color: var(--border); background: var(--muted);">
+      <div class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <div class="lg:col-span-4">
+            <span class="font-mono-label block mb-2" style="color: var(--primary);">CAPSTONE</span>
+            <h2 class="font-serif-display text-2xl mb-3" style="color: var(--foreground);">实践项目</h2>
+            <p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">阶段交付的工程项目，作为本阶段学习成果的检验。</p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-center gap-2 mb-4">
-                <i data-lucide="book-open" class="w-4 h-4" style="color: var(--primary);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--foreground);">官方文档</span>
+          <div class="lg:col-span-8">
+            <div class="rounded-[12px] border-2 p-6 editorial-shadow" style="border-color: var(--primary); background: var(--card);">
+              <div class="flex items-start gap-4 mb-4">
+                <div class="flex-shrink-0 w-11 h-11 rounded-[8px] flex items-center justify-center" style="background: var(--primary);"><i data-lucide="package-check" class="w-5 h-5" style="color: var(--primary-foreground);"></i></div>
+                <div><div class="font-mono-label mb-1" style="color: var(--primary);">DELIVERABLE</div><h3 class="font-serif-display text-lg" style="color: var(--foreground);">LLMOps 可视化管理平台</h3></div>
               </div>
-              <div class="space-y-2">
-                <a href="https://jinja.palletsprojects.com/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Jinja2 模板引擎文档 →</a>
-                <a href="https://jwt.io/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">JWT 官方文档 →</a>
-                <a href="https://fastapi.tiangolo.com/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">FastAPI 文档（可对比Flask）→</a>
-                <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">MDN: SSE 协议 →</a>
-                <a href="https://auth0.com/docs/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Auth0 认证文档（RBAC参考）→</a>
-              </div>
-            </div>
-            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-center gap-2 mb-4">
-                <i data-lucide="play-circle" class="w-4 h-4" style="color: var(--primary);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--foreground);">视频教程</span>
-              </div>
-              <div class="space-y-2">
-                <a href="https://www.bilibili.com/video/BV1ob4y1L7pL" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">JWT 认证完整教程（B站）→</a>
-                <a href="https://www.bilibili.com/video/BV1zT4y1T7E2" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Flask SSE 流式响应实战（B站）→</a>
-                <a href="https://www.bilibili.com/video/BV1Sb411M7Yv" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">RBAC 权限系统设计（B站）→</a>
-                <a href="https://www.youtube.com/watch?v=7Q17ubWHj2c" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">OAuth 2.0 认证流程（YouTube）→</a>
-                <a href="https://www.youtube.com/watch?v=UbYZUarpm1c" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Prompt Engineering 教程（YouTube）→</a>
-              </div>
-            </div>
-            <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
-              <div class="flex items-center gap-2 mb-4">
-                <i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i>
-                <span class="font-serif-display text-sm" style="color: var(--foreground);">推荐阅读</span>
-              </div>
-              <div class="space-y-2">
-                <a href="https://datatracker.ietf.org/doc/html/rfc7519" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">JWT RFC 7519 标准 →</a>
-                <a href="https://owasp.org/www-community/ access_control" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">OWASP 访问控制指南 →</a>
-                <a href="https://www.promptingguide.ai/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Prompt Engineering 指南 →</a>
-                <a href="https://docs.github.com/en/actions" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">GitHub Actions CI/CD →</a>
-                <a href="https://swagger.io/docs/specification/about/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Swagger/OpenAPI 规范 →</a>
+              <p class="text-[14px] leading-[1.8] mb-4" style="color: var(--muted-foreground);">交付包含 Prompt 管理 + 流式响应 + 认证的可视化管理平台：运营人员可在后台管理 Prompt 模板与版本，开发者可监控响应耗时与 Token 用量，用户通过 JWT 认证访问，RBAC 控制不同角色的可见范围。</p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);"><div class="font-mono text-[10px] mb-1" style="color: var(--primary);">PROMPT</div><div class="text-[13px]" style="color: var(--foreground);">模板管理与 A/B 测试</div></div>
+                <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);"><div class="font-mono text-[10px] mb-1" style="color: var(--primary);">RESPONSE</div><div class="text-[13px]" style="color: var(--foreground);">SSE 流式 + 多模型</div></div>
+                <div class="rounded-[8px] border p-3" style="border-color: var(--border); background: var(--muted);"><div class="font-mono text-[10px] mb-1" style="color: var(--primary);">AUTH</div><div class="text-[13px]" style="color: var(--foreground);">JWT + RBAC 权限</div></div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      <!-- ============ Bottom Navigation ============ -->
-      <section class="mx-auto max-w-[1200px] px-6 py-14">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <a href="stage-2.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
-            <div class="font-mono-label mb-2" style="color: var(--primary);">PREVIOUS · STAGE 02</div>
-            <div class="font-serif-display text-[15px] flex items-center gap-2" style="color: var(--foreground);">
-              <i data-lucide="arrow-left" class="w-4 h-4" style="color: var(--primary);"></i>
-              商业级聊天机器人开发
-            </div>
-          </a>
-          <a href="stage-4.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
-            <div class="font-mono-label mb-2 text-right" style="color: var(--primary);">NEXT · STAGE 04</div>
-            <div class="font-serif-display text-[15px] flex items-center justify-end gap-2" style="color: var(--foreground);">
-              LLMOps 可视化续
-              <i data-lucide="arrow-right" class="w-4 h-4" style="color: var(--primary);"></i>
-            </div>
-          </a>
+      </div>
+    </section>
+    <!-- ============ 7. Technical Points ============ -->
+    <section class="mx-auto max-w-[1200px] px-6 py-14">
+      <div class="mb-8">
+        <span class="font-mono-label block mb-2" style="color: var(--primary);">TECHNICAL HIGHLIGHTS</span>
+        <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">技术要点</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);"><div class="flex items-center gap-2 mb-3"><i data-lucide="file-code-2" class="w-4 h-4" style="color: var(--primary);"></i><span class="font-serif-display text-[15px]" style="color: var(--foreground);">Jinja2 模板引擎</span></div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">使用 Jinja2 实现 Prompt 变量注入与渲染，支持系统变量与自定义变量校验。</p></div>
+        <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);"><div class="flex items-center gap-2 mb-3"><i data-lucide="radio" class="w-4 h-4" style="color: var(--primary);"></i><span class="font-serif-display text-[15px]" style="color: var(--foreground);">SSE 协议</span></div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">基于 text/event-stream 实现服务端推送，配合心跳保活与断点续传。</p></div>
+        <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);"><div class="flex items-center gap-2 mb-3"><i data-lucide="key-round" class="w-4 h-4" style="color: var(--primary);"></i><span class="font-serif-display text-[15px]" style="color: var(--foreground);">JWT 双 Token 认证</span></div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">Access Token 短时效存内存，Refresh Token 长时效存 HttpOnly Cookie，自动续签。</p></div>
+        <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);"><div class="flex items-center gap-2 mb-3"><i data-lucide="users" class="w-4 h-4" style="color: var(--primary);"></i><span class="font-serif-display text-[15px]" style="color: var(--foreground);">RBAC 权限模型</span></div><p class="text-[13px] leading-[1.7]" style="color: var(--muted-foreground);">角色-权限映射实现 API 级与路由级双重控制，支撑多租户场景。</p></div>
+      </div>
+    </section>
+    <!-- ============ 8. FAQ ============ -->
+    <section class="border-t" style="border-color: var(--border); background: var(--muted);">
+      <div class="mx-auto max-w-[1200px] px-6 py-14">
+        <div class="mb-8">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">FAQ</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">常见问题</h2>
         </div>
-      </section>
-
-      <!-- ============ Footer ============ -->
-      <footer class="border-t" style="border-color: var(--border);">
-        <div class="mx-auto max-w-[1200px] px-6 py-8">
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-[8px] flex items-center justify-center" style="background: var(--primary);">
-                <span class="font-serif-display text-sm" style="color: var(--primary-foreground);">L</span>
-              </div>
-              <div>
-                <div class="font-serif-display text-sm" style="color: var(--foreground);">LLMOps 学习路径</div>
-                <div class="font-mono-label" style="color: var(--muted-foreground);">STAGE 03 · WEEK 07 — 09</div>
-              </div>
+        <div class="space-y-3">
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3 mb-2"><span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q1</span><h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">SSE 连接经常断开？</h4></div><p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">实现 Last-Event-ID 机制支持断点续传，添加心跳包（每 15s 发送注释行），Nginx 配置 proxy_buffering off 避免缓冲堆积。</p></div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3 mb-2"><span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q2</span><h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">JWT Token 存哪里？</h4></div><p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">Access Token 存内存（前端 Vuex / Pinia），Refresh Token 存 HttpOnly Cookie，避免 XSS 攻击窃取。</p></div>
+          <div class="rounded-[12px] border p-5 editorial-shadow" style="border-color: var(--border); background: var(--card);"><div class="flex items-start gap-3 mb-2"><span class="font-mono text-[11px] px-2 py-0.5 rounded-[4px] flex-shrink-0" style="background: var(--primary); color: var(--primary-foreground);">Q3</span><h4 class="font-serif-display text-[15px]" style="color: var(--foreground);">Prompt 版本管理怎么做？</h4></div><p class="text-[13px] leading-[1.8] pl-[52px]" style="color: var(--muted-foreground);">每次修改创建新版本，保留历史版本，支持 diff 对比与一键回滚，配合 A/B 测试用数据驱动迭代。</p></div>
+        </div>
+      </div>
+    </section>
+    <!-- ============ 9. Learning Resources ============ -->
+    <section class="border-b" style="border-color: var(--border);">
+      <div class="mx-auto max-w-[1200px] px-6 py-12">
+        <div class="mb-6">
+          <span class="font-mono-label block mb-2" style="color: var(--primary);">RESOURCES</span>
+          <h2 class="font-serif-display text-2xl" style="color: var(--foreground);">学习资料</h2>
+          <p class="text-sm mt-1" style="color: var(--muted-foreground);">本阶段涉及的官方文档、视频教程与推荐阅读，学习时及时查阅。</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4"><i data-lucide="book-open" class="w-4 h-4" style="color: var(--primary);"></i><span class="font-serif-display text-sm" style="color: var(--foreground);">官方文档</span></div>
+            <div class="space-y-2">
+              <a href="https://jinja.palletsprojects.com/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Jinja2 模板引擎文档 →</a>
+              <a href="https://jwt.io/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">JWT 官方文档 →</a>
+              <a href="https://fastapi.tiangolo.com/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">FastAPI 文档（可对比Flask）→</a>
+              <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">MDN: SSE 协议 →</a>
+              <a href="https://auth0.com/docs/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Auth0 认证文档（RBAC参考）→</a>
             </div>
-            <p class="text-xs" style="color: var(--muted-foreground);">基于课程大纲设计 · 从架构基础到商业级 AI 应用</p>
+          </div>
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4"><i data-lucide="play-circle" class="w-4 h-4" style="color: var(--primary);"></i><span class="font-serif-display text-sm" style="color: var(--foreground);">视频教程</span></div>
+            <div class="space-y-2">
+              <a href="https://www.bilibili.com/video/BV1ob4y1L7pL" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">JWT 认证完整教程（B站）→</a>
+              <a href="https://www.bilibili.com/video/BV1zT4y1T7E2" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Flask SSE 流式响应实战（B站）→</a>
+              <a href="https://www.bilibili.com/video/BV1Sb411M7Yv" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">RBAC 权限系统设计（B站）→</a>
+              <a href="https://www.youtube.com/watch?v=7Q17ubWHj2c" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">OAuth 2.0 认证流程（YouTube）→</a>
+              <a href="https://www.youtube.com/watch?v=UbYZUarpm1c" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Prompt Engineering 教程（YouTube）→</a>
+            </div>
+          </div>
+          <div class="rounded-[12px] border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-center gap-2 mb-4"><i data-lucide="file-text" class="w-4 h-4" style="color: var(--primary);"></i><span class="font-serif-display text-sm" style="color: var(--foreground);">推荐阅读</span></div>
+            <div class="space-y-2">
+              <a href="https://datatracker.ietf.org/doc/html/rfc7519" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">JWT RFC 7519 标准 →</a>
+              <a href="https://owasp.org/www-community/access_control" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">OWASP 访问控制指南 →</a>
+              <a href="https://www.promptingguide.ai/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Prompt Engineering 指南 →</a>
+              <a href="https://docs.github.com/en/actions" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">GitHub Actions CI/CD →</a>
+              <a href="https://swagger.io/docs/specification/about/" target="_blank" class="block text-xs hover:underline" style="color: var(--primary);">Swagger/OpenAPI 规范 →</a>
+            </div>
           </div>
         </div>
-      </footer>
-
-    </main>
-
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script>lucide.createIcons();</script>
-
-    <style>
-      .editorial-shadow { box-shadow: 0 1px 3px rgba(30,27,46,0.04), 0 1px 2px rgba(30,27,46,0.03); }
-      .prose-stage p { line-height: 1.85; }
-      .code-block { font-family: var(--font-mono); }
-      .nav-link { transition: color 0.2s; }
-      [data-icon] { background-color: currentColor; }
-    </style>
+      </div>
+    </section>
+    <!-- ============ 10. Bottom Navigation ============ -->
+    <section class="mx-auto max-w-[1200px] px-6 py-14">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="stage-2.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
+          <div class="font-mono-label mb-2" style="color: var(--primary);">PREVIOUS · STAGE 02</div>
+          <div class="font-serif-display text-[15px] flex items-center gap-2" style="color: var(--foreground);"><i data-lucide="arrow-left" class="w-4 h-4" style="color: var(--primary);"></i>商业级聊天机器人开发</div>
+        </a>
+        <a href="stage-4.html" class="rounded-[12px] border p-5 transition-colors group" style="border-color: var(--border); background: var(--card);">
+          <div class="font-mono-label mb-2 text-right" style="color: var(--primary);">NEXT · STAGE 04</div>
+          <div class="font-serif-display text-[15px] flex items-center justify-end gap-2" style="color: var(--foreground);">LLMOps 可视化续<i data-lucide="arrow-right" class="w-4 h-4" style="color: var(--primary);"></i></div>
+        </a>
+      </div>
+    </section>
+    <!-- ============ Footer ============ -->
+    <footer class="border-t" style="border-color: var(--border);">
+      <div class="mx-auto max-w-[1200px] px-6 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-[8px] flex items-center justify-center" style="background: var(--primary);"><span class="font-serif-display text-sm" style="color: var(--primary-foreground);">L</span></div>
+            <div><div class="font-serif-display text-sm" style="color: var(--foreground);">LLMOps 学习路径</div><div class="font-mono-label" style="color: var(--muted-foreground);">STAGE 03 · WEEK 07 — 09</div></div>
+          </div>
+          <p class="text-xs" style="color: var(--muted-foreground);">基于课程大纲设计 · 从架构基础到商业级 AI 应用</p>
+        </div>
+      </div>
+    </footer>
+  </main>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

@@ -1,6 +1,6 @@
-import type { Stage } from '../types'
+import type { BaseStage, Stage } from '../types'
 
-export const stages: Stage[] = [
+export const stages: BaseStage[] = [
   {
     id: 1,
     number: `01`,
@@ -1359,18 +1359,18 @@ app = graph.compile()`,
     title: `前端调优及生产部署`,
     weeks: `WEEK 13 — 14`,
     level: `工程化`,
-    description: `本阶段聚焦后端性能优化与生产环境部署，将前四个阶段构建的 LLMOps 平台从开发环境推向生产可用。通过接口瓶颈分析、数据库查询优化与异步任务编排，系统性地提升后端吞吐能力与响应速度。`,
+    description: `本阶段聚焦多 LLM 接入、统计模块与生产部署，将前四个阶段构建的 LLMOps 平台从开发环境推向生产可用。`,
     tags: [
-      `工程化`,
-      `Docker`,
-      `Nginx`,
-      `性能优化`,
-      `监控统计`,
+      `多LLM接入`,
+      `配置部署`,
+      `统计监控`,
+      `WebApp发布`,
+      `Docker部署`,
     ],
     overview: [
-      `本阶段聚焦后端性能优化与生产环境部署，将前四个阶段构建的 LLMOps 平台从开发环境推向生产可用。通过接口瓶颈分析、数据库查询优化与异步任务编排，系统性地提升后端吞吐能力与响应速度。`,
-      `在部署层面，完成 Docker 容器化与 docker-compose 多服务编排，配置 Nginx 反向代理与 SSL 证书，搭建 GitHub Actions CI/CD 流水线，实现代码提交到生产部署的自动化闭环。前端同步进行路由懒加载、组件按需加载与体验调优。`,
-      `最后接入调用统计面板与 Sentry 错误监控，构建从数据采集、可视化分析到告警通知的完整可观测性体系，确保平台在生产环境中的稳定运行与持续迭代。`,
+      `本阶段聚焦多 LLM 接入、统计模块与生产部署，将前四个阶段构建的 LLMOps 平台从开发环境推向生产可用。第 13 章完成多模型管理器与本地 LLM（Ollama）接入，第 14 章补齐 Token 统计、WebApp 发布与项目优化部署，系统性提升平台可用性与交付标准。`,
+      `在多 LLM 层面，通过 YAML 配置 + 动态导入设计模型管理器，支持 GPT、Ollama 等供应商快速切换与 function calling 扩展；在统计层面，分别统计输入 / 输出 Token 并接入 ECharts 可视化面板；在发布层面，打通 WebApp 凭证、会话与对话接口，并接入 markdown-it 渲染 AI 消息。`,
+      `最后通过 404/403 错误页面、Vue hooks 优化、TypeScript 类型补全与前后端 Dockerfile 容器化，将项目交付到生产环境，构建一个稳定运行、可观测、可快速迭代的生产级 AI 平台。`,
     ],
     forYou: {
       transferableSkills: [
@@ -1409,29 +1409,29 @@ app = graph.compile()`,
     },
     learningObjectives: [
       {
-        icon: `gauge`,
-        title: `掌握后端接口性能优化策略`,
-        description: `分析接口瓶颈，优化数据库查询与异步任务处理`,
-      },
-      {
-        icon: `container`,
-        title: `实现 Docker 容器化与生产部署`,
-        description: `编写 Dockerfile，编排多服务，配置 Nginx 与 CI/CD`,
-      },
-      {
-        icon: `zap`,
-        title: `完成前端性能优化与体验提升`,
-        description: `路由懒加载、按需加载、骨架屏与响应式适配`,
+        icon: `layers`,
+        title: `实现多 LLM 接入与模型管理`,
+        description: `YAML 配置 + 动态导入设计模型管理器，支持快速切换与 function calling`,
       },
       {
         icon: `bar-chart-3`,
-        title: `搭建调用统计与监控面板`,
-        description: `ECharts 可视化，多维度分析与告警通知`,
+        title: `搭建 Token 统计与可视化面板`,
+        description: `输入/输出 Token 分别统计，ECharts 图表展示与调试面板优化`,
+      },
+      {
+        icon: `share-2`,
+        title: `完成 WebApp 发布与会话链路`,
+        description: `凭证管理、会话/消息接口、对话交互与 markdown 渲染`,
+      },
+      {
+        icon: `container`,
+        title: `实现项目优化与 Docker 部署`,
+        description: `错误页面、TS 类型补全、前后端 Dockerfile 容器化部署`,
       },
       {
         icon: `package-check`,
-        title: `交付生产环境部署的 LLMOps 平台`,
-        description: `完整的生产级平台，含监控统计与自动化部署流水线`,
+        title: `交付生产级 LLMOps 平台`,
+        description: `含多模型接入、统计监控、WebApp 发布与容器化部署的完整平台`,
       },
     ],
     weeksContent: [
@@ -1482,56 +1482,56 @@ app = graph.compile()`,
     ],
     practiceProject: {
       title: `生产环境部署的 LLMOps 平台`,
-      description: `将前四个阶段构建的 LLMOps 平台完整部署到生产环境，包含 Docker 容器化编排、Nginx 反向代理、CI/CD 自动化流水线、调用统计可视化面板与 Sentry 监控告警体系。交付一个稳定运行、可观测、可快速迭代的生产级 AI 平台。`,
+      description: `将前四个阶段构建的 LLMOps 平台完整部署到生产环境，包含多 LLM 模型管理器、Token 统计可视化面板、WebApp 发布链路与前后端 Dockerfile 容器化。交付一个稳定运行、可观测、可快速迭代的生产级 AI 平台。`,
       deliverables: [
         {
-          label: `DEVOPS`,
-          title: `容器化部署`,
+          label: `多LLM接入`,
+          title: `YAML 配置 + 动态导入模型管理器，Ollama 本地模型`,
         },
         {
-          label: `MONITOR`,
-          title: `监控统计面板`,
+          label: `统计与发布`,
+          title: `ECharts 统计面板 + WebApp 凭证会话链路`,
         },
         {
-          label: `CI/CD`,
-          title: `CI/CD 流水线`,
+          label: `容器化部署`,
+          title: `Vue 与 API 双 Dockerfile，项目优化与 TS 补全`,
         },
       ],
     },
     technicalHighlights: [
       {
-        icon: `container`,
-        title: `Docker Compose`,
-        description: `多服务编排，Flask + PostgreSQL + Redis 一键启动`,
+        icon: `layers`,
+        title: `模型管理器`,
+        description: `YAML 配置 + 动态导入，多供应商快速切换`,
       },
       {
-        icon: `network`,
-        title: `Nginx 负载均衡`,
-        description: `反向代理、SSL 终端、静态缓存与 SSE 代理`,
-      },
-      {
-        icon: `list-todo`,
-        title: `Celery 异步任务`,
-        description: `耗时操作异步化，Redis 作为消息队列 Broker`,
+        icon: `cpu`,
+        title: `Ollama 本地LLM`,
+        description: `本地部署开源模型，Faiss 向量索引`,
       },
       {
         icon: `bar-chart-3`,
         title: `ECharts 可视化`,
-        description: `调用统计、Token 消耗、错误率多维度图表呈现`,
+        description: `输入/输出 Token 统计与指标卡片`,
+      },
+      {
+        icon: `container`,
+        title: `Dockerfile 部署`,
+        description: `Vue 与 API 双镜像构建，生产容器化`,
       },
     ],
     faq: [
       {
-        question: `Docker 镜像太大怎么办？`,
-        answer: `使用多阶段构建（multi-stage build），选择 python:slim 基础镜像，构建完成后清理 pip 缓存，合并镜像层减少最终镜像体积。`,
+        question: `模型管理器如何支持新供应商？`,
+        answer: `在 YAML 配置文件中新增供应商条目，利用动态导入按配置项加载对应服务类，pydantic 校验初始化参数，无需修改核心代码即可接入新供应商。`,
       },
       {
-        question: `SSE 经 Nginx 代理后不流式？`,
-        answer: `在 Nginx 配置中关闭缓冲与缓存：proxy_buffering off; proxy_cache off; 并设置 proxy_set_header Connection ''; 确保流式数据实时透传。`,
+        question: `WebApp 凭证失效如何重生成？`,
+        answer: `调用发布模块的凭证重生成接口，旧凭证立即失效并写入新凭证标识，前端 WebApp 通过新凭证获取基础信息与对话接口。`,
       },
       {
-        question: `前端首屏加载慢？`,
-        answer: `路由懒加载拆分代码块，第三方库按需引入避免全量打包，服务端开启 gzip 压缩减小传输体积，使用 CDN 加速静态资源分发，配合图片懒加载进一步降低首屏负担。`,
+        question: `前后端 Dockerfile 有何区别？`,
+        answer: `Vue 前端使用多阶段构建，先 node 构建静态资源再用 nginx 托管；API 后端基于 python 镜像安装依赖并启动 Flask 服务，两者可独立构建与部署。`,
       },
     ],
     resources: [
@@ -1642,21 +1642,22 @@ app = graph.compile()`,
   {
     id: 6,
     number: `06`,
-    title: `多模态工具功能`,
+    title: `多模态工具功能与平台部署`,
     weeks: `WEEK 15`,
     level: `拓展`,
-    description: `本阶段扩展 Agent 工具链，支持图像、语音等多模态输入输出，打通多模态交互链路，让 AI 能看、能听、能说。从单一文本交互跃迁到图文语音全模态交互，大幅拓展 AI 应用的能力边界。`,
+    description: `本阶段扩展 Agent 工具链，支持图像、语音等多模态输入输出，并完成平台生产部署与第三方社交平台对接，让 AI 能看、能听、能说，还能发布到微信公众号。`,
     tags: [
-      `拓展`,
-      `图像理解`,
-      `ASR`,
+      `多模态`,
+      `GPT-4V`,
+      `Whisper ASR`,
       `TTS`,
-      `多模态 Agent`,
+      `Nginx部署`,
+      `微信发布`,
     ],
     overview: [
-      `本阶段扩展 Agent 工具链，支持图像、语音等多模态输入输出，打通多模态交互链路，让 AI 能看、能听、能说。从单一文本交互跃迁到图文语音全模态交互，大幅拓展 AI 应用的能力边界。`,
-      `上半周聚焦多模态输入：接入 GPT-4 Vision / Claude Vision 实现图像理解与 OCR 识别，接入 Whisper API 完成实时语音转文字，并将这些能力封装为 Agent 工具，实现多模态输入的智能路由与自动调度。`,
-      `下半周转向多模态输出：通过 Azure TTS / Edge TTS 实现自然语音合成，接入 DALL-E / Stable Diffusion 实现文生图能力。最终打通"语音输入 → ASR → LLM 推理 → TTS 语音输出"与"图片输入 → 视觉理解 → LLM 推理 → 图片/文字输出"两条完整链路。`,
+      `本阶段扩展 Agent 工具链，支持图像、语音等多模态输入输出，并完成平台生产部署与第三方社交平台对接，让 AI 能看、能听、能说，还能发布到微信公众号。`,
+      `15-1 节聚焦多模态输入：接入 GPT-4V 实现图像理解，对接 Whisper 实现语音转文本，并完善前端图片上传与语音配置 UI；15-2 节处理生产部署前的优化——日志冲突、Weaviate/Postgres 优化、Celery 环境隔离与 LangChain 0.3 升级。`,
+      `15-3 节完成 Docker 容器化与 Nginx 反向代理、SSL 证书、腾讯云部署与 Azure OpenAI 接入；15-4 节打通微信公众号发布链路，并扩展接入 DeepSeek 开源模型，构建完整的多模态 + 多平台 LLMOps 系统。`,
     ],
     forYou: {
       transferableSkills: [
@@ -1695,29 +1696,29 @@ app = graph.compile()`,
     },
     learningObjectives: [
       {
-        icon: `layers`,
-        title: `理解多模态 AI 技术架构`,
-        description: `掌握多模态模型的能力边界与适用场景`,
-      },
-      {
         icon: `image`,
-        title: `实现图像理解与视觉描述工具`,
-        description: `接入 Vision API，封装视觉理解 Agent 工具`,
+        title: `实现多模态输入与输出`,
+        description: `GPT-4V 图像理解、Whisper ASR、边缘 TTS 语音播放`,
       },
       {
-        icon: `mic`,
-        title: `接入语音识别与语音合成`,
-        description: `Whisper ASR 语音转文字，TTS 文字转语音`,
+        icon: `database`,
+        title: `完成平台部署优化`,
+        description: `日志/向量库/Postgres 优化，Celery 环境隔离与依赖管理`,
       },
       {
-        icon: `wrench`,
-        title: `构建多模态 Agent 工具链`,
-        description: `多模态输入路由，Agent 自动选择处理方式`,
+        icon: `container`,
+        title: `实现 Docker + Nginx 生产部署`,
+        description: `容器化编排、Nginx 反向代理、SSL 证书与腾讯云部署`,
+      },
+      {
+        icon: `share-2`,
+        title: `打通第三方平台发布`,
+        description: `微信公众号对接、消息推送，扩展接入 DeepSeek`,
       },
       {
         icon: `route`,
-        title: `打通图文语音多模态交互全链路`,
-        description: `语音输入→ASR→LLM→TTS 输出；图片输入→视觉理解→LLM→图片/文字输出`,
+        title: `交付多模态 + 多平台 LLMOps 系统`,
+        description: `能看听说 + 生产部署 + 社交平台发布的完整 AI 平台`,
       },
     ],
     weeksContent: [
@@ -1753,62 +1754,62 @@ app = graph.compile()`,
       },
     ],
     practiceProject: {
-      title: `支持图文语音多模态输入输出的 Agent 系统`,
-      description: `构建一个完整的多模态 Agent 系统，支持文字、图片、语音三种输入方式，能根据输入类型自动路由到对应处理工具，并通过文字、图片、语音三种方式输出结果。打通从输入到输出的完整多模态交互链路。`,
+      title: `多模态 + 多平台部署的 LLMOps 系统`,
+      description: `在阶段 5 平台基础上扩展多模态能力（GPT-4V / Whisper / TTS），完成 Docker + Nginx + SSL 生产部署到腾讯云，并打通微信公众号发布链路与 DeepSeek 开源模型接入，交付一个能看听说、可社交分发的完整 AI 平台。`,
       deliverables: [
         {
-          label: `VISION`,
-          title: `多模态输入处理`,
+          label: `多模态能力`,
+          title: `GPT-4V 图像理解 + Whisper ASR + 边缘 TTS`,
         },
         {
-          label: `SPEECH`,
-          title: `多模态输出能力`,
+          label: `生产部署`,
+          title: `Docker 编排 + Nginx + SSL + 腾讯云 + Azure`,
         },
         {
-          label: `PIPELINE`,
-          title: `全链路打通`,
+          label: `平台发布`,
+          title: `微信公众号对接 + DeepSeek 开源模型接入`,
         },
       ],
     },
     technicalHighlights: [
       {
         icon: `image`,
-        title: `GPT-4 Vision`,
-        description: `图像理解、OCR 识别、图表分析`,
+        title: `GPT-4V`,
+        description: `多模态图片输入与图像理解`,
       },
       {
         icon: `mic`,
         title: `Whisper ASR`,
-        description: `实时语音转文字，多语言支持`,
+        description: `语音转文本，流式 TTS 语音播放`,
       },
       {
-        icon: `volume-2`,
-        title: `Edge TTS`,
-        description: `Neural 语音合成，多音色 SSML 控制`,
+        icon: `container`,
+        title: `Docker + Nginx`,
+        description: `容器编排、反向代理与 SSL 部署`,
       },
       {
-        icon: `paintbrush`,
-        title: `DALL-E 生图`,
-        description: `文生图能力，指令式图片生成`,
+        icon: `message-circle`,
+        title: `微信公众号`,
+        description: `wechatpy 对接与消息推送`,
       },
       {
-        icon: `route`,
-        title: `多模态路由`,
-        description: `Agent 自动选择处理方式与工具`,
+        icon: `cpu`,
+        title: `DeepSeek`,
+        description: `开源模型扩展接入与 Azure OpenAI`,
       },
     ],
     faq: [
       {
-        question: `图片识别准确率不够？`,
-        answer: `提供清晰的图片指令（prompt），明确指定关注区域与期望输出格式。多角度图片输入提升信息完整度，结合 OCR 辅助识别文字内容，必要时进行图片预处理（裁剪/增强对比度）。`,
+        question: `切换模型后 GPT2 词表报错？`,
+        answer: `不同模型 Tokenizer 词表不一致，切换模型时需重新加载对应词表，避免复用旧 Tokenizer 导致编码错乱，15-1-7 课时给出了解决方案。`,
       },
       {
-        question: `TTS 语音不自然？`,
-        answer: `选择 Neural TTS 引擎（而非传统拼接式），调整语速参数（建议范围 0.8 — 1.2）与音调参数匹配场景需求，使用 SSML 标记精细控制停顿、重音与情感，显著提升语音自然度。`,
+        question: `同步与异步 Weaviate 冲突？`,
+        answer: `Weaviate 同步客户端与 Gevent 异步协程存在兼容问题，需区分运行环境并配置 Celery 猴子补丁，15-3-6 课时详细分析了该影响。`,
       },
       {
-        question: `多模态数据传输慢？`,
-        answer: `图片传输前压缩为 WebP 格式减小体积，音频使用流式传输（chunked transfer）避免整段等待，前端实现加载进度提示与骨架状态，提升用户感知体验。`,
+        question: `微信公众号如何对接 Agent？`,
+        answer: `利用 wechatpy SDK 简化对接流程，设计三方平台发布模块的数据库表与 API，用户消息经公众号回调推送至 Agent，回复再通过消息推送接口返回公众号。`,
       },
     ],
     resources: [
@@ -2492,14 +2493,29 @@ app = graph.compile()`,
   },
 ]
 
+import { stageOverviewMap, stageLessonChaptersMap } from './stageDetails'
+
 export function getStageById(id: number): Stage | undefined {
-  return stages.find((stage) => stage.id === id)
+  const stage = stages.find((stage) => stage.id === id)
+  if (!stage) return undefined
+  return {
+    ...stage,
+    stageOverview: stageOverviewMap[id] ?? {
+      duration: '',
+      durationLabel: '',
+      structure: '',
+      structureLabel: '',
+      lessonsCount: '',
+      lessonsLabel: '',
+    },
+    lessonChapters: stageLessonChaptersMap[id] ?? [],
+  }
 }
 
 export function getStageNavigation(id: number): { prev: Stage | null; next: Stage | null } {
   const index = stages.findIndex((stage) => stage.id === id)
   return {
-    prev: index > 0 ? stages[index - 1] : null,
-    next: index < stages.length - 1 ? stages[index + 1] : null,
+    prev: index > 0 ? getStageById(stages[index - 1].id) ?? null : null,
+    next: index < stages.length - 1 ? getStageById(stages[index + 1].id) ?? null : null,
   }
 }

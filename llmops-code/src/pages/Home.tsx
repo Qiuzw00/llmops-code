@@ -122,11 +122,9 @@ export const Home = () => {
                     <h3 className="font-serif-display text-lg" style={{ color: isHighlighted ? 'var(--color-primary-foreground)' : 'var(--color-foreground)' }}>
                       {stage.title}
                     </h3>
-                    {[1, 4, 8].includes(stage.id) && (
-                      <Link to={`/stage/${stage.id}`} className="inline-flex items-center gap-1 text-xs mt-1 text-primary hover:underline" style={{ color: isHighlighted ? 'var(--color-primary-foreground)' : undefined }}>
-                        查看详细学习内容 <ArrowRight className="w-3 h-3" />
-                      </Link>
-                    )}
+                    <Link to={`/stage/${stage.id}`} className="inline-flex items-center gap-1 text-xs mt-1 text-primary hover:underline" style={{ color: isHighlighted ? 'var(--color-primary-foreground)' : undefined }}>
+                      查看详细学习内容 <ArrowRight className="w-3 h-3" />
+                    </Link>
                   </div>
                 </div>
                 <div className="p-6">

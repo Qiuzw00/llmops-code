@@ -66,7 +66,38 @@ export interface ResourceCategory {
   links: ResourceLink[]
 }
 
-export interface Stage {
+export interface LessonNode {
+  code: string
+  title: string
+  description: string
+  tags: string[]
+  isRecap?: boolean
+}
+
+export interface LessonSection {
+  sectionNumber: number
+  title: string
+  lessons: LessonNode[]
+}
+
+export interface LessonChapter {
+  chapterNumber: number
+  title: string
+  weekNumber: number
+  sections: LessonSection[]
+}
+
+export interface StageOverviewStats {
+  duration: string
+  durationLabel: string
+  structure: string
+  structureLabel: string
+  lessonsCount: string
+  lessonsLabel: string
+  titleParts?: [string, string]
+}
+
+export interface BaseStage {
   id: number
   number: string
   title: string
@@ -83,6 +114,11 @@ export interface Stage {
   technicalHighlights: TechnicalHighlight[]
   faq: FAQItem[]
   resources: ResourceCategory[]
+}
+
+export interface Stage extends BaseStage {
+  stageOverview: StageOverviewStats
+  lessonChapters: LessonChapter[]
 }
 
 export interface TechCategory {
